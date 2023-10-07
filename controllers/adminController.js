@@ -30,3 +30,4 @@ const add_pharmacist = (req, res) => {
 }
 
 module.exports = { add_admin, add_pharmacist };
+//test
