@@ -21,6 +21,7 @@ const editMedPrice =asyncHandler( async (req,res) =>{
 
     //const newPrice= req.body.price
     //med.price=newPrice
+    //
     const updatedMed = await Medicine.findByIdAndUpdate(req.params.id, req.body.price, {new: true})
     res.status(200).json(updatedMed)
 })
@@ -32,7 +33,10 @@ const editMedDetails =asyncHandler( async (req,res) =>{
         res.status(400)
         throw new Error('not found ')
     }
-    const updatedMed = await Medicine.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    // const updatedMed = await Medicine.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    const newDetails= req.body.details;
+    med.details = newdetails;
+    const updatedMed = await med.save();
     res.status(200).json(updatedMed)
 })
 
