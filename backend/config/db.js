@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const connectDB = async() => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI)
+        const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://MangoDB:MangoDB@acldb1.f6mque5.mongodb.net/')
 
         console.log(`MongoDB Connected Successfuly: ${conn.connection.host}`.magenta.bold)
     } catch (error) {

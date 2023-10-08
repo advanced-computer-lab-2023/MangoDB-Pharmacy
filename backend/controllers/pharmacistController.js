@@ -10,6 +10,22 @@ const addMedicine = (req, res) => {
             .catch((err) => console.log(err));
 }
 
+const getMedicine = (req, res) => {
+    const medicine = Medicine.find()
+                             .then((result) => {
+                                const out = result.map(med => ({
+                                    details: med.details,
+                                    price: med.price,
+                                    quantity: med.quantity
+                                }));
+
+                                console.log(out);
+
+                                res.send(result);
+                             })
+                             .catch((err) => console.log(err));
+}
+
 const editMedPrice =asyncHandler( async (req,res) =>{
     const med = await Medicine.findById(req.params.id)
     if(!med)
@@ -41,7 +57,7 @@ const editMedDetails =asyncHandler( async (req,res) =>{
 })
 
 module.exports = { addMedicine,
+    getMedicine,
     editMedPrice,
     editMedDetails,
-
  };

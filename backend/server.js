@@ -5,7 +5,7 @@ const {errorHandler} = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
 const port = process.env.port || 5000
 
-//connectDB()
+connectDB()
 
 
 const app = express()
