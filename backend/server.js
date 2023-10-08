@@ -18,6 +18,7 @@ app.use(errorHandler)
 app.listen(port, () => console.log(`Server Started On Port ${port}...`.green.bold))
 app.get('/' , require('./routes/adminRoutes'))
 app.use('/Admin' , require('./routes/adminRoutes'))
+app.use('/Pharmacist' , require('./routes/pharmacistRoutes'))
 
 //localhost:5000/
 //localhost:5000/addpharma

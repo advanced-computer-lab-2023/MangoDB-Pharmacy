@@ -6,10 +6,10 @@ const medicineSchema = mongoose.Schema({
     required:[true , "Name"]
    },
     picture: {
-    type : Image,
+    type : String,
    },
     price: {
-    type:Float64Array,
+    type:Number,
     required:[true, "Enter price"],
    },
    use: {

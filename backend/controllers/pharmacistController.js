@@ -1,5 +1,6 @@
 const Pharmacist = require('../models/pharmacistModel')
 const Medicine = require('../models/medicineModel')
+const asyncHandler = require('express-async-handler')
 
 const addMedicine = (req, res) => {
     const medicine = new Medicine(req.body);
@@ -9,4 +10,34 @@ const addMedicine = (req, res) => {
             .catch((err) => console.log(err));
 }
 
-module.exports = { addMedicine };
+const editMedPrice =asyncHandler( async (req,res) =>{
+    const med = await Medicine.findById(req.params.id)
+    if(!med)
+    {
+        res.status(400)
+        throw new Error('not found ')
+    }
+
+
+    //const newPrice= req.body.price
+    //med.price=newPrice
+    const updatedMed = await Medicine.findByIdAndUpdate(req.params.id, req.body.price, {new: true})
+    res.status(200).json(updatedMed)
+})
+
+const editMedDetails =asyncHandler( async (req,res) =>{
+    const med = await Medicine.findById(req.params.id)
+    if(!med)
+    {
+        res.status(400)
+        throw new Error('not found ')
+    }
+    const updatedMed = await Medicine.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    res.status(200).json(updatedMed)
+})
+
+module.exports = { addMedicine,
+    editMedPrice,
+    editMedDetails,
+
+ };
