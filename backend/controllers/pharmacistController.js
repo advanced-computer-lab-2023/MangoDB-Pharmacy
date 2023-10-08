@@ -1,4 +1,4 @@
-const Medicine = require('../models/medicine')
+const Medicine = require('../models/pharmacistModel')
 
 const add_medicine = (req, res) => {
     const medicine = new Medicine();
