@@ -19,6 +19,7 @@ app.listen(port, () => console.log(`Server Started On Port ${port}...`.green.bol
 app.get('/' , require('./routes/adminRoutes'))
 app.use('/Admin' , require('./routes/adminRoutes'))
 app.use('/Pharmacist' , require('./routes/pharmacistRoutes'))
+app.use('/Guest' , require('./routes/guestRoutes'))
 
 //localhost:5000/
 //localhost:5000/addpharma

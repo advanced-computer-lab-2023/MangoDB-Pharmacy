@@ -8,7 +8,7 @@ const emailValidator = function (email) {
 const adminSchema = mongoose.Schema({
     username: {
         type: String,
-        required: [true, "Please Enter a Username"],
+        required: [false],
          unique: true
     },
     email: {
@@ -19,7 +19,7 @@ const adminSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please Enter a Password"]
+        required: [false]
     },
     firstName: {
         type: String,

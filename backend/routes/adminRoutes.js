@@ -11,5 +11,6 @@ router.get('/' , (req,res) => {
 router.post('/addAdmin' , adminController.add_admin)
 router.post('/addPharma', adminController.add_pharmacist);
 router.delete('/deletePharma', adminController.deletePharmacist);
-
+router.delete('/deletePatient', adminController.deletePatient);
+router.get('/getPendingPharma', adminController.getPendingPharma);
 module.exports = router;

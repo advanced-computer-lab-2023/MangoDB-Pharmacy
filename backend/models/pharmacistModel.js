@@ -33,7 +33,13 @@ const pharmacistSchema = new Schema({
     education: {
         type: String,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        required: true,
+        enum: ['hired', 'pending', 'rejected'],
+        default: "pending"
+    },
 }, { timestamps: true });
 
 const pharmacistModel = mongoose.model('Pharmacist', pharmacistSchema);
