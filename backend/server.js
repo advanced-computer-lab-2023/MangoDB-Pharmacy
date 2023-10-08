@@ -15,9 +15,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(errorHandler)
 
 
-
-
-
 app.listen(port, () => console.log(`Server Started On Port ${port}...`.green.bold))
 app.get('/' , require('./routes/adminRoutes'))
 app.use('/Admin' , require('./routes/adminRoutes'))
