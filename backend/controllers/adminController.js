@@ -9,7 +9,7 @@ const add_admin = (req, res) => {
     const admin = new Admin(req.body);
 
     console.log(admin.username,  admin.password)
-    res.status(201).json({ message: 'Admin info reached line 9 successfully' });
+    res.status(201).json({ message: req.body });
 
     // save the admin to the database
     // admin.save()
@@ -21,6 +21,7 @@ const add_admin = (req, res) => {
     //         console.error('Error adding admin:', err);
     //         res.status(500).json({ error: 'Internal Server Error mmmmm' });
     //     });
+    
 };
 const add_pharmacist = (req, res) => {
     // Create a new Pharmacist instance

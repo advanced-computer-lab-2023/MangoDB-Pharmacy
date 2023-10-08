@@ -6,6 +6,8 @@ const router = express.Router();
 router.get('/' , (req,res) => {
     res.status(200).json({message: 'Weselt'})
 })
+
+
 router.post('/addAdmin' , adminController.add_admin)
 router.post('/addPharma', adminController.add_pharmacist);
 router.delete('/deletePharma', adminController.deletePharmacist);
