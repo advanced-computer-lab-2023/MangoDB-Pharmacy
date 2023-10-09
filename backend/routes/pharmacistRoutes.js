@@ -7,8 +7,10 @@ const router = express.Router();
 // })
 router.post('/' , pharmacistController.addMedicine)
 router.get('/getMedicine', pharmacistController.getMedicine)
+router.get('/query?:name', pharmacistController.searchFilter)
 router.post('/:id' , pharmacistController.editMedPrice)
 router.get('/:name' , pharmacistController.searchMedicineByName)
+
 
     
 module.exports = router;

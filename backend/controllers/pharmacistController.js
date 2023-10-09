@@ -8,7 +8,8 @@ const addMedicine = (req, res) => {
 
     medicine.save()
             .then((result) => console.log('NEW MEDICINE ADDED:', result))
-            .catch((err) => console.log(err));
+            .catch((err) => console.log('Please change me I am just an error'));
+            // .catch((err) => console.log(err.toString().substring(0, 55)));
 }
 
 const getMedicine = (req, res) => {
@@ -145,10 +146,38 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
     res.status(200).json(medicine)
   })
 
+
+
+// search & filter
+const searchFilter = asyncHandler (async (req, res) => {
+    try {
+      const { search, use } = req.query;
+      const query = {};
+      if (search) {
+        query.name = { $regex: search, $options: 'i' }; // Case-insensitive search
+      }
+        //And OR
+      if (use) {
+        // query.use = use;
+        query.use = { $regex: use, $options: 'i' }
+      }
+
+      // Fetch medicines based on the query
+      const medicines = await Medicine.find(query);
+
+      // Return the filtered medicines
+      res.json(medicines);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
 module.exports = { addMedicine,
     getMedicine,
     editMedPrice,
     editMedDetails,
     searchMedicineByName,
     viewMed,
+    searchFilter
  };
