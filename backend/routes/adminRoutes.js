@@ -13,4 +13,6 @@ router.post('/addPharma', adminController.add_pharmacist);
 router.delete('/deletePharma', adminController.deletePharmacist);
 router.delete('/deletePatient', adminController.deletePatient);
 router.get('/getPendingPharma', adminController.getPendingPharma);
+router.get('/:name' , adminController.searchMedicineByName)
+
 module.exports = router;

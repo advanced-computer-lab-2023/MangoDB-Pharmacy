@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/' , pharmacistController.addMedicine)
 router.get('/getMedicine', pharmacistController.getMedicine)
 router.post('/:id' , pharmacistController.editMedPrice)
+router.get('/:name' , pharmacistController.searchMedicineByName)
 
     
 module.exports = router;

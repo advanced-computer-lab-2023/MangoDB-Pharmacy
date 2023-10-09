@@ -136,8 +136,9 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
           res.status(404).json({ message: 'medicine not found' });
           return;
       }
-
+      
       res.status(200).json(medicines);
+
   } catch (error) {
       res.status(500).json({ message: 'Server error' });
   }
@@ -168,7 +169,7 @@ const viewMed= asyncHandler( async (req,res) =>{
 })
 
 
-
+//find by id 
 //view pharmacist info
 const viewPharmacist= asyncHandler( async (req,res) =>{
   const pharmacist= await Pharmacist.find()
@@ -185,6 +186,7 @@ const getPatient = asyncHandler( async (req,res) =>{
       // Extract the name and mobile and bla bla  from each patient document
       const patientsInfo = patients.map(patient => ({
           name: patient.name,
+          username: patient.username,
           mobile: patient.mobile,
           dob: patient.dob,
           gender: patient.gender,
