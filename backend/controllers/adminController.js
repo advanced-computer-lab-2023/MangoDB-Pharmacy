@@ -1,6 +1,8 @@
 const Admin = require('../models/adminModel');
 const Pharmacist = require('../models/pharmacistModel');
 const Patient = require('../models/patientModel');
+const Medicine = require('../models/medicineModel');
+
 const asyncHandler = require('express-async-handler')
 
 
@@ -114,4 +116,64 @@ const getPendingPharma = asyncHandler(async(req, res) => {
  
 });
 
-module.exports = { add_admin, add_pharmacist, deletePharmacist, deletePatient, getPendingPharma };
+
+//view a list of all available medicine 
+const viewMed= asyncHandler( async (req,res) =>{
+  try {
+    const medicine= await Medicine.find()
+
+    // Extract the name and mobile and bla bla  from each patient document
+    const medInfo = medicine.map(medicine => ({
+        picture: medicine.picture,
+        price: medicine.price,
+        description: medicine.description,
+    }));
+
+    res.status(200).json(medInfo);
+} catch (error) {
+    res.status(500).json({ message: 'Server error' });
+}
+
+  
+  res.status(200).json(medicine)
+})
+
+
+
+//view pharmacist info
+const viewPharmacist= asyncHandler( async (req,res) =>{
+  const pharmacist= await Pharmacist.find()
+  res.status(200).json(pharmacist)
+})
+
+
+
+//get patient basic info 
+const getPatient = asyncHandler( async (req,res) =>{
+    try {
+      const patients = await Patient.find();
+
+      // Extract the name and mobile and bla bla  from each patient document
+      const patientsInfo = patients.map(patient => ({
+          name: patient.name,
+          mobile: patient.mobile,
+          dob: patient.dob,
+          gender: patient.gender,
+      }));
+
+      res.status(200).json(patientsInfo);
+  } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+  }
+
+})
+
+module.exports = { add_admin, 
+  add_pharmacist, 
+  deletePharmacist,
+   deletePatient, 
+   getPendingPharma,
+   getPatient,
+   viewPharmacist,
+   viewMed
+   };
