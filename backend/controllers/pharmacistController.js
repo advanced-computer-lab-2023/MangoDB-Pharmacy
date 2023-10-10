@@ -149,7 +149,7 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
   }
   
     
-    res.status(200).json(medicine)
+    //res.status(200).json(medicine)
   })
 
 

@@ -25,6 +25,7 @@ app.get('/' , require('./routes/adminRoutes'))
 app.use('/Admin' , require('./routes/adminRoutes'))
 app.use('/Pharmacist' , require('./routes/pharmacistRoutes'))
 app.use('/Guest' , require('./routes/guestRoutes'))
+app.use('/Patient', require('./routes/patientRoutes'))
 
 //localhost:5000/
 //localhost:5000/addpharma

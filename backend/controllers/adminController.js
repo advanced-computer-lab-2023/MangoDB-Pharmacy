@@ -169,7 +169,7 @@ const viewMed= asyncHandler( async (req,res) =>{
 }
 
   
-  res.status(200).json(medicine)
+  //res.status(200).json(medicine)
 })
 
 
@@ -180,7 +180,7 @@ const viewPharmacist= asyncHandler( async (req,res) =>{
     const { pharmacistId } = req.params;
     const pharmacist = await Pharmacist.findById(pharmacistId);
     if(!pharmacist){
-      return res.status(404).json({ message: 'Patient not found' });
+      return res.status(404).json({ message: 'Pharmacist not found' });
     }
     res.status(200).json(pharmacist)
   }catch(error){
