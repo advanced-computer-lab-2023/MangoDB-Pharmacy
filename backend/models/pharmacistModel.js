@@ -1,27 +1,8 @@
 const mongoose = require('mongoose');
+const User = require('./userModel')
 const Schema = mongoose.Schema;
 
 const pharmacistSchema = new Schema({
-    username: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    dob: {
-        type: Date,
-        required: true
-    },
     rate: {
         type: Number,
         required: true
@@ -42,5 +23,8 @@ const pharmacistSchema = new Schema({
     },
 }, { timestamps: true });
 
-const pharmacistModel = mongoose.model('Pharmacist', pharmacistSchema);
-module.exports = pharmacistModel;
+// const pharmacistModel = mongoose.model('Pharmacist', pharmacistSchema);
+
+const Pharmacist = User.discriminator('Pharmacist', pharmacistSchema)
+
+module.exports = Pharmacist;

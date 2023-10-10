@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('./userModel')
 
 const emailValidator = function (email) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -11,29 +12,6 @@ const phoneNumberValidator = function (phoneNumber) {
 }
 
 const patientSchema = mongoose.Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        //validate: emailValidator
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    dob: {
-        type: Date,
-        required: true
-    },
     gender: {
         type: String,
         required: true,
@@ -95,4 +73,8 @@ const patientSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Patient', patientSchema)
+// module.exports = mongoose.model('Patient', patientSchema)
+
+const Patient = User.discriminator('Patient', patientSchema)
+
+module.exports = Patient;

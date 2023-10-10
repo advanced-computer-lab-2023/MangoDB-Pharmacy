@@ -3,6 +3,12 @@ const Medicine = require('../models/medicineModel')
 
 const asyncHandler = require('express-async-handler')
 
+const home = (req, res) => {
+    const meds = Medicine.find()
+                         .then((result) => res.render('medicine', { meds: result }))
+                         .catch(err => console.log(err));
+}
+
 const addMedicine = (req, res) => {
     const medicine = new Medicine(req.body);
 
@@ -173,11 +179,11 @@ const searchFilter = asyncHandler (async (req, res) => {
     }
   });
 
-module.exports = { addMedicine,
+module.exports = { home, addMedicine,
     getMedicine,
     editMedPrice,
     editMedDetails,
     searchMedicineByName,
     viewMed,
     searchFilter
- };
+};

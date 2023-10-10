@@ -49,10 +49,14 @@ function generateRandomString(length) {
     return generateRandomString(passwordLength);
   }
 const add_pharmacist = (req, res) => {
+  const pharmacist = Pharmacist.findOneAndUpdate("", { status: "hired" })
+                               .then((result) => {
+                                  res.status(201).json({ message: 'pharmacist info reached line 26 successfully' });
+                               })
+                               .catch((err) => console.log(err));
     // Create a new Pharmacist instance
-    const pharmacist = new Pharmacist(req.body);
-    console.log(pharmacist.username,  pharmacist.password)
-    res.status(201).json({ message: 'pharmacist info reached line 26 successfully' });
+    // const pharmacist = new Pharmacist(req.body);
+    // console.log(pharmacist.username,  pharmacist.password)
     // save the pharmacist to the database
 //    
 }
