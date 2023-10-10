@@ -176,32 +176,47 @@ const viewMed= asyncHandler( async (req,res) =>{
 //find by id 
 //view pharmacist info
 const viewPharmacist= asyncHandler( async (req,res) =>{
-  const pharmacist= await Pharmacist.find()
-  res.status(200).json(pharmacist)
-})
+  try {
+    const { pharmacistId } = req.params;
+    const pharmacist = await Pharmacist.findById(pharmacistId);
+    if(!pharmacist){
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+    res.status(200).json(pharmacist)
+  }catch(error){
+    res.status(500).json({error: err.message})
 
-
-
-//get patient basic info 
-const getPatient = asyncHandler( async (req,res) =>{
-    try {
-      const patients = await Patient.find();
-
-      // Extract the name and mobile and bla bla  from each patient document
-      const patientsInfo = patients.map(patient => ({
-          name: patient.name,
-          username: patient.username,
-          mobile: patient.mobile,
-          dob: patient.dob,
-          gender: patient.gender,
-      }));
-
-      res.status(200).json(patientsInfo);
-  } catch (error) {
-      res.status(500).json({ message: 'Server error' });
   }
-
 })
+
+
+
+//get patient basic info
+//ntla3 kolo w n5tar
+//hyd5al el id  
+const getPatient = asyncHandler(async (req, res) => {
+  try {
+    const { patientId } = req.params;
+    const patient = await Patient.findById(patientId);
+
+    // Check if the patient exists
+    if (!patient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+    const patientInfo = {
+      name: patient.name,
+      username: patient.username,
+      mobile: patient.mobile,
+      dob: patient.dob,
+      gender: patient.gender,
+    };
+
+    res.status(200).json(patientInfo);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 module.exports = { add_admin, 
   add_pharmacist, 
