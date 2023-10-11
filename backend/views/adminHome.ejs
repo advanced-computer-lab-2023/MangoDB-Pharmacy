@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        
+        <h1>Your Header</h1>
+        <div class="menu">
+            <ul class="menu-list">
+                <li><a href="/">Home Page</a></li>
+                <li class="dropdown">
+                    <a href="#">Contact Us</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/contact">Email</a></li>
+                        <li><a href="/contact">Phone</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <button id="getPendingRequests">Get Pending Requests</button>
+            <div id="tableContainer">
+                <!-- The table will be inserted here -->
+                
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2023 Your Company Name
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const getPendingRequestsButton = document.getElementById("getPendingRequests");
+            const tableContainer = document.getElementById("tableContainer");
+        
+            getPendingRequestsButton.addEventListener("click", function () {
+                fetch("http://localhost:5000/Admin/getPendingPharma")
+                    .then(response => response.json())
+                    .then(data => {
+                        // Create a table and populate it with data
+                        const table = document.createElement("table");
+                       // console.log(response);
+                        table.innerHTML = `
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        `;
+        
+                        data.forEach(item => {
+                            const row = table.insertRow();
+                            row.insertCell(0).textContent = item.id;
+                            row.insertCell(1).textContent = item.name;
+                            row.insertCell(2).textContent = item.description;
+                        });
+        
+                        // Replace the existing table with the new one
+                        //tableContainer.innerHTML = "";
+                        tableContainer.appendChild(table);
+                    })
+                    .catch(error => console.error("Error fetching data: ", error));
+            });
+        });
+        
+        
+        </script>
+</body>
+
+</html>
+
+
