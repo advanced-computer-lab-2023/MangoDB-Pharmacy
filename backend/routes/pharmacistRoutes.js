@@ -10,7 +10,7 @@ router.post('/addMedicine' , pharmacistController.addMedicine)
 router.get('/viewMed', pharmacistController.viewMed)    
 router.get('/getMed', pharmacistController.getMedicine)
 router.get('/query?:name', pharmacistController.searchFilter)
-router.post('/:id' , pharmacistController.editMedPrice)
+router.put('/:id' , pharmacistController.editMedPrice)
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 

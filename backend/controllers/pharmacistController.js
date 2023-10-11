@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler')
 
 const home = (req, res) => {
     const meds = Medicine.find()
-                         .then((result) => res.render('medicine', { meds: result }))
+                         .then((result) => res.render('medicine', { docTitle: "Meds", meds: result }))
                          .catch(err => console.log(err));
 }
 
@@ -22,13 +22,13 @@ const getMedicine = (req, res) => {
     const medicine = Medicine.find()
                              .then((result) => {
                                 const out = result.map(med => ({
-                                    sales: med.sales,
-                                    quantity: med.quantity
+                                    quantity: med.quantity,
+                                    sales: med.sales
                                 }));
 
                                 console.log(out);
 
-                                res.send(result);
+                                res.send(out);
                              })
                              .catch((err) => console.log(err));
 }
@@ -52,9 +52,20 @@ const getMedicine = (req, res) => {
 //edit medicine price
 const editMedPrice = asyncHandler(async (req, res) => {
     try {
+        const { details, price } = req.body;
+        const update = {};
+        if (details) {
+            update.details = details;
+        }
+
+        if (price) {
+            update.price = price;
+        }
+
         const updatedMed = await Medicine.findByIdAndUpdate(
             req.params.id,
-            { price: req.body.price }, // Update the price field with the new value
+            // { price: req.body.price }, // Update the price field with the new value
+            update,
             { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
         );
 
@@ -86,24 +97,24 @@ const editMedPrice = asyncHandler(async (req, res) => {
 
 
 //edit medicine details 
-const editMedDetails = asyncHandler(async (req, res) => {
-    try {
-        const updatedMed = await Medicine.findByIdAndUpdate(
-            req.params.id,
-            { details: req.body.details }, // Update the price field with the new value
-            { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
-        );
+// const editMedDetails = asyncHandler(async (req, res) => {
+//     try {
+//         const updatedMed = await Medicine.findByIdAndUpdate(
+//             req.params.id,
+//             { details: req.body.details }, // Update the price field with the new value
+//             { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
+//         );
 
-        if (!updatedMed) {
-            res.status(404).json({ message: 'Medicine not found' });
-            return;
-        }
+//         if (!updatedMed) {
+//             res.status(404).json({ message: 'Medicine not found' });
+//             return;
+//         }
 
-        res.status(200).json(updatedMed);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
+//         res.status(200).json(updatedMed);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
 
 //search medicine based on name 
 const searchMedicineByName = asyncHandler(async (req, res) => {
@@ -182,7 +193,7 @@ const searchFilter = asyncHandler (async (req, res) => {
 module.exports = { home, addMedicine,
     getMedicine,
     editMedPrice,
-    editMedDetails,
+    // editMedDetails,
     searchMedicineByName,
     viewMed,
     searchFilter
