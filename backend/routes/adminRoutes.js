@@ -9,7 +9,7 @@ router.get('/' , (req,res) => {
 
 router.get('/getMed' , adminController.viewMed)
 router.get('/viewPharma' , adminController.viewPharmacist)
-router.get('/viewPatient' , adminController.getPatient)
+router.get('/getPatientsBasicInfo' , adminController.getPatientsBasicInfo)
 router.post('/addAdmin' , adminController.add_admin)
 router.post('/addPharma', adminController.add_pharmacist);
 router.delete('/deletePharma', adminController.deletePharmacist);
