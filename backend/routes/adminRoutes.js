@@ -1,10 +1,16 @@
 const express = require('express');
 const adminController = require('../controllers/adminController');
+const pharmacistModel = require('../models/pharmacistModel');
 
 const router = express.Router();
 
 router.get('/' , (req,res) => {
-    res.render('../backend/views/adminHome.ejs')
+    const pharmacists = pharmacistModel.find()
+                                       .then((result) => {
+                                            res.render('adminHome', { result });
+                                       })
+                                       .catch((err) => console.log(err));
+    // res.render('adminHome')
 })
 
 router.get('/query?:name',adminController.searchFilter)

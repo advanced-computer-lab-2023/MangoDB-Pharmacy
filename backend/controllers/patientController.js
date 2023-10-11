@@ -11,13 +11,15 @@ const viewMed= asyncHandler( async (req,res) =>{
       const medicines= await Medicine.find()
   
       // Extract the name and mobile and bla bla  from each patient document
-      const medInfo = medicines.map(medicine => ({
-          picture: medicine.picture,
-          price: medicine.price,
-          description: medicine.description,
-      }));
+      // const medInfo = medicines.map(medicine => ({
+      //     id: medicine.__id,
+      //     picture: medicine.picture,
+      //     price: medicine.price,
+      //     description: medicine.description,
+      // }));
   
-      res.status(200).json(medInfo);
+      // res.status(200).json(medInfo);
+      res.status(200).render('Patient/index', { meds: medicines });
   } catch (error) {
       res.status(500).json({ message: 'Server error' });
   }
