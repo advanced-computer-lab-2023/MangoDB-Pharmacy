@@ -273,5 +273,6 @@ module.exports = { add_admin,
    getPatientsBasicInfo,
    viewPharmacistInfo,
    viewMed,
-   searchFilter
+   searchFilter,
+   viewAllPharmacists
    };

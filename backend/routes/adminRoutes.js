@@ -10,6 +10,7 @@ router.get('/' , (req,res) => {
 router.get('/query?:name',adminController.searchFilter)
 router.get('/getMed' , adminController.viewMed)
 router.get('/viewPharmacistInfo/:id' , adminController.viewPharmacistInfo)
+router.get('/viewAllPharmacists' , adminController.viewAllPharmacists)
 router.get('/getPatientsBasicInfo' , adminController.getPatientsBasicInfo)
 router.post('/addAdmin' , adminController.add_admin)
 router.post('/addPharma', adminController.add_pharmacist);
