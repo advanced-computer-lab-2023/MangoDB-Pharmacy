@@ -4,7 +4,7 @@ const adminController = require('../controllers/adminController');
 const router = express.Router();
 
 router.get('/' , (req,res) => {
-    res.status(200).json({message: 'Weselt'})
+    res.render('../backend/views/adminHome.ejs')
 })
 
 router.get('/query?:name',adminController.searchFilter)

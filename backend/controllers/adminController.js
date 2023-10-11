@@ -111,7 +111,9 @@ const getPendingPharma = asyncHandler(async(req, res) => {
         if (pendingPharmacists.length === 0) {
           return res.status(404).json({ error: 'No pharmacists with pending status found' });
         }
+        console.log(pendingPharmacists);
     
+        
         return res.json(pendingPharmacists);
       } catch (error) {
         console.error(error);

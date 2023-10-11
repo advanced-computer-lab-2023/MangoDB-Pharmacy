@@ -1,0 +1,268 @@
+/* Body styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f1de;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-weight:300 lighter;
+}
+
+/* Header styles */
+header {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f1de;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+    font-weight: lighter 100;
+}
+
+.menu {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e07a5f;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 0;
+}
+
+.menu li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+    .menu li a {
+        font-family: 'Roboto', sans-serif;
+        color: white;
+        text-decoration: none;
+        padding: 5px 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .menu li a:hover {
+            background-color: #AE3F21;
+        }
+/* Existing styles */
+
+/* Existing styles */
+
+.menu li.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #C9DED4;
+    padding: 10px;
+    top: 100%;
+    left: 0;
+    z-index: 999; /* Adjust the z-index value as needed */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu li.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  margin-bottom: 5px;
+  padding:5px;
+}
+
+    .dropdown-menu li a {
+        font-family: 'Roboto', sans-serif;
+        color: #21362C;
+        text-decoration: none;
+        padding: 5px 10px;
+        display: block;
+    }
+
+        .dropdown-menu li a:hover {
+            background-color: #DBE9E2;
+        }
+
+
+.logo {
+  margin-right: 10px;
+}
+
+.logo img {
+  max-width: 120px;
+  height: auto;
+  content: url("logo.png");
+}
+
+.logo2 {
+    margin-right: 10px;
+}
+
+    .logo2 img {
+        max-width: 120px;
+        height: auto;
+        content: url("logo.png");
+    }
+
+.portal-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.portal-buttons button {
+  margin: 0 5px; /* Adjust the margin as needed */
+}
+
+h1 {
+    font-family: 'Teko', sans-serif;
+    color: #81b29a;
+    margin: 0;
+    text-align: center;
+    font-size: 70px; /* Adjust the font size as needed */
+    font-weight: bold;
+    flex: 1;
+    margin-left: -140px;
+    font-weight: normal;
+}
+
+/* Main section styles */
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+h2 {
+    font-family: 'Teko', sans-serif;
+    color: #81b29a;
+    text-align: center;
+    font-weight: lighter 100;
+}
+
+/* Form styles */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+    font-family: 'Roboto', sans-serif;
+    width: 120px;
+}
+.textbox {
+    font-family: 'Roboto', sans-serif;
+    width: 50%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.textarea {
+  width: 100%;
+  height: 100px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.banner {
+    display: none;
+    background-color: #e07a5f;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 45px; /* Adjust the value as needed */
+    left: 0;
+    width: 100%;
+}
+.line {
+  width: 2px;
+  height: 50%;
+  background-color: black;
+  position: absolute;
+  top: 150;
+  left: 49%;
+  transform: translateX(-50%);
+}
+.main-content {
+  margin-bottom: 28px; /* Adjust the value as needed */
+}
+
+.banner-text {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-100%, -50%);
+    animation: bannerMove 30s linear infinite;
+}
+
+@keyframes bannerMove {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+
+
+input[type="text"],
+input[type="password"] {
+    font-family: 'Roboto', sans-serif;
+    flex: 1;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+}
+
+button {
+    font-family: 'Roboto', sans-serif;
+    padding: 10px 20px;
+    border: none;
+    background-color: #52796f;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+    button:hover {
+        background-color: #354f52;
+    }
+
+/* Footer styles */
+footer {
+    font-family: 'Roboto', sans-serif;
+    background-color: #81b29a;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25px;
+}
