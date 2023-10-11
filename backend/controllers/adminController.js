@@ -175,20 +175,25 @@ const viewMed= asyncHandler( async (req,res) =>{
 
 //find by id 
 //view pharmacist info
-const viewPharmacist= asyncHandler( async (req,res) =>{
-  // try {
-  //   const { pharmacistId } = req.params;
-  //   const pharmacist = await Pharmacist.findById(pharmacistId);
-  //   if(!pharmacist){
-  //     return res.status(404).json({ message: 'Pharmacist not found' });
-  //   }
-  //   res.status(200).json(pharmacist)
-  // }catch(error){
-  //   res.status(500).json({error: err.message})
+const viewPharmacistInfo= asyncHandler( async (req,res) =>{
+  try {
+    const  pharmacistId  = req.params.id;
+    const pharmacist = await Pharmacist.findById(pharmacistId);
+    if(!pharmacist){
+       return res.status(404).json({ message: 'Pharmacist not found' });
+    }
+    res.status(200).json(pharmacist)
+  }catch(error){
+    res.status(500).json({error: err.message})
 
-  // }
-  const pharmacist= await Pharmacist.find()
-  res.status(200).json(pharmacist)
+  }
+  // const pharmacist= await Pharmacist.find()
+  // res.status(200).json(pharmacist)
+})
+//view all 3shan el frontend 
+const viewAllPharmacists= asyncHandler( async (req,res) =>{
+      const pharmacist= await Pharmacist.find()
+      res.status(200).json(pharmacist)
 })
 
 
@@ -266,7 +271,7 @@ module.exports = { add_admin,
    deletePatient, 
    getPendingPharma,
    getPatientsBasicInfo,
-   viewPharmacist,
+   viewPharmacistInfo,
    viewMed,
    searchFilter
    };
