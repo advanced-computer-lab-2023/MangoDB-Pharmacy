@@ -236,6 +236,29 @@ const getPatientsBasicInfo = asyncHandler(async (req, res) => {
 }
 });
 
+const searchFilter = asyncHandler (async (req, res) => {
+  try {
+    const { search, use } = req.query;
+    const query = {};
+    if (search) {
+      query.name = { $regex: search, $options: 'i' }; // Case-insensitive search
+    }
+      //And OR
+    if (use) {
+      // query.use = use;
+      query.use = { $regex: use, $options: 'i' }
+    }
+
+    // Fetch medicines based on the query
+    const medicines = await Medicine.find(query);
+
+    // Return the filtered medicines
+    res.json(medicines);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = { add_admin, 
   add_pharmacist, 
@@ -245,5 +268,5 @@ module.exports = { add_admin,
    getPatientsBasicInfo,
    viewPharmacist,
    viewMed,
-   searchMedicineByName
+   searchFilter
    };
