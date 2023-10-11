@@ -229,6 +229,7 @@ const getPatientsBasicInfo = asyncHandler(async (req, res) => {
     // Extract the name and mobile and bla bla  from each patient document
     const patientsInfo = patients.map(patient => ({
         firstName: patient.firstName,
+        lastName: patient.lastName,
         username: patient.username,
         mobile: patient.mobile,
         dob: patient.dob,
