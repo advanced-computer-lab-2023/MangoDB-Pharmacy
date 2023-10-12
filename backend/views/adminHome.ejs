@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -41,14 +64,15 @@
         document.addEventListener("DOMContentLoaded", function () {
             const getPendingRequestsButton = document.getElementById("getPendingRequests");
             const tableContainer = document.getElementById("tableContainer");
+            console.log("shjcbewjenc");
         
             getPendingRequestsButton.addEventListener("click", function () {
-                fetch("http://localhost:5000/Admin/getPendingPharma")
+                fetch("http://localhost:3000/Admin/getPendingPharma")
                     .then(response => response.json())
                     .then(data => {
                         // Create a table and populate it with data
                         const table = document.createElement("table");
-                       // console.log(response);
+                     //  console.log(response);
                         table.innerHTML = `
                             <tr>
                                 <th>ID</th>
@@ -56,12 +80,29 @@
                                 <th>Description</th>
                             </tr>
                         `;
-        
+                        const row = table.insertRow();
+                        
+                            row.insertCell(0).textContent = "first name";
+                            row.insertCell(1).textContent = "last name";
+                            row.insertCell(2).textContent = "affiliation";
+                            row.insertCell(3).textContent = "rate";
+                            row.insertCell(4).textContent = "username";
+                            row.insertCell(5).textContent = "password";
+                            row.insertCell(6).textContent = "status";
+                            row.insertCell(7).textContent = "education";
+                            tableContainer.appendChild(row);
+
                         data.forEach(item => {
                             const row = table.insertRow();
-                            row.insertCell(0).textContent = item.rate;
-                            row.insertCell(1).textContent = item.firstName;
+                            row.insertCell(0).textContent = item.firstName;
+                            row.insertCell(1).textContent = item.lastName;
                             row.insertCell(2).textContent = item.affiliation;
+                            row.insertCell(3).textContent = item.rate;
+                            row.insertCell(4).textContent = item.username;
+                            row.insertCell(5).textContent = item.password;
+                            row.insertCell(6).textContent = item.status;
+                            row.insertCell(7).textContent = item.education;
+                            
                             tableContainer.appendChild(row);
                         });
                         

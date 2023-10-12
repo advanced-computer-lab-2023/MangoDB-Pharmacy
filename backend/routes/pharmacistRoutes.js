@@ -5,12 +5,15 @@ const router = express.Router();
 // router.get('/:id' , (req,res) => {
 //     res.status(200).json({message: 'Weselt'})
 // })
+router.get('/' , (req,res) => {
+    res.render('../backend/views/pharmaHome')
+})
 router.get('/', pharmacistController.home)
 router.post('/addMedicine' , pharmacistController.addMedicine)
 router.get('/viewMed', pharmacistController.viewMed)    
 router.get('/getMed', pharmacistController.getMedicine)
 router.get('/query?:name', pharmacistController.searchFilter)
-router.put('/:id' , pharmacistController.editMedPrice)
+router.put('/updateMed' , pharmacistController.editMedPrice)
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 
