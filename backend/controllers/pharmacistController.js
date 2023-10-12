@@ -52,7 +52,7 @@ const getMedicine = (req, res) => {
 //edit medicine price
 const editMedPrice = asyncHandler(async (req, res) => {
     try {
-        const { id, details, price } = req.body;
+        const { details, price } = req.body;
         const update = {};
         if (details) {
             update.details = details;
@@ -63,7 +63,7 @@ const editMedPrice = asyncHandler(async (req, res) => {
         }
 
         const updatedMed = await Medicine.findByIdAndUpdate(
-            id,
+            req.params.id,
             // { price: req.body.price }, // Update the price field with the new value
             update,
             { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
@@ -152,8 +152,8 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
           medicine
       }));
       
-      res.status(200).render('Pharmacist/viewMeds', { meds: medicine, title: "Pharmacist | Meds" });
-      // res.status(200).json(medInfo);
+      //res.status(200).render('../views/Pharmacist/viewMeds', { meds: medicine, title: "Pharmacist | Meds" });
+       res.status(200).json(medInfo);
   } catch (error) {
       res.status(500).json({ message: 'Server error' });
   }

@@ -25,13 +25,13 @@
     <main>
         <section>
             <form id="updateForm">
-                <label for="inputField1">Input Field 1:</label>
-                <input type="text" id="inputField1" name="inputField1">
-                <label for="inputField2">Input Field 2:</label>
-                <input type="text" id="inputField2" name="inputField2">
-                <label for="inputField3">Input Field 3:</label>
-                <input type="text" id="inputField3" name="inputField3">
-                <button id="updateButton" type="button">Update Data</button>
+                <input type ="text" id="ID" placeholder="Enter Med ID:">
+                <br><br>
+                <input type ="text" id="price" placeholder="Enter Price:">
+                <br><br>
+                <input type ="text" id="desc" placeholder="Enter Desc:">
+                <br><br>
+                <button id="updateButton">Update Data</button>
             </form>
             <div id="updatedDataContainer">
                 <!-- The updated data will be inserted here -->
@@ -44,45 +44,49 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const updateButton = document.getElementById("updateButton");
-            const updatedDataContainer = document.getElementById("updatedDataContainer");
+       $(document).ready(function(){
+        var medID = $("#ID").val();
+                var Price1 = $("#price").val();
+                var Desc1 = $("#desc").val();
+                console.log('Id:',medID);
+        $("#updateButton").on("click",function(){
+                 medID = $("#ID").val();
+                 Price1 = $("#price").val();
+                 Desc1 = $("#desc").val();
+                console.log('Id:',medID);
 
+                $.ajax({ url:'/pharmacist/updateMed/${medID}', method: "PUT", data:{
+                     details:Desc1,price:Price1},
+                     success: function(response){console.log("price and details updated successfully");},
+            error:function(error){ console.error("Error updating price and/or details:", error);}
+        });
 
-            updateButton.addEventListener("click", function() {
-                const inputField1Value = document.getElementById("inputField1").value;
-                const inputField2Value = document.getElementById("inputField2").value;
-                const inputField3Value = document.getElementById("inputField3").value;
-
-                // Make a PUT request to your server endpoint with the updated data
-                updatedDataContainer.innerHTML = `Hnea ${inputField1Value}`;
-
-
-                fetch("http://localhost:3000/pharmacist/updateMed", {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        inputField1Value: document.getElementById("inputField1").value,
-                        inputField2Value: document.getElementById("inputField2").value,
-                        inputField3Value: document.getElementById("inputField3").value,
-                    }),
-                })
-                .then(response => response.json())//check json
-                .then(updatedData => {
-                    // Display the updated data
-                    updatedDataContainer.innerHTML = `
-                        <p>Updated Data:</p>
-                        <p>Field 1: ${updatedData.field2}</p>
-                        <p>Field 2: ${updatedData.field3}</p>
-                    `;
-                })
-                .catch(error => {
-                    console.error("Error updating data: ", error);
-                    updatedDataContainer.innerHTML = "Error updating data.";
-                });
-            });
+            //     fetch("http://localhost:3000/pharmacist/updateMed", {
+            //         method: "PUT",
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify({
+            //             inputField1Value: document.getElementById("inputField1").value,
+            //             inputField2Value: document.getElementById("inputField2").value,
+            //             inputField3Value: document.getElementById("inputField3").value,
+            //         }),
+            //     })
+            //     .then(response => response.json())
+            //     .then(updatedData => {
+            //         // Display the updated data
+            //         updatedDataContainer.innerHTML = `
+            //             <p>Updated Data:</p>
+            //             <p>updatedDataContainer.innerHTML =  ${inputField1Value}</p>
+            //             <p>Field 1: ${updatedData.field2}</p>
+            //             <p>Field 2: ${updatedData.field3}</p>
+            //         `;
+            //     })
+            //     .catch(error => {
+            //         console.error("Error updating data: ", error);
+            //         updatedDataContainer.innerHTML = "Error updating data.";
+            //     });
+             });
         });
     </script>
 </body>

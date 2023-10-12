@@ -6,14 +6,14 @@ const router = express.Router();
 //     res.status(200).json({message: 'Weselt'})
 // })
 router.get('/' , (req,res) => {
-    res.render('../backend/views/pharmaHome')
+    res.render('../backend/views/try')
 })
 router.get('/', pharmacistController.home)
 router.post('/addMedicine' , pharmacistController.addMedicine)
 router.get('/viewMed', pharmacistController.viewMed)    
 router.get('/getMed', pharmacistController.getMedicine)
 router.get('/query?:name', pharmacistController.searchFilter)
-router.put('/updateMed' , pharmacistController.editMedPrice)
+router.put('/:id ', pharmacistController.editMedPrice)
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 
