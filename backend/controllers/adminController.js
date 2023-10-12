@@ -165,7 +165,9 @@ const viewMed= asyncHandler( async (req,res) =>{
         description: medicine.description,
     }));
 
-    res.status(200).json(medInfo);
+    res.status(200).render('Admin/viewMeds', { meds: medicine, title: "Admin | Meds" });
+
+    // res.status(200).json(medInfo);
 } catch (error) {
     res.status(500).json({ message: 'Server error' });
 }

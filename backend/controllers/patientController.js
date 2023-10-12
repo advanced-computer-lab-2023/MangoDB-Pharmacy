@@ -19,7 +19,7 @@ const viewMed= asyncHandler( async (req,res) =>{
       // }));
   
       // res.status(200).json(medInfo);
-      res.status(200).render('Patient/index', { meds: medicines });
+      res.status(200).render('Patient/viewMeds', { meds: medicines, title: "Patient | Meds" });
   } catch (error) {
       res.status(500).json({ message: 'Server error' });
   }
