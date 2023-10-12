@@ -153,8 +153,9 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
           price: medicine.price,
           description: medicine.description,
       }));
-  
-      res.status(200).json(medInfo);
+      
+      res.status(200).render('Pharmacist/viewMeds', { meds: medicine, title: "Pharmacist | Meds" });
+      // res.status(200).json(medInfo);
   } catch (error) {
       res.status(500).json({ message: 'Server error' });
   }
