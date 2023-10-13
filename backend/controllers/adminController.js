@@ -194,11 +194,6 @@ const viewMed= asyncHandler( async (req,res) =>{
 // })
 
 
-
-
-
-
-
 //find by id 
 //view pharmacist info
 const viewPharmacistInfo= asyncHandler( async (req,res) =>{
@@ -263,8 +258,8 @@ const getPatientsBasicInfo = asyncHandler(async (req, res) => {
         dob: patient.dob,
         gender: patient.gender,
     }));
-
-    res.status(200).json(patientsInfo);
+    res.status(200).render('Admin/getPatientsBasicInfo', { patients, title: "Admin| patients" });
+    // res.status(200).json(patientsInfo);
 } catch (error) {
     res.status(500).json({ message: 'Server error' });
 }

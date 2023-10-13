@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h2> Patients info</h2>
+    <% if (patients.length > 0) { %>
+        <% patients.forEach(patients => { %>
+            <a>
+                 <h3>Name:<%=patients.firstName%>  &nbsp;<%=patients.lastName%> <br>
+                    username:<%=patients.username%> <br>
+                    mobile:<%=patients.mobile%> <br>
+                    dob:<%=patients.dob%> <br>
+                    gender:<%=patients.gender%> <br>
+                 </h3>
+            </a>
+        <% }); %>
+        <% } else { %>
+
+            <p>There are no patients to display...</p>
+
+        <% } %>
+        <a href="/Admin %>">
+            HOME </a>
+   
+    </div>
+</body>
+</html>
