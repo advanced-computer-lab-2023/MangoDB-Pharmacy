@@ -17,21 +17,60 @@ const addMedicine = (req, res) => {
             .catch((err) => console.log('Please change me I am just an error'));
             // .catch((err) => console.log(err.toString().substring(0, 55)));
 }
+//view a list of all available medicine 
+// const viewMed= asyncHandler( async (req,res) =>{
+//   try {
+//     const medicine= await Medicine.find()
+//     const medInfo = medicine.map(medicine => ({
+//         medicine
+//     }));
+    
+//     //res.status(200).render('../views/Pharmacist/viewMeds', { meds: medicine, title: "Pharmacist | Meds" });
+//      res.status(200).json(medInfo);
+// } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+// }
 
-const getMedicine = (req, res) => {
-    const medicine = Medicine.find()
-                             .then((result) => {
-                                const out = result.map(med => ({
-                                    quantity: med.quantity,
-                                    sales: med.sales
-                                }));
+  
+//   //res.status(200).json(medicine)
+// })
+const viewMed= asyncHandler( async (req,res) =>{
+  try {
+    const medicines= await Medicine.find()
 
-                                console.log(out);
+    // Extract the name and mobile and bla bla  from each patient document
+    // const medInfo = medicines.map(medicine => ({
+    //     id: medicine.__id,
+    //     picture: medicine.picture,
+    //     price: medicine.price,
+    //     description: medicine.description,
+    // }));
 
-                                res.send(out);
-                             })
-                             .catch((err) => console.log(err));
+    // res.status(200).json(medInfo);
+    res.status(200).render('Pharmacist/viewMeds', { meds: medicines, title: "Pharmacist | Meds" });
+} catch (error) {
+    res.status(500).json({ message: 'Server error' });
 }
+})
+
+const getMedicine =  asyncHandler( async (req, res) => {
+    try {
+        const medicines= await Medicine.find()
+    
+        // Extract the name and mobile and bla bla  from each patient document
+        // const medInfo = medicines.map(medicine => ({
+        //     id: medicine.__id,
+        //     picture: medicine.picture,
+        //     price: medicine.price,
+        //     description: medicine.description,
+        // }));
+    
+        // res.status(200).json(medInfo);
+        res.status(200).render('Pharmacist/getMedicine', { meds: medicines, title: "Pharmacist | Meds" });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+})
 
 // const editMedPrice =asyncHandler( async (req,res) =>{
 //     const med = await Medicine.findById(req.params.id)
@@ -142,25 +181,7 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
     }
   });
 
-  //view a list of all available medicine 
-    const viewMed= asyncHandler( async (req,res) =>{
-    try {
-      const medicine= await Medicine.find()
   
-      // Extract the name and mobile and bla bla  from each patient document
-      const medInfo = medicine.map(medicine => ({
-          medicine
-      }));
-      
-      //res.status(200).render('../views/Pharmacist/viewMeds', { meds: medicine, title: "Pharmacist | Meds" });
-       res.status(200).json(medInfo);
-  } catch (error) {
-      res.status(500).json({ message: 'Server error' });
-  }
-  
-    
-    //res.status(200).json(medicine)
-  })
 
 
 

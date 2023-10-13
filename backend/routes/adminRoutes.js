@@ -9,7 +9,7 @@ router.get('/' , (req,res) => {
 })
 
 router.get('/query?:name',adminController.searchFilter)
-router.get('/getMed' , adminController.viewMed)
+router.get('/viewMed' , adminController.viewMed)
 router.get('/viewPharmacistInfo/:id' , adminController.viewPharmacistInfo)
 router.get('/viewAllPharmacists' , adminController.viewAllPharmacists)
 router.get('/getPatientsBasicInfo' , adminController.getPatientsBasicInfo)
@@ -18,6 +18,7 @@ router.post('/addPharma', adminController.add_pharmacist);
 router.delete('/deletePharma', adminController.deletePharmacist);
 router.delete('/deletePatient', adminController.deletePatient);
 router.get('/getPendingPharma', adminController.getPendingPharma);
+router.get('/:id', adminController.viewPharmacistInfo);
 //router.get('/:name' , adminController.searchMedicineByName)
 
 module.exports = router;

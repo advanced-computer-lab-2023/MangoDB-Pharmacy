@@ -150,31 +150,53 @@ const searchMedicineByName = asyncHandler(async (req, res) => {
   }
 });
 
-
-
-
-//view a list of all available medicine 
 const viewMed= asyncHandler( async (req,res) =>{
   try {
-    const medicine= await Medicine.find()
+    const medicines= await Medicine.find()
 
     // Extract the name and mobile and bla bla  from each patient document
-    const medInfo = medicine.map(medicine => ({
-        picture: medicine.picture,
-        price: medicine.price,
-        description: medicine.description,
-    }));
-
-    res.status(200).render('Admin/viewMeds', { meds: medicine, title: "Admin | Meds" });
+    // const medInfo = medicines.map(medicine => ({
+    //     id: medicine.__id,
+    //     picture: medicine.picture,
+    //     price: medicine.price,
+    //     description: medicine.description,
+    // }));
 
     // res.status(200).json(medInfo);
+    res.status(200).render('Admin/viewMeds', { meds: medicines, title: "Admin | Meds" });
 } catch (error) {
     res.status(500).json({ message: 'Server error' });
 }
+})
+
+
+//view a list of all available medicine 
+// const viewMed= asyncHandler( async (req,res) =>{
+//   try {
+//     const medicine= await Medicine.find()
+
+//     // Extract the name and mobile and bla bla  from each patient document
+//     const medInfo = medicine.map(medicine => ({
+//         picture: medicine.picture,
+//         price: medicine.price,
+//         description: medicine.description,
+//     }));
+
+//     res.status(200).render('Admin/viewMeds', { meds: medicine, title: "Admin | Meds" });
+
+//     // res.status(200).json(medInfo);
+// } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+// }
 
   
-  //res.status(200).json(medicine)
-})
+//   //res.status(200).json(medicine)
+// })
+
+
+
+
+
 
 
 //find by id 
@@ -186,7 +208,8 @@ const viewPharmacistInfo= asyncHandler( async (req,res) =>{
     if(!pharmacist){
        return res.status(404).json({ message: 'Pharmacist not found' });
     }
-    res.status(200).json(pharmacist)
+     res.status(200).render('Admin/viewPharmacistInfo', { pharmacist, title: "Admin| Pharmacists" });
+    // res.status(200).json(pharmacist)
   }catch(error){
     res.status(500).json({error: err.message})
 
@@ -197,7 +220,8 @@ const viewPharmacistInfo= asyncHandler( async (req,res) =>{
 //view all 3shan el frontend 
 const viewAllPharmacists= asyncHandler( async (req,res) =>{
       const pharmacist= await Pharmacist.find()
-      res.status(200).json(pharmacist)
+      res.status(200).render('Admin/viewAllPharmacists', { pharmacist, title: "Admin| Pharmacists" });
+      // res.status(200).json(pharmacist)
 })
 
 

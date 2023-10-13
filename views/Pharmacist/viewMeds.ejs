@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <div>
+        <h2>All Meds</h2>
+
+        <% if (meds.length > 0) { %>
+
+            <table>
+                <tr>
+                    <th>Picture&nbsp;</th>
+                    <th>Price &nbsp;</th>
+                    <th>Description&nbsp;</th>
+                    <!-- <th>sales&nbsp;</th>
+                    <th>quantity&nbsp;</th> -->
+                 </tr>
+
+                <% meds.forEach(med => { %>
+                
+                    <tr>
+                        <td><a href="/Pharmacist/<%= med.id %>"><%= med.picture %></a></td>
+                        <td><%= med.price %></td>
+                        <td><%= med.description %></td>
+                    <!-- el two fuctions fe nafs el makan -->
+                        <!-- <td><%=  med.sales%></td>
+                        <td><%= med.quantity%></td>
+
+                        -->
+                    </tr>
+                    <!-- <a href="/Pharmacist/<%= med.id %>">
+                        <h3 style="margin: 0;"><%= med.picture %></h3>
+                        <h4 style="margin: 0;"><%= med.price %></h4>
+                        <h5 style="margin: 0; margin-bottom: 100px;"><%= med.description %></h5>
+                    </a> -->
+
+                <% }); %>
+            
+            </table>
+
+        <% } else { %>
+
+            <p>There are no meds to display...</p>
+
+        <% } %>
+    </div>
+</body>
+</html>

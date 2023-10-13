@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h2>Choose a pharmacicst to view more info</h2>
+    <% if (pharmacist.length > 0) { %>
+        <% pharmacist.forEach(pharmacist => { %>
+            <a href="/Admin/<%= pharmacist._id %>">
+                <h3><%=pharmacist.firstName%>  &nbsp; <%=pharmacist.lastName%></h3>
+            </a>
+        <% }); %>
+        <% } else { %>
+
+            <p>There are no pharmacists to display...</p>
+
+        <% } %>
+    </div>
+</body>
+</html>

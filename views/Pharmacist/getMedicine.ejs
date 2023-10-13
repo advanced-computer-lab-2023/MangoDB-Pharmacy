@@ -7,23 +7,29 @@
 </head>
 <body>
     <div>
-        <h2>All Meds</h2>
+        <h2>Meds sales and quantity</h2>
 
         <% if (meds.length > 0) { %>
 
             <table>
                 <tr>
-                    <th>Picture</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                </tr>
+                    <th>Name&nbsp;</th>
+                    <th>Sales&nbsp;</th>
+                    <th>Quantity &nbsp;</th>
+
+                 </tr>
 
                 <% meds.forEach(med => { %>
                 
                     <tr>
-                        <td><a href="/Patient/<%= med.id %>"><%= med.picture %></a></td>
-                        <td><%= med.price %></td>
-                        <td><%= med.description %></td>
+                        <td><%= med.name %></td>
+                         <td><%= med.sales %></td>
+                        <td><%= med.quantity %></td>
+                    <!-- el two fuctions fe nafs el makan -->
+                        <!-- <td><%=  med.sales%></td>
+                        <td><%= med.quantity%></td>
+
+                        -->
                     </tr>
                     <!-- <a href="/Pharmacist/<%= med.id %>">
                         <h3 style="margin: 0;"><%= med.picture %></h3>
