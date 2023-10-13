@@ -10,8 +10,11 @@ const home = (req, res) => {
 }
 
 const addMedicine = (req, res) => {
-    // const medicine = new Medicine(req.body);
-    const { name, price, use, description, quantity, sales, details } = req.body;
+    // 
+
+    if(req.file.path)
+    {
+        const { name, price, use, description, quantity, sales, details } = req.body;
 
     const medicine = new Medicine({
         name,
@@ -24,9 +27,16 @@ const addMedicine = (req, res) => {
         picture: req.file.path // save the file path in the 'picture' field
     });
 
+    }else
+    {
+
+        const medicine = new Medicine(req.body);
+    }
+    
+
     medicine.save()
             .then((result) => console.log('NEW MEDICINE ADDED:', result))
-            .catch((err) => console.log('Please change me I am just an error'));
+            .catch((err) => console.log('Please change me I am just an error',err));
             // .catch((err) => console.log(err.toString().substring(0, 55)));
 }
 

@@ -21,8 +21,16 @@ const upload = multer({ storage: storage });
 router.get('/' , (req,res) => {
     res.render('../backend/views/try')
 })
-router.get('/', pharmacistController.home)
+
 router.post('/addMedicine' , upload.single('picture'), pharmacistController.addMedicine)
+router.get('/addMedicine', (req, res) => {
+    res.render('Pharmacist/addMedicine');
+});
+
+
+
+router.get('/', pharmacistController.home)
+
 router.get('/viewMed', pharmacistController.viewMed)    
 router.get('/getMed', pharmacistController.getMedicine)
 //test
