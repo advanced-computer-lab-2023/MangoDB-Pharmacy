@@ -23,7 +23,13 @@
                 <% meds.forEach(med => { %>
                 
                     <tr>
-                        <td><a href="/Pharmacist/<%= med.id %>"><%= med.picture %></a></td>
+                        <!-- <td><a href="/Pharmacist/medDetails/<%= med.id %>"><%= med.picture %></a></td> -->
+                        <% if (med.picture) { %>
+                            <% const imagePath = '/uploads/' + (med.picture || '').substring(8).replace(/\/\//g, '/') %>
+                            <td><a href="/Pharmacist/medDetails/<%= med.id %>"><img src="<%= imagePath %>" alt="Medicine Image"></a></td>
+                        <% } else { %>
+                            <td><a href="/Pharmacist/medDetails/<%= med.id %>">No picture available</a></td>
+                        <% } %>
                         <td><%= med.price %></td>
                         <td><%= med.description %></td>
                     <!-- el two fuctions fe nafs el makan -->

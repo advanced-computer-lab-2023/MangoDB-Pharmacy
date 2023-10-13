@@ -10,12 +10,33 @@ const home = (req, res) => {
 }
 
 const addMedicine = (req, res) => {
-    const medicine = new Medicine(req.body);
+    // const medicine = new Medicine(req.body);
+    const { name, price, use, description, quantity, sales, details } = req.body;
+
+    const medicine = new Medicine({
+        name,
+        price,
+        use,
+        description,
+        quantity,
+        sales,
+        details,
+        picture: req.file.path // save the file path in the 'picture' field
+    });
 
     medicine.save()
             .then((result) => console.log('NEW MEDICINE ADDED:', result))
             .catch((err) => console.log('Please change me I am just an error'));
             // .catch((err) => console.log(err.toString().substring(0, 55)));
+}
+
+const getDetails = (req, res) => {
+    const medID = req.params.id;
+    const med = Medicine.findById(medID)
+                        .then((result) => {
+                            res.status(200).render('Pharmacist/medDetails', { medicine: result });
+                        })
+                        .catch((err) => console.log(err));
 }
 //view a list of all available medicine 
 // const viewMed= asyncHandler( async (req,res) =>{
@@ -217,5 +238,6 @@ module.exports = { home, addMedicine,
     // editMedDetails,
     searchMedicineByName,
     viewMed,
-    searchFilter
+    searchFilter,
+    getDetails
 };

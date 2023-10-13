@@ -7,6 +7,8 @@ const medicineSchema = mongoose.Schema({
    },
     picture: {
     type : String,
+    // data: Buffer,
+    // contentType: String
    },
     price: {
     type:Number,
