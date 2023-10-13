@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Your Header</h1>
+        <h1>Pharmacist</h1>
         <div class="menu">
             <ul class="menu-list">
                 <li><a href="/">Home Page</a></li>
@@ -24,7 +24,7 @@
 
     <main>
         <section>
-            <form id="updateForm">
+            <!-- <form id="updateForm">
                 <label for="inputField1">Input Field 1:</label>
                 <input type="text" id="inputField1" name="inputField1">
                 <label for="inputField2">Input Field 2:</label>
@@ -32,6 +32,18 @@
                 <label for="inputField3">Input Field 3:</label>
                 <input type="text" id="inputField3" name="inputField3">
                 <button id="updateButton" type="button">Update Data</button>
+            </form> -->
+            <form id="editMedForm" action="/Pharmacist/updateMed" method="PUT">
+                <label for="id">Medicine ID:</label>
+                <input type="text" name="id" id="id" placeholder="Enter Medicine ID">
+            
+                <label for="details">New Details:</label>
+                <input type="text" name="details" id="details" placeholder="Enter New Details">
+            
+                <label for="price">New Price:</label>
+                <input type="text" name="price" id="price" placeholder="Enter New Price">
+            
+                <button type="button" onclick="editMedPrice()">Update Medicine</button>
             </form>
             <div id="updatedDataContainer">
                 <!-- The updated data will be inserted here -->
@@ -43,7 +55,7 @@
         &copy; 2023 Your Company Name
     </footer>
 
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const updateButton = document.getElementById("updateButton");
             const updatedDataContainer = document.getElementById("updatedDataContainer");
@@ -84,6 +96,38 @@
                 });
             });
         });
-    </script>
+    </script> -->
+    <script>
+        function editMedPrice() {
+            const id = document.getElementById("id").value;
+            const details = document.getElementById("details").value;
+            const price = document.getElementById("price").value;
+            console.log(id);
+        
+            fetch("/Pharmacist/updateMed", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id, details, price }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response here, e.g., display a message or update the UI
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle errors here, e.g., display an error message
+                console.error(error);
+            });
+        }
+        </script>
+       
+        
+        
+        
+        
+        
+        
 </body>
 </html>

@@ -67,7 +67,7 @@
             console.log("shjcbewjenc");
         
             getPendingRequestsButton.addEventListener("click", function () {
-                fetch("http://localhost:3000/Admin/getPendingPharma")
+                fetch("http://localhost:5000/Admin/getPendingPharma")
                     .then(response => response.json())
                     .then(data => {
                         // Create a table and populate it with data
