@@ -23,7 +23,14 @@ const add_admin = (req, res) => {
     .catch((err) => console.log(err));
 
     console.log(admin.username,  admin.password)
-    res.status(201).json({ message: req.body });
+    res.status(201).json({
+      email: admin.email,
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+      username: admin.username,
+      password: admin.password,
+  });
+  
 
    
     

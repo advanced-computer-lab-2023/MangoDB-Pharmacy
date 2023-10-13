@@ -54,6 +54,27 @@
                 
             </div>
         </section>
+        <form id="addAdminForm" action="/Admin/addAdmin" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email">
+        
+            <label for="firstName">First Name:</label>
+            <input type="text" name="firstName" id="firstName" placeholder="Enter First Name">
+        
+            <label for="lastName">Last Name:</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Enter Last Name">
+        
+            <button type="button" onclick="addAdmin()">Add Admin</button>
+        </form>
+        
+        <div id="adminInfo" style="display: none;">
+            <p>Randomly Generated Admin:</p>
+            <p>Email: <span id="emailDisplay"></span></p>
+            <p>First Name: <span id="firstNameDisplay"></span></p>
+            <p>Last Name: <span id="lastNameDisplay"></span></p>
+            <p>Username: <span id="username"></span></p>
+            <p>Password: <span id="password"></span></p>
+        </div>
     </main>
 
     <footer>
@@ -113,6 +134,43 @@
             });
         });
         
+
+        function addAdmin() {
+    const email = document.getElementById("email").value;
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+
+    fetch("/Admin/addAdmin", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, firstName, lastName }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display the randomly generated username and password
+        const emailDisplay = document.getElementById("emailDisplay");
+        const firstNameDisplay = document.getElementById("firstNameDisplay");
+        const lastNameDisplay = document.getElementById("lastNameDisplay");
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+
+        emailDisplay.textContent = data.email;
+        firstNameDisplay.textContent = data.firstName;
+        lastNameDisplay.textContent = data.lastName;
+        username.textContent = data.username;
+        password.textContent = data.password;
+
+        // Show the admin info
+        const adminInfo = document.getElementById("adminInfo");
+        adminInfo.style.display = "block";
+    })
+    .catch(error => {
+        // Handle errors here, e.g., display an error message
+        console.error(error);
+    });
+}
         
         </script>
 </body>
