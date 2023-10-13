@@ -19,6 +19,11 @@ router.delete('/deletePharma', adminController.deletePharmacist);
 router.delete('/deletePatient', adminController.deletePatient);
 router.get('/getPendingPharma', adminController.getPendingPharma);
 router.get('/:id', adminController.viewPharmacistInfo);
+
+
+// router.get('/', (req, res) => {
+//     res.status(200).render('Admin/Home');
+//   });
 //router.get('/:name' , adminController.searchMedicineByName)
 
 module.exports = router;

@@ -21,7 +21,7 @@
                 <% meds.forEach(med => { %>
 
                     <tr>
-                        <td><a href="/Patient/<%= med.id %>"><%= med.picture %></a></td>
+                        <td><a><%= med.picture %></a></td>
                         <td><%= med.price %></td>
                         <td><%= med.description %></td>
                     </tr>
@@ -40,6 +40,8 @@
             <p>There are no meds to display...</p>
 
         <% } %>
+        <a href="/Patient %>">
+            HOME </a>
     </div>
 </body>
 </html>
