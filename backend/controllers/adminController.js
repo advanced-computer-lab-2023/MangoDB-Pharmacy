@@ -224,7 +224,7 @@ const viewPharmacistInfo= asyncHandler( async (req,res) =>{
      res.status(200).render('Admin/viewPharmacistInfo', { pharmacist, title: "Admin| Pharmacists" });
     // res.status(200).json(pharmacist)
   }catch(error){
-    res.status(500).json({error: err.message})
+    res.status(500).json({error: error.message})
 
   }
   // const pharmacist= await Pharmacist.find()
@@ -311,7 +311,7 @@ const searchFilter = asyncHandler (async (req, res) => {
     const medicines = await Medicine.find(query);
 
     // Return the filtered medicines
-    res.json(medicines);
+    res.render('Admin/search', { medicines });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

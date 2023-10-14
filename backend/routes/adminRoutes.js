@@ -8,7 +8,7 @@ router.get('/' , (req,res) => {
     res.render('../views/adminHome')
 })
 
-router.get('/query?:name',adminController.searchFilter)
+router.get('/query',adminController.searchFilter)
 router.get('/viewMed' , adminController.viewMed)
 router.get('/viewPharmacistInfo/:id' , adminController.viewPharmacistInfo)
 router.get('/viewAllPharmacists' , adminController.viewAllPharmacists)
