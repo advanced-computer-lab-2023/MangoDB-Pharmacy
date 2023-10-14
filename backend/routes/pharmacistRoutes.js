@@ -36,7 +36,7 @@ router.get('/getMed', pharmacistController.getMedicine)
 //test
 router.get('/medDetails/:id', pharmacistController.getDetails);
 //test
-router.get('/query?:name', pharmacistController.searchFilter)
+router.get('/query', pharmacistController.searchFilter)
 // router.put('/:id ', pharmacistController.editMedPrice)
 router.put('/updateMed' , pharmacistController.editMedPrice)
 // router.get('/:name' , pharmacistController.searchMedicineByName)

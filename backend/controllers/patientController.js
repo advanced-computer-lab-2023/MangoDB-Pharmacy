@@ -40,18 +40,17 @@ const viewMed= asyncHandler( async (req,res) =>{
         // query.use = use;
         query.use = { $regex: use, $options: 'i' }
       }
-
+  
       // Fetch medicines based on the query
       const medicines = await Medicine.find(query);
-
+  
       // Return the filtered medicines
-      res.json(medicines);
+      res.render('Patient/search', { medicines });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Wrong parameters' });
+      res.status(500).json({ error: 'Internal server error' });
     }
   });
-
   
 //search medicine based on name 
 // const searchMedicineByName = asyncHandler(async (req, res) => {

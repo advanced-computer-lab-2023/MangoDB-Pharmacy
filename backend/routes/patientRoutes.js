@@ -5,5 +5,5 @@ const patientController = require('../controllers/patientController');
 const {protect} = require('../middleware/authMiddleware')
 
 router.get('/viewMed', patientController.viewMed)
-router.get('/query?:name' , patientController.searchFilter)
+router.get('/query' , patientController.searchFilter)
 module.exports = router
