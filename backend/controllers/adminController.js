@@ -2,6 +2,7 @@ const Admin = require('../models/adminModel');
 const Pharmacist = require('../models/pharmacistModel');
 const Patient = require('../models/patientModel');
 const Medicine = require('../models/medicineModel');
+const User = require('../models/userModel');
 
 const asyncHandler = require('express-async-handler')
 
@@ -63,7 +64,7 @@ const add_pharmacist = (req, res) => {
 
 const deletePharmacist = asyncHandler(async(req, res) => {
     const id = req.params.id;
-    Pharmacist.findOneAndDelete(id)
+    Pharmacist.findByIdAndDelete(id)
               .then((result) => res.json({ redirect: '/Admin/viewAllPharmacists' }))
               .catch((err) => console.log(err))  
 
@@ -89,24 +90,29 @@ const deletePharmacist = asyncHandler(async(req, res) => {
 });
 
 const deletePatient = asyncHandler(async(req, res) => {
-    try {
-        const { username } = req.body; // Remove .text since it's not a nested object
+    const id = req.params.id;
+    Patient.findByIdAndDelete(id)
+           .then((result) => res.json({ redirect: '/Admin/viewAllPatients' }))
+           .catch((err) => console.log(err));
+
+    // try {
+    //     const { username } = req.body; // Remove .text since it's not a nested object
     
-        if (!username) {
-          return res.status(400).json({ error: 'Username is required in the request body' });
-        }
+    //     if (!username) {
+    //       return res.status(400).json({ error: 'Username is required in the request body' });
+    //     }
     
-        const deletedPatient = await Patient.findOneAndDelete({ username });
+    //     const deletedPatient = await Patient.findOneAndDelete({ username });
     
-        if (!deletedPatient) {
-          return res.status(404).json({ error: 'Patient not found' });
-        }
+    //     if (!deletedPatient) {
+    //       return res.status(404).json({ error: 'Patient not found' });
+    //     }
     
-        return res.json({ message: 'Patient deleted successfully' });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred while deleting the Patient' });
-      }
+    //     return res.json({ message: 'Patient deleted successfully' });
+    //   } catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json({ error: 'An error occurred while deleting the Patient' });
+    //   }
  
 });
 const getPendingPharma = asyncHandler(async(req, res) => {
@@ -224,6 +230,12 @@ const viewAllPharmacists= asyncHandler( async (req,res) =>{
       // res.status(200).json(pharmacist)
 })
 
+const viewAllPatients = (req, res) => {
+  Patient.find()
+         .then((result) => res.status(201).render('Admin/viewAllPatients', { patients: result }))
+         .catch((err) => console.log(err));
+};
+
 
 
 //get patient basic info
@@ -250,24 +262,29 @@ const getPatientsBasicInfo = asyncHandler(async (req, res) => {
   // } catch (error) {
   //   res.status(500).json({ error: err.message });
   // }
+  const id = req.params.id;
+  Patient.findById(id)
+         .then((result) => res.status(201).render('Admin/getPatientsBasicInfo', { patient: result }))
+         .catch((err) => console.log(err));
 
-  try {
-    const patients = await Patient.find();
+//   try {
+//     const patients = await Patient.find();
 
-    // Extract the name and mobile and bla bla  from each patient document
-    const patientsInfo = patients.map(patient => ({
-        firstName: patient.firstName,
-        lastName: patient.lastName,
-        username: patient.username,
-        mobile: patient.mobile,
-        dob: patient.dob,
-        gender: patient.gender,
-    }));
-    res.status(200).render('Admin/getPatientsBasicInfo', { patients, title: "Admin| patients" });
-    // res.status(200).json(patientsInfo);
-} catch (error) {
-    res.status(500).json({ message: 'Server error' });
-}
+//     // Extract the name and mobile and bla bla  from each patient document
+//     const patientsInfo = patients.map(patient => ({
+//         id: patient._id,
+//         firstName: patient.firstName,
+//         lastName: patient.lastName,
+//         username: patient.username,
+//         mobile: patient.mobile,
+//         dob: patient.dob,
+//         gender: patient.gender,
+//     }));
+//     res.status(200).render('Admin/getPatientsBasicInfo', { patients, title: "Admin| patients" });
+//     // res.status(200).json(patientsInfo);
+// } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+// }
 });
 
 const searchFilter = asyncHandler (async (req, res) => {
@@ -303,5 +320,6 @@ module.exports = { add_admin,
    viewPharmacistInfo,
    viewMed,
    searchFilter,
-   viewAllPharmacists
+   viewAllPharmacists,
+   viewAllPatients
    };
