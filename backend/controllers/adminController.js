@@ -62,24 +62,29 @@ const add_pharmacist = (req, res) => {
 }
 
 const deletePharmacist = asyncHandler(async(req, res) => {
-    try {
-        const { username } = req.body; // Remove .text since it's not a nested object
+    const id = req.params.id;
+    Pharmacist.findOneAndDelete(id)
+              .then((result) => res.json({ redirect: '/Admin/viewAllPharmacists' }))
+              .catch((err) => console.log(err))  
+
+    // try {
+    //     const { username } = req.body; // Remove .text since it's not a nested object
     
-        if (!username) {
-          return res.status(400).json({ error: 'Username is required in the request body' });
-        }
+    //     if (!username) {
+    //       return res.status(400).json({ error: 'Username is required in the request body' });
+    //     }
     
-        const deletedPharmacist = await Pharmacist.findOneAndDelete({ username });
+    //     const deletedPharmacist = await Pharmacist.findOneAndDelete({ username });
     
-        if (!deletedPharmacist) {
-          return res.status(404).json({ error: 'Pharmacist not found' });
-        }
+    //     if (!deletedPharmacist) {
+    //       return res.status(404).json({ error: 'Pharmacist not found' });
+    //     }
     
-        return res.json({ message: 'Pharmacist deleted successfully' });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred while deleting the pharmacist' });
-      }
+    //     return res.json({ message: 'Pharmacist deleted successfully' });
+    //   } catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json({ error: 'An error occurred while deleting the pharmacist' });
+    //   }
  
 });
 

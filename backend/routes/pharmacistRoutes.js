@@ -29,7 +29,7 @@ router.get('/addMedicine', (req, res) => {
 
 
 
-router.get('/', pharmacistController.home)
+// router.get('/', pharmacistController.home)
 
 router.get('/viewMed', pharmacistController.viewMed)    
 router.get('/getMed', pharmacistController.getMedicine)

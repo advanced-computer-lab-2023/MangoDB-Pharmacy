@@ -15,7 +15,7 @@ router.get('/viewAllPharmacists' , adminController.viewAllPharmacists)
 router.get('/getPatientsBasicInfo' , adminController.getPatientsBasicInfo)
 router.post('/addAdmin' , adminController.add_admin)
 router.post('/addPharma', adminController.add_pharmacist);
-router.delete('/deletePharma', adminController.deletePharmacist);
+router.delete('/deletePharma/:id', adminController.deletePharmacist);
 router.delete('/deletePatient', adminController.deletePatient);
 router.get('/getPendingPharma', adminController.getPendingPharma);
 router.get('/:id', adminController.viewPharmacistInfo);
