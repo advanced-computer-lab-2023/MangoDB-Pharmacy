@@ -11,24 +11,24 @@ const asyncHandler = require("express-async-handler");
 
 const addMedicine = (req, res) => {
   //
+  const medicine = new Medicine(req.body);
+  // if (req.file.path) {
+  //   const { name, price, use, description, quantity, sales, details } =
+  //     req.body;
 
-  if (req.file.path) {
-    const { name, price, use, description, quantity, sales, details } =
-      req.body;
-
-    const medicine = new Medicine({
-      name,
-      price,
-      use,
-      description,
-      quantity,
-      sales,
-      details,
-      //picture: req.file.path // save the file path in the 'picture' field
-    });
-  } else {
-    const medicine = new Medicine(req.body);
-  }
+  //   const medicine = new Medicine({
+  //     name,
+  //     price,
+  //     use,
+  //     description,
+  //     quantity,
+  //     sales,
+  //     details,
+  //     //picture: req.file.path // save the file path in the 'picture' field
+  //   });
+  // } else {
+  //   const medicine = new Medicine(req.body);
+  // }
 
   medicine
     .save()

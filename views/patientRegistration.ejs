@@ -107,7 +107,11 @@
             <input type="text" name="family[0].gender" id="familyGender" placeholder="Enter family member gender">
 
             <label for="familyRelation">Family Member Relation:</label>
-            <input type="text" name="family[0].relation" id="familyRelation" placeholder="Enter family member relation">
+            <select name="family[0].relation" id="familyRelation">
+                <option value="wife">Wife</option>
+                <option value="husband">Husband</option>
+                <option value="child">Child</option>
+            </select>
 
             <button type="button" onclick="regPatient()">Register</button>
         </form>
