@@ -72,7 +72,13 @@
             <input type="text" name="lastName" id="lastName" placeholder="Enter Last Name">
 
             <label for="dob">Date of birth:</label>
-            <input type="dob" name="dob" id="dob" placeholder="Date of birth">
+            <input type="date" name="dob" id="dob" placeholder="Date of birth">
+
+            <label for="gender">Gender:</label>
+            <select name="gender" id="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
 
 
             <label for="rate">rate:</label>
@@ -93,7 +99,7 @@
             </select>
 
 
-            
+
 
 
 
@@ -117,6 +123,7 @@
         &copy; Mangaweya
     </footer>
     <script>
+
         function regPharma() {
             const email = document.getElementById("email").value;
             const firstName = document.getElementById("firstName").value;
@@ -125,35 +132,32 @@
             const password = document.getElementById("password").value;
             const dob = document.getElementById("dob").value;
             const gender = document.getElementById("gender").value;
-            const mobile = document.getElementById("mobile").value;
-            
-
             const rate = document.getElementById("rate").value;
             const affiliation = document.getElementById("affiliation").value;
             const education = document.getElementById("education").value;
+            const status = document.getElementById("status").value;
 
-            const status = document.getElementById("education").value;
-
-           
-
+            // Add the missing fields to this object, if needed
+            const data = {
+                email,
+                firstName,
+                lastName,
+                username,
+                password,
+                dob,
+                gender,
+                rate,
+                affiliation,
+                education,
+                status
+            };
 
             fetch("/Guest/regPharma", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    email,
-                    firstName,
-                    lastName,
-                    username,
-                    password,
-                    dob,
-                    gender,
-                    mobile,
-                    status,
-                    
-                }),
+                body: JSON.stringify(data),
             })
                 .then(response => response.json())
                 .then(data => {
@@ -163,6 +167,7 @@
                     console.error(error);
                 });
         }
+
 
     </script>
 
