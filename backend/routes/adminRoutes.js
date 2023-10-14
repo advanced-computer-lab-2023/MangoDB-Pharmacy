@@ -5,7 +5,7 @@ const pharmacistModel = require('../models/pharmacistModel');
 const router = express.Router();
 
 router.get('/' , (req,res) => {
-    res.render('../backend/views/adminHome')
+    res.render('../views/adminHome')
 })
 
 router.get('/query?:name',adminController.searchFilter)

@@ -9,25 +9,32 @@ const asyncHandler = require('express-async-handler')
 
 
 const add_admin = (req, res) => {
-    // create a new Admin instance
-    const admin = new Admin(req.body);
+  // create a new Admin instance
+  const admin = new Admin(req.body);
 
-    const randomUsername = generateRandomUsername();
-    const randomPassword = generateRandomPassword();
-    console.log('Username:', randomUsername)
-    console.log('Password:', randomPassword)
-    admin.username = randomUsername
-    admin.password = randomPassword
+  const randomUsername = generateRandomUsername();
+  const randomPassword = generateRandomPassword();
+  console.log('Username:', randomUsername)
+  console.log('Password:', randomPassword)
+  admin.username = randomUsername
+  admin.password = randomPassword
 
-    admin.save()
-    .then((result) => console.log('NEW ADMIN ADDED:', result))
-    .catch((err) => console.log(err));
+  admin.save()
+  .then((result) => console.log('NEW ADMIN ADDED:', result))
+  .catch((err) => console.log(err));
 
-    console.log(admin.username,  admin.password)
-    res.status(201).json({ message: req.body });
+  console.log(admin.username,  admin.password)
+  res.status(201).json({
+    email: admin.email,
+    firstName: admin.firstName,
+    lastName: admin.lastName,
+    username: admin.username,
+    password: admin.password,
+});
 
-   
-    
+
+ 
+  
 };
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -116,21 +123,21 @@ const deletePatient = asyncHandler(async(req, res) => {
  
 });
 const getPendingPharma = asyncHandler(async(req, res) => {
-    try {
-        const pendingPharmacists = await Pharmacist.find({ status: 'pending' });
-    
-        if (pendingPharmacists.length === 0) {
-          return res.status(404).json({ error: 'No pharmacists with pending status found' });
-        }
-        console.log(pendingPharmacists);
-    
-        
-        return res.json(pendingPharmacists);
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'An error occurred while retrieving pharmacists' });
+  try {
+      const pendingPharmacists = await Pharmacist.find({ status: 'pending' });
+  
+      if (pendingPharmacists.length === 0) {
+        return res.status(404).json({ error: 'No pharmacists with pending status found' });
       }
- 
+      console.log(pendingPharmacists);
+  
+      
+      return res.json(pendingPharmacists);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'An error occurred while retrieving pharmacists' });
+    }
+
 });
 
 

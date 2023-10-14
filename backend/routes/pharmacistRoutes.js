@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 //     res.status(200).json({message: 'Weselt'})
 // })
 router.get('/' , (req,res) => {
-    res.render('../backend/views/try')
+    res.render('../views/pharmaHome')
 })
 
 router.post('/addMedicine' , upload.single('picture'), pharmacistController.addMedicine)
@@ -37,7 +37,8 @@ router.get('/getMed', pharmacistController.getMedicine)
 router.get('/medDetails/:id', pharmacistController.getDetails);
 //test
 router.get('/query?:name', pharmacistController.searchFilter)
-router.put('/:id ', pharmacistController.editMedPrice)
+// router.put('/:id ', pharmacistController.editMedPrice)
+router.put('/updateMed' , pharmacistController.editMedPrice)
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 

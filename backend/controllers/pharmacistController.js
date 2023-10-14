@@ -122,7 +122,7 @@ const getMedicine =  asyncHandler( async (req, res) => {
 //edit medicine price
 const editMedPrice = asyncHandler(async (req, res) => {
     try {
-        const { details, price } = req.body;
+        const { id, details, price } = req.body;
         const update = {};
         if (details) {
             update.details = details;
@@ -133,7 +133,7 @@ const editMedPrice = asyncHandler(async (req, res) => {
         }
 
         const updatedMed = await Medicine.findByIdAndUpdate(
-            req.params.id,
+            id,
             // { price: req.body.price }, // Update the price field with the new value
             update,
             { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
