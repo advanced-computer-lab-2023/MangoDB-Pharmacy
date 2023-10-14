@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <title>Admin Home</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         table {
@@ -30,18 +30,14 @@
 </head>
 <body>
     <header>
-        
-        <h1>Your Header</h1>
+        <h1>Admin Home</h1>
         <div class="menu">
             <ul class="menu-list">
-                <li><a href="/">Home Page</a></li>
-                <li class="dropdown">
-                    <a href="#">Contact Us</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/contact">Email</a></li>
-                        <li><a href="/contact">Phone</a></li>
-                    </ul>
-                </li>
+                <li><a href="/Admin/viewAllPatients">View All Patients</a></li>
+                <li><a href="/Admin/viewAllPharmacists">View All Pharmacists</a></li>
+                <li><a href="/Admin/viewMed">View Medicines</a></li>
+                <li><a href="/Admin/query">Search</a></li>
+                
             </ul>
         </div>
     </header>
@@ -170,7 +166,28 @@
         // Handle errors here, e.g., display an error message
         console.error(error);
     });
-}
+
+
+
+        }
+
+    document.addEventListener("DOMContentLoaded", function () {
+            const menuLinks = document.querySelectorAll(".menu-list a");
+
+            menuLinks.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default behavior of clicking a link
+                    const targetUrl = this.getAttribute("href");
+                    window.location.href = targetUrl; // Redirect to the target URL
+                });
+            });
+        });
+
+
+
+
+
+
         
         </script>
 </body>

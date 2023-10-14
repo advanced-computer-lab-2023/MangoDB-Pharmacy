@@ -2,22 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Update Data</title>
+    <title>Pharmacist Home</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>Pharmacist</h1>
+        <h1>Pharmacist Home</h1>
         <div class="menu">
             <ul class="menu-list">
-                <li><a href="/">Home Page</a></li>
-                <li class="dropdown">
-                    <a href="#">Contact Us</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/contact">Email</a></li>
-                        <li><a href="/contact">Phone</a></li>
-                    </ul>
-                </li>
+                <li><a href="/Pharmacist/addMedicine">Add Medicine</a></li>
+                <li><a href="/Pharmacist/getMed">Get Medicine Sales and Quan.</a></li>
+                <li><a href="/Pharmacist/viewMed">View Medicines Pic and Desc.</a></li>
+                <li><a href="/Pharmacist/query">Search</a></li>
+                
             </ul>
         </div>
     </header>
@@ -121,6 +118,18 @@
                 console.error(error);
             });
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuLinks = document.querySelectorAll(".menu-list a");
+
+            menuLinks.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault(); // Prevent the default behavior of clicking a link
+                    const targetUrl = this.getAttribute("href");
+                    window.location.href = targetUrl; // Redirect to the target URL
+                });
+            });
+        });
         </script>
        
         
