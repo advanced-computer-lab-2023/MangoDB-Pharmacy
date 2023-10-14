@@ -1,11 +1,13 @@
-const express = require('express')
-const guestController = require('../controllers/guestController');
-const router = express.Router()
+const express = require("express");
+const guestController = require("../controllers/guestController");
+const router = express.Router();
 
-const {protect} = require('../middleware/authMiddleware')
+const { protect } = require("../middleware/authMiddleware");
 
-router.post('/regPatient' , guestController.regPatient)
-router.post('/regPharma' , guestController.regPharma)
+//router.get("/", guestController.patientForm);
 
+router.get("/regPatient", guestController.regPatientView);
+router.post("/regPatient", guestController.regPatient);
+router.post("/regPharma", guestController.regPharma);
 
-module.exports = router
+module.exports = router;
