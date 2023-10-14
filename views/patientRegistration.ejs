@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+
+        <h1>Your Header</h1>
+        <div class="menu">
+            <ul class="menu-list">
+                <li><a href="/">Home Page</a></li>
+                <li class="dropdown">
+                    <a href="#">Contact Us</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/contact">Email</a></li>
+                        <li><a href="/contact">Phone</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+
+        <form id="regPatient" action="/Guest/regPatient" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email">
+
+            <label for="firstName">First Name:</label>
+            <input type="text" name="firstName" id="firstName" placeholder="Enter First Name">
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Enter Last Name">
+
+            <label for="username">username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter username">
+
+            <label for="password">password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter password">
+
+            <label for="dob">Date of birth:</label>
+            <input type="dob" name="dob" id="dob" placeholder="Date of birth">
+
+            <!-- <label for="gender">Gender:</label>
+            <input type="gender" name="gender" id="gender" placeholder="Gender">
+             -->
+            <label for="gender">Your gender:</label>
+            <select id="gender" name="gender">
+                <option value="male">male</option>
+                <option value="female">female</option>
+            </select>
+
+            <label for="mobile">mobile:</label>
+            <input type="mobile" name="mobile" id="mobile" placeholder="mobile">
+
+            <label for="emergencyName">Emergency Contact Name:</label>
+            <input type="text" name="emergency.name" id="emergencyName" placeholder="Enter emergency contact name">
+
+            <label for="emergencyMobile">Emergency Contact Mobile:</label>
+            <input type="text" name="emergency.mobile" id="emergencyMobile"
+                placeholder="Enter emergency contact mobile">
+
+
+            <!-- Nested fields for family member (an example for one family member) -->
+            <label for="familyName">Family Member Name:</label>
+            <input type="text" name="family[0].name" id="familyName" placeholder="Enter family member name">
+
+            <label for="familyNationalID">Family Member National ID:</label>
+            <input type="text" name="family[0].nationalID" id="familyNationalID"
+                placeholder="Enter family member national ID">
+
+            <label for="familyAge">Family Member Age:</label>
+            <input type="number" name="family[0].age" id="familyAge" placeholder="Enter family member age">
+
+            <label for="familyGender">Family Member Gender:</label>
+            <input type="text" name="family[0].gender" id="familyGender" placeholder="Enter family member gender">
+
+            <label for="familyRelation">Family Member Relation:</label>
+            <select name="family[0].relation" id="familyRelation">
+                <option value="wife">Wife</option>
+                <option value="husband">Husband</option>
+                <option value="child">Child</option>
+            </select>
+
+            <button type="button" onclick="regPatient()">Register</button>
+        </form>
+        <!-- 
+        <div id="adminInfo" style="display: none;">
+            <p>Register as a patient</p>
+            <p>Email: <span id="emailDisplay"></span></p>
+            <p>First Name: <span id="firstNameDisplay"></span></p>
+            <p>Last Name: <span id="lastNameDisplay"></span></p>
+            <p>Username: <span id="username"></span></p>
+            <p>Password: <span id="password"></span></p>
+        </div> -->
+    </main>
+
+    <footer>
+        &copy; Mangaweya
+    </footer>
+
+    <script>
+        function regPatient() {
+            const email = document.getElementById("email").value;
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const dob = document.getElementById("dob").value;
+            const gender = document.getElementById("gender").value;
+            const mobile = document.getElementById("mobile").value;
+            const emergencyName = document.getElementById("emergencyName").value;
+            const emergencyMobile = document.getElementById("emergencyMobile").value;
+            // const emergencyDetails = document.getElementById("emergencyDetails").value;
+
+            const familyName = document.getElementById("familyName").value;
+            const familyNationalID = document.getElementById("familyNationalID").value;
+            const familyAge = document.getElementById("familyAge").value;
+            const familyGender = document.getElementById("familyGender").value;
+            const familyRelation = document.getElementById("familyRelation").value;
+
+            fetch("/Guest/regPatient", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    firstName,
+                    lastName,
+                    username,
+                    password,
+                    dob,
+                    gender,
+                    mobile,
+                    emergency: {
+                        name: emergencyName,
+                        mobile: emergencyMobile,
+                    },
+                    family: [
+                        {
+                            name: familyName,
+                            nationalID: familyNationalID,
+                            age: familyAge,
+                            gender: familyGender,
+                            relation: familyRelation,
+                        },
+                    ],
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response here
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>
