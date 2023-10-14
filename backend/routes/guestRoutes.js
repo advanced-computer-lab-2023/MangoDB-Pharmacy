@@ -8,6 +8,8 @@ const { protect } = require("../middleware/authMiddleware");
 
 router.get("/regPatient", guestController.regPatientView);
 router.post("/regPatient", guestController.regPatient);
+
+router.get("/regPharma", guestController.regPharmaView);
 router.post("/regPharma", guestController.regPharma);
 
 module.exports = router;

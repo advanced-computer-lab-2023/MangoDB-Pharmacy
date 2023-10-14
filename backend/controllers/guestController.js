@@ -26,6 +26,10 @@ const regPatient = (req, res) => {
   //console.log(patient.username,  patient.password)
 };
 
+
+const regPharmaView = (req, res) => {
+  res.status(200).render("pharmacistRegistration");
+};
 const regPharma = (req, res) => {
   // create a new Admin instance
   const body = { ...req.body, userType: "pharmacist" };
@@ -42,4 +46,4 @@ const regPharma = (req, res) => {
   //console.log(patient.username,  patient.password)
 };
 
-module.exports = { regPatient, regPharma, regPatientView };
+module.exports = { regPatient, regPharma, regPatientView,regPharmaView };

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+
+        <h1>Your Header</h1>
+        <div class="menu">
+            <ul class="menu-list">
+                <li><a href="/">Home Page</a></li>
+                <li class="dropdown">
+                    <a href="#">Contact Us</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/contact">Email</a></li>
+                        <li><a href="/contact">Phone</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+
+        <form id="regPharma" action="/Guest/regPharma" method="POST">
+
+            <label for="username">username:</label>
+            <input type="text" name="username" id="username" placeholder="Enter username">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Enter Email">
+
+
+            <label for="password">password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter password">
+
+            <label for="firstName">First Name:</label>
+            <input type="text" name="firstName" id="firstName" placeholder="Enter First Name">
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Enter Last Name">
+
+            <label for="dob">Date of birth:</label>
+            <input type="dob" name="dob" id="dob" placeholder="Date of birth">
+
+
+            <label for="rate">rate:</label>
+            <input type="rate" name="rate" id="rate" placeholder="rate">
+
+            <label for="affiliation">affiliation:</label>
+            <input type="affiliation" name="affiliation" id="affiliation" placeholder="affiliation">
+
+            <label for="education">education:</label>
+            <input type="education" name="education" id="education" placeholder="education">
+
+
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                <option value="hired">Hired</option>
+                <option value="pending">Pending</option>
+                <option value="rejected">Rejected</option>
+            </select>
+
+
+            
+
+
+
+            <button type="button" onclick="regPharma()">Register</button>
+
+
+
+        </form>
+        <!-- 
+        <div id="adminInfo" style="display: none;">
+            <p>Register as a patient</p>
+            <p>Email: <span id="emailDisplay"></span></p>
+            <p>First Name: <span id="firstNameDisplay"></span></p>
+            <p>Last Name: <span id="lastNameDisplay"></span></p>
+            <p>Username: <span id="username"></span></p>
+            <p>Password: <span id="password"></span></p>
+        </div> -->
+    </main>
+
+    <footer>
+        &copy; Mangaweya
+    </footer>
+    <script>
+        function regPharma() {
+            const email = document.getElementById("email").value;
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const dob = document.getElementById("dob").value;
+            const gender = document.getElementById("gender").value;
+            const mobile = document.getElementById("mobile").value;
+            
+
+            const rate = document.getElementById("rate").value;
+            const affiliation = document.getElementById("affiliation").value;
+            const education = document.getElementById("education").value;
+
+            const status = document.getElementById("education").value;
+
+           
+
+
+            fetch("/Guest/regPharma", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    firstName,
+                    lastName,
+                    username,
+                    password,
+                    dob,
+                    gender,
+                    mobile,
+                    status,
+                    
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response here
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>
