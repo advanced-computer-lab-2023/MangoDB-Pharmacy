@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler')
-const Patient = require('../models/patientModel')
+const Patient = require('../models/patientModel');
 const Medicine = require('../models/medicineModel');
-const Pharmacist = require('../models/pharmacistModel')
+const Pharmacist = require('../models/pharmacistModel');
+const Order = require('../models/orderModel'); 
 
 //const asyncHandler = require('express-async-handler')
 
@@ -73,10 +74,260 @@ const viewMed= asyncHandler( async (req,res) =>{
 //         res.status(500).json({ message: 'Server error' });
 //     }
 //   });
+
+
+
+
+const addMedicineToCart = async (req, res) => {
+  const { medicineName, quantity } = req.body;
+  const patientId = req.params.id;
+  try {
+    const patient = await Patient.findById(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    const cartItem = patient.cart.find((item) => item.medicineName === medicineName);
+    const medicine = await Medicine.findOne({ name: medicineName });
+
+    if (!medicine) {
+      return res.status(404).json({ error: 'Medicine not found' });
+    }
+
+    if (cartItem) {
+      const totalQuantity = cartItem.quantity + quantity;
+
+     
+      if (totalQuantity > medicine.quantity) {
+        return res.status(400).json({
+          error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity - cartItem.quantity}`,
+        });
+      }
+
+      const totalPrice = totalQuantity * medicine.price;
+
+      cartItem.quantity = totalQuantity;
+      cartItem.price = totalPrice;
+    } else {
+
+      if (quantity > medicine.quantity) {
+        return res.status(400).json({
+          error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity}`,
+        });
+      }
+
   
-  
+      const totalPrice = quantity * medicine.price;
+
+
+      patient.cart.push({
+        medicineName: medicine.name,
+        quantity: quantity,
+        price: totalPrice,
+      });
+    }
+
+    await patient.save();
+
+    return res.status(201).json({ message: 'Medicine added to the cart' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const changeCartItemAmount = async (req, res) => {
+  const { medicineName, quantity } = req.body;
+  const patientId = req.params.id;
+  try {
+    const patient = await Patient.findById(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    const cartItem = patient.cart.find((item) => item.medicineName === medicineName);
+
+    if (!cartItem) {
+      return res.status(404).json({ error: 'Medicine not found in the cart' });
+    }
+
+    const medicine = await Medicine.findOne({ name: medicineName });
+
+    if (!medicine) {
+      return res.status(404).json({ error: 'Medicine not found' });
+    }
+
+    if (quantity > medicine.quantity) {
+      return res.status(400).json({
+        error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity}`,
+      });
+    }
+
+    const totalPrice = quantity * medicine.price;
+
+    cartItem.quantity = quantity;
+    cartItem.price = totalPrice;
+
+    await patient.save();
+
+    return res.status(200).json({ message: 'Cart item quantity changed successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+const addAddress = async (req, res) => {
+  const { address } = req.body;
+  const patientId = req.params.id;
+
+  try {
+    const patient = await Patient.findById(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    patient.addresses.push(address);
+
+    await patient.save();
+
+    return res.status(201).json({ message: 'Address added successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const viewListOfOrders= async (req, res) => {
+  const patientId = req.params.id;
+
+  try {
+    const orders = await Order.find({ patientId });
+
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for the patient' });
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const viewOrderDetails = async (req, res) => {
+  const orderId = req.params.id; 
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    return res.status(200).json(order);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const cancelOrder = async (req, res) => {
+  const orderId = req.params.id; 
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    if (order.status !== 'pending') {
+      return res.status(400).json({ error: 'Order cannot be canceled' });
+    }
+
+    order.status = 'cancelled';
+
+    await order.save();
+
+    return res.status(200).json({ message: 'Order has been canceled' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+
+
+const createPatient = async (req, res) => {
+  try {
+    const {
+      gender,
+      mobile,
+      addresses,
+      emergency,
+      family,
+      username,
+      email,
+      password,
+      firstName,
+      lastName,
+      dob,
+      userType,
+      accountStatus
+    } = req.body;
+
+    const newPatient = new Patient({
+      gender,
+      mobile,
+      addresses,
+      emergency,
+      family,
+      username,
+      email,
+      password,
+      firstName,
+      lastName,
+      dob,
+      userType,
+      accountStatus,
+    });
+
+    const savedPatient = await newPatient.save();
+
+    res.status(201).json(savedPatient);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+
+
+
+const getPatients = asyncHandler(async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    res.status(200).json(patients);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
   module.exports = 
-  { viewMed, searchFilter
+  { viewMed, searchFilter, addMedicineToCart, createPatient,getPatients, changeCartItemAmount, addAddress, viewListOfOrders, viewOrderDetails, cancelOrder
     }
   
 

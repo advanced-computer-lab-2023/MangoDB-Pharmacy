@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./userModel");
 
+
 const emailValidator = function (email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email);
@@ -17,6 +18,10 @@ const patientSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: ["male", "female"],
+    },
+    addresses: {
+      type: [String], 
+      default: [],   
     },
     mobile: {
       type: String,
@@ -40,6 +45,7 @@ const patientSchema = mongoose.Schema(
         },
       },
     },
+
     family: {
       type: [
         {
@@ -69,13 +75,26 @@ const patientSchema = mongoose.Schema(
       ],
       default: [],
     },
+    cart: [{
+      
+      medicineName: {
+        type: String,
+      },
+      price: {
+        type: Number
+      },
+      quantity: {
+        type: Number,
+ 
+      },
+  }],
+  
   },
   {
     timestamps: true,
   }
 );
 
-// module.exports = mongoose.model('Patient', patientSchema)
 
 const Patient = User.discriminator("Patient", patientSchema);
 
