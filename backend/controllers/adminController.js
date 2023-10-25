@@ -322,6 +322,211 @@ const searchFilter = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Login admin
+// @route POST /admin/login
+// @access Public
+const loginAdmin = asyncHandler( async (req, res) => {
+    const {username, password} = req.body
+
+    if (!username){
+        res.status(400)
+        throw new Error("Please Enter Your Username")
+    } else if (!password) {
+        res.status(400)
+        throw new Error("Enter Your Password")
+    }
+
+    // Check for username
+    const admin = await Admin.findOne({username})
+
+    if (admin && (await bcrypt.compare(password, admin.password))){
+        res.status(200).json({
+            message: "Successful Login",
+            _id: admin.id,
+            username: admin.username,
+            name: admin.firstName + admin.lastName,
+            email: admin.email,
+            token: generateToken(admin._id)
+        })
+    } else {
+        res.status(400)
+        throw new Error("Invalid Credentials")
+    }
+})
+
+// @desc Approve pharmacist registration
+// @route PUT /admin/pharmacist-approval/:id
+// @access Private
+const pharmacistApproval = asyncHandler(async (req, res) => {
+  try {
+    const pharmacist = await Pharmacist.findById(req.params.id)
+
+    if (!pharmacist) {
+      res.status(400)
+      throw new Error('Pharmacist not found')
+    }
+
+    if (pharmacist.accountStatus === 'inactive') {
+      pharmacist.accountStatus = 'active'
+      await pharmacist.save()
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'omarelzaher93@gmail.com',
+            pass: ''
+        }
+    })
+
+      const mailOptions = {
+        from: 'omarelzaher93@gmail.com',
+        to: pharmacist.email,
+        subject: '[NO REPLY] Congratulations! You Have Been Approved To Use El7any!',
+        html: `<h1> Congratulations Dr. ${pharmacist.lastName}<h1>
+                <p>Everything looks good on your part and we have decided to accept you to use our service! <p>
+                <p>You can now login with your username and password as you like. <p>
+                <p>We wish you a fruitful experience using El7any!<p>
+                <p>This Is An Automated Message, Please Do Not Reply.<p>`
+      }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error){
+            res.status(500)
+            throw new Error("Something Went Wrong")
+        } else {
+            res.status(200).json({ message: 'pharmacist Has Been Approved And Email Has Been Sent!'})
+        }
+      })
+    } else {
+      res.status(400).json({ message: 'pharmacist Is Already Active!' })
+    }
+  } catch (error) {
+    res.status(500)
+    throw new Error("pharmacist Approval Failed")
+  }
+})
+
+// @desc Reject pharmacist registration
+// @route GET /admin/pharmacist-rejection/:id
+// @access Private
+const pharmacistRejection = asyncHandler(async (req, res) => {
+    try {
+    const pharmacist = await Pharmacist.findById(req.params.id)
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'omarelzaher93@gmail.com',
+            pass: ''
+        }
+    })
+
+    const mailOptions = {
+        from: 'omarelzaher93@gmail.com',
+        to: pharmacist.email,
+        subject: '[NO REPLY] Update On Your El7any Request To Join',
+        html: `<h1> Dear Dr. ${pharmacist.lastName}<h1>
+                <p>We regret to inform you that after extensive research, we have come to the conclusion of rejecting your pharmacist request<p>
+                <p>We hope this rejection will not alter your perception of our service.<p>
+                <p>This Is An Automated Message, Please Do Not Reply.<p>`
+      }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error){
+            res.status(500)
+            throw new Error("Something Went Wrong")
+        }
+      })
+
+        await pharmacist.findByIdAndDelete(req.params.id)
+
+        res.status(200).json({
+            message: "Pharmacist Has Been Rejected, Deleted, and Informed via Email"
+        })
+    } catch (error) {
+        res.status(500)
+        throw new Error("Pharmacist Rejection Failed")
+    }
+})
+
+// @desc Request otp
+// @route GET /admin/request-otp
+// @access Private
+const sendOTP = asyncHandler( async(req, res) => {
+    const admin = req.user
+
+    const otp = generateOTP()
+    admin.passwordResetOTP = otp
+    await admin.save()
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'omarelzaher93@gmail.com',
+            pass: ''
+        }
+    })
+
+      const mailOptions = {
+        from: 'omarelzaher93@gmail.com',
+        to: admin.email,
+        subject: '[NO REPLY] Your Password Reset Request',
+        html: `<h1>You have requested to reset your password.<h1>
+                <p>Your OTP is ${otp}<p>
+                <p>If you did not request to reset your password, you can safely disregard this message.<p>
+                <p>We wish you a fruitful experience using El7a2ny!<p>
+                <p>This Is An Automated Message, Please Do Not Reply.<p>`
+      }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error){
+            res.status(500)
+            throw new Error("Failed to Send OTP Email.")
+        } else {
+            res.status(200).json({ message: 'OTP Sent, Please Check Your Email'})
+        }
+      })
+})
+
+// @desc Delete packages
+// @route POST /admin/verify-otp
+// @access Private
+const verifyOTP = asyncHandler( async(req, res) => {
+    const {otp} = req.body
+    const admin = req.user
+
+    if (otp === admin.passwordResetOTP){
+        res.status(200).json({message: "Correct OTP"})
+    } else {
+        res.status(400)
+        throw new Error("Invalid OTP Entered")
+    }
+})
+
+// @desc Delete packages
+// @route POST /admin/reset-password
+// @access Private
+const resetPassword = asyncHandler(async (req, res) => {
+    try {
+        const { newPassword } = req.body;
+        const admin = req.user;
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        if (await bcrypt.compare(newPassword, admin.password)) {
+            res.status(400).json({message: "New Password Cannot Be The Same As the Old One"});
+        } else {
+            admin.password = hashedPassword;
+            await admin.save();
+            res.status(200).json({ message: 'Your Password Has Been Reset Successfuly' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error resetting password' });
+    }
+});
+
+
 module.exports = {
   add_admin,
   add_pharmacist,
@@ -334,4 +539,10 @@ module.exports = {
   searchFilter,
   viewAllPharmacists,
   viewAllPatients,
+  loginAdmin,
+  sendOTP,
+  verifyOTP,
+  resetPassword,
+  pharmacistApproval,
+  pharmacistRejection,
 };
