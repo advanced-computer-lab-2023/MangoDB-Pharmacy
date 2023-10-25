@@ -19,5 +19,10 @@ router.get('/viewListOfOrders/:id', patientController.viewListOfOrders);
 router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
 
+router.get('/carts' , patientController.viewCartItems)
+router.delete('/removecart' , patientController.removeCartItems)
+router.post('/checkout' , patientController.checkout)
+
+
 
 module.exports = router

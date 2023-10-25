@@ -325,9 +325,113 @@ const getPatients = asyncHandler(async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+const viewCartItems = async (req, res) => {
+  const { patientId } = req.body;
+
+  try {
+    const patient = await Patient.findById(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+
+    const cartItems = patient.cart;
+    const medInfo = [];
+
+    for (const cartItem of cartItems) {
+      const medicine = await Medicine.findOne({ name: cartItem.medicineName });
+
+      if (medicine) {
+        const item = {
+          name: medicine.name,
+          // picture: medicine.picture,
+          price: cartItem.price,
+          quantity: cartItem.quantity        };
+        medInfo.push(item);
+      }
+      else {
+        res.status(500).json({ error: 'medicine not found' });
+
+      }
+    }
+    res.status(200).json(medInfo);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const removeCartItems = async (req, res) => {
+  const { patientId, medicinename } = req.body;
+  try {
+    const patient = await Patient.findById(patientId);
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+    const cart = patient.cart
+    const medicineIndex = cart.findIndex(item => item.medicineName === medicinename);
+    if (medicineIndex === -1) {
+      return res.status(404).json({ error: 'Medicine not found in the cart' });
+    }
+    cart.splice(medicineIndex, 1);
+    await patient.save();
+    res.status(200).json({ message: 'Medicine removed from the cart' });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const checkout = async (req, res) => {
+  const {patientId,deliveryAddress,paymentMethod} = req.body;
+let totalPrice = 0
+  try {
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+    const finalorder = patient.cart
+    const orderdetails = [];
+    for (const cartItem of finalorder) {
+       const medicine = await Medicine.findOne({ name: cartItem.medicineName });
+
+       medicine.quantity = medicine.quantity - cartItem.quantity
+       totalPrice+= cartItem.price 
+          const item = {
+            medicineName: medicine.name,
+            // picture: medicine.picture,
+            quantity: cartItem.quantity, 
+            };
+            orderdetails.push(item);
+          await medicine.save();
+        }
+const dateOfOrder = new Date(); 
+const dateOfDelivery = new Date(dateOfOrder);
+dateOfDelivery.setDate(dateOfOrder.getDate() + 2);
+    const order = await Order.create({ 
+      status: "preparing",
+      dateOfOrder,
+      dateOfDelivery,
+      deliveryAddress,
+      paymentMethod,
+      totalPrice,
+      patientId,
+      orderdetails,     
+        });
+
+patient.cart = [];
+await patient.save();
+    res.status(200).json(order);
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.status(500).json({ error: 'Internal Server Error' });  }
+};
+
+  
+
+
 
   module.exports = 
-  { viewMed, searchFilter, addMedicineToCart, createPatient,getPatients, changeCartItemAmount, addAddress, viewListOfOrders, viewOrderDetails, cancelOrder
+  { viewMed, searchFilter, addMedicineToCart, createPatient,getPatients, changeCartItemAmount, addAddress, viewListOfOrders, viewOrderDetails, cancelOrder,checkout,viewCartItems,removeCartItems
     }
   
 
