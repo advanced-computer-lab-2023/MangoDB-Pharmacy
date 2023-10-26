@@ -267,7 +267,7 @@ const loginPharmacist = asyncHandler( async (req, res) => {
     }
 })
 
-// @desc Request 
+// @desc Request otp 
 // @route GET /pharmacist/request-otp
 // @access Private
 const sendOTP = asyncHandler( async(req, res) => {
@@ -306,7 +306,7 @@ const sendOTP = asyncHandler( async(req, res) => {
       })
 })
 
-// @desc Delete packages
+// @desc Verify sent otp
 // @route POST /pharmacist/verify-otp
 // @access Private
 const verifyOTP = asyncHandler( async(req, res) => {
@@ -321,7 +321,7 @@ const verifyOTP = asyncHandler( async(req, res) => {
     }
 })
 
-// @desc Delete packages
+// @desc reset password
 // @route POST /pharmacist/reset-password
 // @access Private
 const resetPassword = asyncHandler(async (req, res) => {
@@ -348,9 +348,11 @@ module.exports = {
   addMedicine,
   getMedicine,
   editMedPrice,
-  // editMedDetails,
   viewMed,
   searchFilter,
   getDetails,
   loginPharmacist,
+  sendOTP,
+  verifyOTP,
+  resetPassword
 };

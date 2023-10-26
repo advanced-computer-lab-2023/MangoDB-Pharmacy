@@ -458,7 +458,7 @@ const loginPatient = asyncHandler( async (req, res) => {
     }
 })
 
-// @desc Request 
+// @desc Request otp
 // @route GET /patient/request-otp
 // @access Private
 const sendOTP = asyncHandler( async(req, res) => {
@@ -497,7 +497,7 @@ const sendOTP = asyncHandler( async(req, res) => {
       })
 })
 
-// @desc Delete packages
+// @desc Verify sent otp
 // @route POST /patient/verify-otp
 // @access Private
 const verifyOTP = asyncHandler( async(req, res) => {
@@ -512,7 +512,7 @@ const verifyOTP = asyncHandler( async(req, res) => {
     }
 })
 
-// @desc Delete packages
+// @desc Reset Password
 // @route POST /patient/reset-password
 // @access Private
 const resetPassword = asyncHandler(async (req, res) => {

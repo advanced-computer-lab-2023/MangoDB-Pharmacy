@@ -29,6 +29,11 @@ router.get("/addMedicine", (req, res) => {
 
 // router.get('/', pharmacistController.home)
 
+router.post('/login', pharmacistController.loginPharmacist)
+router.get('/request-otp', pharmacistController.sendOTP)
+router.post('/verify-otp', pharmacistController.verifyOTP)
+router.post('/reset-password', pharmacistController.resetPassword)
+
 router.get("/viewMed", pharmacistController.viewMed);
 router.get("/getMed", pharmacistController.getMedicine);
 //test
