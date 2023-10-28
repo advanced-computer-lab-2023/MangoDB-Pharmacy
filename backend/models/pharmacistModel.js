@@ -7,6 +7,10 @@ const pharmacistSchema = new Schema({
         type: Number,
         required: true
     },
+    passwordResetOTP: {
+        type: String,
+        default: ''
+    },
     affiliation: {
         type: String,
         required: true

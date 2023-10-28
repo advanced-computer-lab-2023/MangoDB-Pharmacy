@@ -4,6 +4,8 @@ const pharmacistModel = require('../models/pharmacistModel');
 
 const router = express.Router();
 
+const {protectAdmin} = require('../middleware/adminMiddleware')
+
 router.get('/' , (req,res) => {
     res.render('../views/adminHome')
 })
@@ -19,13 +21,14 @@ router.post('/addPharma', adminController.add_pharmacist);
 router.post('/login', adminController.loginAdmin)
 router.post('/pharmacist-approval/:id', adminController.pharmacistApproval)
 router.post('/pharmacist-rejection/:id', adminController.pharmacistRejection)
-router.post('/verify-otp', adminController.verifyOTP)
-router.post('/reset-password', adminController.resetPassword)
+router.post('/verify-otp', protectAdmin, adminController.verifyOTP)
+router.post('/reset-password', protectAdmin, adminController.resetPassword)
 router.delete('/deletePharma/:id', adminController.deletePharmacist);
 router.delete('/deletePatient/:id', adminController.deletePatient);
 router.get('/getPendingPharma', adminController.getPendingPharma);
 router.get('/:id', adminController.viewPharmacistInfo);
-router.get('/request-otp', adminController.sendOTP);
+
+router.get('/request-otp', protectAdmin, adminController.sendOTP)
 
 
 // router.get('/', (req, res) => {

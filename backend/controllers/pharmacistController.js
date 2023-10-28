@@ -1,5 +1,8 @@
 const Pharmacist = require("../models/pharmacistModel");
 const Medicine = require("../models/medicineModel");
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
 const asyncHandler = require("express-async-handler");
 
@@ -343,6 +346,17 @@ const resetPassword = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error resetting password' });
     }
 });
+
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Generate Token
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: '30d'
+    })
+}
 
 module.exports = {
   addMedicine,

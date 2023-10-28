@@ -3,6 +3,10 @@ const Pharmacist = require("../models/pharmacistModel");
 const Patient = require("../models/patientModel");
 const Medicine = require("../models/medicineModel");
 const User = require("../models/userModel");
+const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
+const bcrypt = require('bcryptjs')
+
 
 const asyncHandler = require("express-async-handler");
 
@@ -321,6 +325,17 @@ const searchFilter = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Generate Token
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: '30d'
+    })
+}
+
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 // @desc Login admin
 // @route POST /admin/login

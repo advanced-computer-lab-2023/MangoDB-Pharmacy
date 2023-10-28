@@ -3,6 +3,8 @@ const pharmacistController = require("../controllers/pharmacistController");
 const router = express.Router();
 const multer = require("multer");
 
+const {protectPharmacist} = require('../middleware/pharmacistMiddleware')
+
 // Multer configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,9 +32,9 @@ router.get("/addMedicine", (req, res) => {
 // router.get('/', pharmacistController.home)
 
 router.post('/login', pharmacistController.loginPharmacist)
-router.get('/request-otp', pharmacistController.sendOTP)
-router.post('/verify-otp', pharmacistController.verifyOTP)
-router.post('/reset-password', pharmacistController.resetPassword)
+router.get('/request-otp', protectPharmacist, pharmacistController.sendOTP)
+router.post('/verify-otp', protectPharmacist, pharmacistController.verifyOTP)
+router.post('/reset-password', protectPharmacist, pharmacistController.resetPassword)
 
 router.get("/viewMed", pharmacistController.viewMed);
 router.get("/getMed", pharmacistController.getMedicine);

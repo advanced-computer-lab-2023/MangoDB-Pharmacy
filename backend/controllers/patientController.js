@@ -3,6 +3,9 @@ const Patient = require('../models/patientModel');
 const Medicine = require('../models/medicineModel');
 const Pharmacist = require('../models/pharmacistModel');
 const Order = require('../models/orderModel'); 
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
 
 //const asyncHandler = require('express-async-handler')
 
@@ -535,7 +538,16 @@ const resetPassword = asyncHandler(async (req, res) => {
     }
 });
 
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
+// Generate Token
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
+        expiresIn: '30d'
+    })
+}
 
   module.exports = 
   { viewMed, searchFilter, addMedicineToCart, createPatient,getPatients, changeCartItemAmount, addAddress, viewListOfOrders, viewOrderDetails, cancelOrder,checkout,viewCartItems,removeCartItems,
