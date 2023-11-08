@@ -329,7 +329,7 @@ const getPatients = asyncHandler(async (req, res) => {
   }
 });
 const viewCartItems = async (req, res) => {
-  const { patientId } = req.body;
+  const patientId = req.user
 
   try {
     const patient = await Patient.findById(patientId);
@@ -347,7 +347,7 @@ const viewCartItems = async (req, res) => {
       if (medicine) {
         const item = {
           name: medicine.name,
-          // picture: medicine.picture,
+          picture: medicine.picture,
           price: cartItem.price,
           quantity: cartItem.quantity        };
         medInfo.push(item);
@@ -364,7 +364,9 @@ const viewCartItems = async (req, res) => {
 };
 
 const removeCartItems = async (req, res) => {
-  const { patientId, medicinename } = req.body;
+  const { medicinename } = req.body;
+  const patientId = req.user
+
   try {
     const patient = await Patient.findById(patientId);
 
@@ -385,8 +387,9 @@ const removeCartItems = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
-  const {patientId,deliveryAddress,paymentMethod} = req.body;
-let totalPrice = 0
+  const {deliveryAddress,paymentMethod} = req.body;
+  const patientId = req.user
+  let totalPrice = 0
   try {
     const patient = await Patient.findById(patientId);
     if (!patient) {
@@ -397,11 +400,11 @@ let totalPrice = 0
     for (const cartItem of finalorder) {
        const medicine = await Medicine.findOne({ name: cartItem.medicineName });
 
-       medicine.quantity = medicine.quantity - cartItem.quantity
+       medicine.quantity = medicine.quantity - cartItem.quantity       
        totalPrice+= cartItem.price 
           const item = {
             medicineName: medicine.name,
-            // picture: medicine.picture,
+            picture: medicine.picture,
             quantity: cartItem.quantity, 
             };
             orderdetails.push(item);
@@ -422,6 +425,7 @@ dateOfDelivery.setDate(dateOfOrder.getDate() + 2);
         });
 
 patient.cart = [];
+
 await patient.save();
     res.status(200).json(order);
   } catch (error) {

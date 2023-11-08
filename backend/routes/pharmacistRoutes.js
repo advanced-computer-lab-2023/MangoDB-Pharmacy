@@ -1,21 +1,12 @@
 const express = require("express");
 const pharmacistController = require("../controllers/pharmacistController");
 const router = express.Router();
-const multer = require("multer");
+const Medicine = require("../models/medicineModel");
 
+const upload = require('../middleware/upload')
 const {protectPharmacist} = require('../middleware/pharmacistMiddleware')
 
 // Multer configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // specify the folder where images will be stored
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 // router.get('/:id' , (req,res) => {
 //     res.status(200).json({message: 'Weselt'})
@@ -24,7 +15,8 @@ router.get("/", (req, res) => {
   res.render("../views/pharmaHome");
 });
 //upload.single('picture'),
-router.post("/addMedicine", pharmacistController.addMedicine);
+router.post("/addMedicine",upload.single('picture'), pharmacistController.addMedicine);
+
 router.get("/addMedicine", (req, res) => {
   res.render("Pharmacist/addMedicine");
 });

@@ -6,38 +6,33 @@ const nodemailer = require('nodemailer')
 
 const asyncHandler = require("express-async-handler");
 
-// const home = (req, res) => {
-//     const meds = Medicine.find()
-//                          .then((result) => res.render('medicine', { docTitle: "Meds", meds: result }))
-//                          .catch(err => console.log(err));
-// }
-
+// Define your addMedicine function
 const addMedicine = (req, res) => {
-  //
-  const medicine = new Medicine(req.body);
-  // if (req.file.path) {
-  //   const { name, price, use, description, quantity, sales, details } =
-  //     req.body;
+  console.log("entered");
+  // Check if req.file is defined before using it
+  
+    const medicine = new Medicine({
+      name: req.body.name,
+      price: req.body.price,
+      use: req.body.use,
+      description: req.body.description,
+      quantity: req.body.quantity,
+      sales: req.body.sales,
+      details: req.body.details,})
+    if (req.file) {  
+      console.log("error here");
 
-  //   const medicine = new Medicine({
-  //     name,
-  //     price,
-  //     use,
-  //     description,
-  //     quantity,
-  //     sales,
-  //     details,
-  //     //picture: req.file.path // save the file path in the 'picture' field
-  //   });
-  // } else {
-  //   const medicine = new Medicine(req.body);
-  // }
+   medicine.picture = req.file.path
+      }
 
+    
+   else {
+    console.log("No file was uploaded");
+  }
   medicine
-    .save()
-    .then((result) => console.log("NEW MEDICINE ADDED:", result))
-    .catch((err) => console.log("Please change me I am just an error", err));
-  // .catch((err) => console.log(err.toString().substring(0, 55)));
+      .save()
+      .then((result) => console.log("NEW MEDICINE ADDED:", result))
+      .catch((err) => console.log("Please change me I am just an error", err));
 };
 
 const getDetails = (req, res) => {
