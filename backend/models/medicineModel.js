@@ -6,9 +6,9 @@ const medicineSchema = mongoose.Schema(
       type: String,
       required: [true, "Name"],
     },
-        picture: {
-      type: String
-       },
+    picture: {
+      type: String,
+    },
     price: {
       type: Number,
       required: [true, "Enter price"],
