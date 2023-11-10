@@ -4,6 +4,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+
 import TodayIcon from '@mui/icons-material/Today';
 import PeopleIcon from '@mui/icons-material/People';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -47,9 +50,26 @@ export const mainListItems = (
     <ListItemButton component={Link} to="/viewwallet">
       <ListItemIcon>
         <WalletIcon />
+        
       </ListItemIcon>
       <ListItemText primary="Wallet" />
     </ListItemButton>
+
+    <ListItemButton component={Link} to="/viewMeds">
+    <ListItemIcon>
+    <LocalPharmacyIcon />
+  </ListItemIcon>
+
+      <ListItemText primary="Pharmacy" />
+    </ListItemButton>
+
+    <ListItemButton component={Link} to="/order">
+    <ListItemIcon>
+   <ReceiptIcon /> 
+</ListItemIcon>
+      <ListItemText primary="Orders" />
+    </ListItemButton>
+
     <ListItemButton component={Link} to="/viewprofile">
       <ListItemIcon>
         <AccountCircleIcon />
@@ -58,29 +78,3 @@ export const mainListItems = (
     </ListItemButton>
   </React.Fragment>
 );
-
-// export const secondaryListItems = (
-//   <React.Fragment>
-//     <ListSubheader component="div" inset>
-//       Saved reports
-//     </ListSubheader>
-//     <ListItemButton>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Current month" />
-//     </ListItemButton>
-//     <ListItemButton>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Last quarter" />
-//     </ListItemButton>
-//     <ListItemButton>
-//       <ListItemIcon>
-//         <AssignmentIcon />
-//       </ListItemIcon>
-//       <ListItemText primary="Year-end sale" />
-//     </ListItemButton>
-//   </React.Fragment>
-// );

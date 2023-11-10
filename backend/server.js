@@ -4,6 +4,8 @@ const dotenv = require("dotenv").config();
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const { render } = require("ejs");
+const path = require('path');
+
 //const port =8000
 const port = process.env.port || 4000;
 const cors = require("cors");
@@ -13,8 +15,9 @@ connectDB();
 const app = express();
 
 app.use(cors());
-app.set("view engine", "ejs");
-app.use(express.static("public"));
+
+app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -13,24 +13,27 @@ const nodemailer = require("nodemailer");
 const viewMed = asyncHandler(async (req, res) => {
   try {
     const medicines = await Medicine.find();
-
-    // Extract the name and mobile and bla bla  from each patient document
-    // const medInfo = medicines.map(medicine => ({
-    //     id: medicine.__id,
-    //     picture: medicine.picture,
-    //     price: medicine.price,
-    //     description: medicine.description,
-    // }));
+    medicines.forEach(medicine => {
+    });
 
     res.status(200).json(medicines);
-    //res.status(200).render('Patient/viewMeds', { meds: medicines, title: "Patient | Meds" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 
-  //res.status(200).json(medicine)
 });
 
+const getMed = asyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const medicine = await Medicine.findById(id)
+    
+    res.status(200).json(medicine);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+
+});
 const searchFilter = asyncHandler(async (req, res) => {
   try {
     const { search, use } = req.query;
@@ -55,30 +58,11 @@ const searchFilter = asyncHandler(async (req, res) => {
   }
 });
 
-//search medicine based on name
-// const searchMedicineByName = asyncHandler(async (req, res) => {
-//     const medName = req.params.name; // Assuming you pass the name in the URL parameter
 
-//     try {
-//         const medicines = await Medicine.find({
-//             name: { $regex: new RegExp(medName, 'i') } // 'i' for case-insensitive search
-
-//         });
-
-//         if (medicines.length === 0) {
-//             res.status(404).json({ message: 'medicine not found' });
-//             return;
-//         }
-
-//         res.status(200).json(medicines);
-//     } catch (error) {
-//         res.status(500).json({ message: 'Server error' });
-//     }
-//   });
 
 const addMedicineToCart = async (req, res) => {
   const { medicineName, quantity } = req.body;
-  const patientId = req.params.id;
+  const patientId = '653834d73faf860a7aa9b6d0';
   try {
     const patient = await Patient.findById(patientId);
 
@@ -204,10 +188,13 @@ const addAddress = async (req, res) => {
 };
 
 const viewListOfOrders = async (req, res) => {
-  const patientId = req.params.id;
+  // const {patientId} = req.body
+  const patientId = '653834d73faf860a7aa9b6d0';
+  console.log(patientId)
 
   try {
     const orders = await Order.find({ patientId });
+    console.log(orders)
 
     if (orders.length === 0) {
       return res
@@ -351,7 +338,7 @@ const viewCartItems = async (req, res) => {
 
 const removeCartItems = async (req, res) => {
   const { medicinename } = req.body;
-  const patientId = req.user;
+  const patientId = '653834d73faf860a7aa9b6d0';
 
   try {
     const patient = await Patient.findById(patientId);
@@ -360,6 +347,7 @@ const removeCartItems = async (req, res) => {
       return res.status(404).json({ error: "Patient not found" });
     }
     const cart = patient.cart;
+    console.log(cart)
     const medicineIndex = cart.findIndex(
       (item) => item.medicineName === medicinename
     );
@@ -563,5 +551,5 @@ module.exports = {
   loginPatient,
   sendOTP,
   resetPassword,
-  verifyOTP,
+  verifyOTP,getMed
 };

@@ -44,11 +44,10 @@ const orderSchema = mongoose.Schema(
           required: true,
           
         },
-        // picture: {
-        //     type : String,
-        //     data: Buffer,
-        //     contentType: String
-        //    }
+        picture: {
+          type: String
+
+           }
 
   }],
     
