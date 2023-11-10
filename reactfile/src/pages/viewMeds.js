@@ -1,7 +1,11 @@
-import { Grid, Paper, Typography, Avatar, Divider } from "@mui/material";
+import { Grid, Typography, Paper } from "@mui/material";
+import { Link } from 'react-router-dom';
+
 import { useEffect, useState } from "react";
 import { viewMeds } from "../services/api";
-import "../index.css";
+import List from '@mui/material/List';
+
+import { mainListItems } from '../components/ListItems';
 
 const ViewMeds = () => {
   const [meds, setMeds] = useState([]);
@@ -22,40 +26,40 @@ const ViewMeds = () => {
   }, []);
 
   return (
-    <Grid container justifyContent="center" style={{ padding: "2rem" }}>
-      <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <h2>Medicines</h2>
+    <Grid container>
+      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
+        {mainListItems}
       </Grid>
-      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+
+      {/* Main Content */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+        <Typography variant="h4" gutterBottom>
+          Medicines
+        </Typography>
+
         {isPending && <div>Loading...</div>}
         {error && <div>{error}</div>}
         {meds && (
           <div>
             {meds.map((med) => (
-              <Paper key={med._id} elevation={3} style={styles.paper}>
-                <Grid container spacing={2}>
-                  <Grid item style={styles.avatarContainer}>
-                    <Avatar
+              <Link to={`/medicine/${med._id}`} key={med._id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Paper
+                  style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
+                >
+                  {med.picture && (
+                    <img
+                      src={`http://localhost:4000/${med.picture}`}
                       alt={med.name}
-                      src={med.picture || "/images/med.png"}
-                      style={styles.avatar}
+                      style={{ width: "50px", height: "50px", marginRight: "1rem" }}
                     />
-                  </Grid>
-                  <Divider orientation="vertical" flexItem />
-                  <Grid item style={styles.contentContainer}>
-                    <Typography variant="h6" gutterBottom>
-                      {med.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {med.use && `(${med.use})`}
-                    </Typography>
-                    <Typography variant="body1">{med.description}</Typography>
-                    <Typography variant="body1" color="primary">
-                      Price: {med.price}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Paper>
+                  )}
+                  <div>
+                    <Typography variant="h6">{med.name}</Typography>
+                    <Typography>{med.description}</Typography>
+                    <Typography variant="subtitle1">Price: {med.price}</Typography>
+                  </div>
+                </Paper>
+              </Link>
             ))}
           </div>
         )}
@@ -64,29 +68,4 @@ const ViewMeds = () => {
   );
 };
 
-const styles = {
-  paper: {
-    margin: "1rem auto",
-    padding: "1rem",
-    borderRadius: "15px",
-    width: "70%", // Adjusted width
-    display: "flex",
-    alignItems: "center", // Center the whole div
-  },
-  avatarContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingRight: "1rem", // Add padding to the right of the avatar
-  },
-  avatar: {
-    width: "80px", // Adjusted size
-    height: "80px", // Adjusted size
-  },
-  contentContainer: {
-    flex: 1, // Take remaining space
-    paddingLeft: "1rem",
-    textAlign: "left", // Align text to the left
-  },
-};
 export default ViewMeds;
