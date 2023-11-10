@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Dashboard from "./components/Dashboard";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ViewMeds from "./pages/viewMeds";
+import PatientReg from "./pages/patientReg";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
             </Route> */}
             <Route path="/viewMeds">
               <ViewMeds />
+            </Route>
+            <Route path="/patientReg">
+              <PatientReg />
             </Route>
           </Switch>
         </div>

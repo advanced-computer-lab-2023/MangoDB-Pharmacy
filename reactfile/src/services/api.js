@@ -10,4 +10,6 @@ const API = axios.create({
 
 export const viewMeds = () => API.get("/patient/viewMed");
 
+export const patientReg = (patient) =>
+  API.post("/patient/createPatient", patient);
 export default API;
