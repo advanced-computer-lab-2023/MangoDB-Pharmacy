@@ -13,7 +13,6 @@ const ViewMeds = () => {
   const [medicineUses, setMedicineUses] = useState([]);
 
   useEffect(() => {
-    // Fetch all medicine uses when the component mounts
     getAllMedicineUses()
       .then((response) => {
         setMedicineUses(response.data.uses);
@@ -22,7 +21,6 @@ const ViewMeds = () => {
         console.error(err.message);
       });
 
-    // Fetch all medicines
     viewMeds()
       .then((response) => {
         setMeds(response.data);
@@ -42,7 +40,6 @@ const ViewMeds = () => {
   const handleUseChange = async (e) => {
     setSelectedUse(e.target.value);
 
-    // Fetch medicines based on the selected use
     if (e.target.value) {
       try {
         const response = await getMedicinesByUse(e.target.value);
@@ -52,7 +49,6 @@ const ViewMeds = () => {
         setError(err.message);
       }
     } else {
-      // If no use is selected, fetch all medicines
       viewMeds()
         .then((response) => {
           setMeds(response.data);
@@ -66,18 +62,15 @@ const ViewMeds = () => {
 
   return (
     <Grid container>
-      {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
         {mainListItems}
       </Grid>
 
-      {/* Main Content */}
       <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
         <Typography variant="h4" gutterBottom>
           Medicines
         </Typography>
 
-        {/* Search Bar */}
         <TextField
           label="Search for Medicine Name"
           variant="outlined"
@@ -89,14 +82,12 @@ const ViewMeds = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                {/* You can add a search icon here if needed */}
               </InputAdornment>
             ),
           }}
           sx={{ borderRadius: "20px" }}
         />
 
-        {/* Dropdown for Medicine Uses */}
         <Select
           label="Select Medicine Use"
           variant="outlined"
