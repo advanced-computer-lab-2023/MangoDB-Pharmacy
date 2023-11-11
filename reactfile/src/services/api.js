@@ -51,4 +51,19 @@ export const addAddress = async (patientId, address) => {
   }
 };
 
+export const addMed = (medicine) =>
+  API.post("/Pharmacist/addMedicine", medicine)
+    .then((response) => {
+      console.log("API response:", response); // Log the entire response
+
+      if (!response.ok) {
+        throw new Error(`Failed to add medicine: ${response.statusText}`);
+      }
+
+      return response.json();
+    })
+    .catch((error) => {
+      console.error("Error adding medicine:", error);
+      throw error; // Rethrow the error to be caught in the component
+    });
 export default API;
