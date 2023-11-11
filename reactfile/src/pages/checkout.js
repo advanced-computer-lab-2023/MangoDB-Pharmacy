@@ -43,6 +43,12 @@ const Checkout = () => {
 
   const handleAddAddress = async () => {
     try {
+     
+      if (!newAddress.trim()) {
+      
+        return;
+      }
+
       const patientId = '653834d73faf860a7aa9b6d0';
       await addAddress(patientId, newAddress);
       setNewAddress('');
@@ -63,7 +69,6 @@ const Checkout = () => {
 
   return (
     <Grid container spacing={3}>
-      {/* Sidebar */}
       <Grid
         item
         xs={12}
@@ -79,8 +84,6 @@ const Checkout = () => {
       >
         {mainListItems}
       </Grid>
-
-      {/* Main Content */}
       <Grid
         item
         xs={12}
@@ -94,7 +97,6 @@ const Checkout = () => {
           Checkout
         </Typography>
 
-        {/* Cart Items Section */}
         {cartItems.length > 0 && (
           <div>
             <Typography variant="h6">Cart Items:</Typography>
@@ -104,7 +106,6 @@ const Checkout = () => {
                 style={{ padding: '1rem', marginBottom: '1rem' }}
               >
                 <Typography variant="h6">{item.name}</Typography>
-                {/* Display the image */}
                 {item.picture && (
                   <img
                     src={`http://localhost:4000/${item.picture}`}
@@ -124,14 +125,12 @@ const Checkout = () => {
           </div>
         )}
 
-        {/* Display Total Price */}
         {cartItems.length > 0 && (
           <Typography variant="h6" style={{ marginTop: '1rem' }}>
             Total Price: ${calculateTotalPrice().toFixed(2)}
           </Typography>
         )}
 
-        {/* Choose Address Section */}
         <FormControl fullWidth style={{ marginBottom: '1rem' }}>
           <InputLabel id="address-select-label">Choose an Address</InputLabel>
           <Select
@@ -151,7 +150,6 @@ const Checkout = () => {
           </Select>
         </FormControl>
 
-        {/* Add Address Section */}
         {!showAddAddress && (
           <Button
             variant="contained"
@@ -178,7 +176,6 @@ const Checkout = () => {
           </div>
         )}
 
-        {/* Display Selected Address */}
         {selectedAddress && (
           <Typography variant="body1" style={{ marginTop: '1rem' }}>
             You chose: {selectedAddress}

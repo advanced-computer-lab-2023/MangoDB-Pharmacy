@@ -23,7 +23,7 @@ export const pharmacistReg = (pharmacist) =>
 
 export const viewCartItems = (id) => API.get(`/Patient/ViewCartItems/${id}`);
 export const changeCartItemAmount = async (id, medicineName, quantity) => {const response = await API.post(`/Patient/changeCartItemAmount/${id}`, { medicineName, quantity });
-    return response.data; // Return updated cart items
+    return response.data; 
 };
 export const removeCartItems = async (id, medicineName) => {
   await API.delete(`/Patient/removecartItems/${id}`, { data: { medicinename: medicineName } });
