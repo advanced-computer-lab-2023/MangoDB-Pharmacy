@@ -8,9 +8,9 @@ import Orders from "./pages/order";
 import OrderDetails from "./pages/orderDetails";
 import PharmacistReg from "./pages/pharmaReg";
 import PatientReg from "./pages/patientReg";
-import ViewCartItems from './pages/cart';
-import Checkout from './pages/checkout';
-
+import ViewCartItems from "./pages/cart";
+import Checkout from "./pages/checkout";
+import AddMed from "./pages/addMed";
 function App() {
   return (
     <Router>
@@ -20,31 +20,28 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-             <Route path="/dashboard">
+            <Route path="/dashboard">
               <Dashboard />
-            </Route> 
-      
+            </Route>
+
             <Route path="/patientReg">
               <PatientReg />
             </Route>
             <Route path="/pharmaReg">
               <PharmacistReg />
             </Route>
-            
+
             <Route path="/viewMeds">
               <ViewMeds />
             </Route>
 
             <Route path="/cart/:id">
-            <ViewCartItems />
+              <ViewCartItems />
             </Route>
 
             <Route path="/medicine/:id">
               <GetMeds />
             </Route>
-
-            <Route path="/checkout" exact component={Checkout} />
-
             <Route path="/order">
               <Orders />
             </Route>
