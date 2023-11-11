@@ -15,5 +15,8 @@ export const removeMedicineFromCart = ( medicineName) => API.delete("/Patient/re
 export const viewAllOrders = () => API.get("/Patient/viewListOfOrders");
 export const viewOrderDetails = (id) => API.get(`/Patient/viewOrderDetails/${id}`);
 export const cancelOrder = (id) => API.post(`/Patient/cancelOrder/${id}`);
-
+export const patientReg = (patient) =>
+  API.post("/Patient/createPatient", patient);
+export const pharmacistReg = (pharmacist) =>
+  API.post("/Guest/regPharma", pharmacist);
 export default API;

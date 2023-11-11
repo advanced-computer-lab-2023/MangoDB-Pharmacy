@@ -8,7 +8,6 @@ const asyncHandler = require("express-async-handler");
 
 // Define your addMedicine function
 const addMedicine = (req, res) => {
-  console.log("entered");
   // Check if req.file is defined before using it
   
     const medicine = new Medicine({

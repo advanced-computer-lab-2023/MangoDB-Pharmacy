@@ -9,7 +9,6 @@ import OrderDetails from "./pages/orderDetails";
 import PharmacistReg from "./pages/pharmaReg";
 import PatientReg from "./pages/patientReg";
 
-
 function App() {
   return (
     <Router>
@@ -29,6 +28,7 @@ function App() {
             <Route path="/pharmaReg">
               <PharmacistReg />
             </Route>
+            
             <Route path="/viewMeds">
               <ViewMeds />
             </Route>

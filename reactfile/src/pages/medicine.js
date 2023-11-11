@@ -42,14 +42,11 @@ const Medicine = () => {
       setQuantity((prevQuantity) => prevQuantity - 1);
     }
   };
-
   const handleAddToCart = () => {
     if (!isAddedToCart) {
       addMedicineToCart(medicine.name, quantity)
         .then((response) => {
           setIsAddedToCart(true);
-  
-          // Do not reset the success message after a certain time
   
           // Handle the response if needed
           console.log('Item added to cart:', response.data);
@@ -57,10 +54,15 @@ const Medicine = () => {
         .catch((error) => {
           // Handle errors
           console.error('Error adding item to cart:', error);
+  
+          // Check if the error response contains a quantity not available message
+          if (error.response && error.response.data && error.response.data.error.includes('Quantity not available')) {
+            // Display the error message to the user
+            alert(error.response.data.error);
+          }
         });
     } 
   };
-  
   
   
   
