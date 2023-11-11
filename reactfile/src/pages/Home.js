@@ -13,6 +13,9 @@ const Home = () => {
       <button onClick={() => history.push("/patientReg")}>
         Register as a patient
       </button>
+      <button onClick={() => history.push("/pharmaReg")}>
+        Register as a pharmacist
+      </button>
     </div>
   );
 };

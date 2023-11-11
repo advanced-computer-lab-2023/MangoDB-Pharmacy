@@ -10,8 +10,14 @@ const API = axios.create({
 
 export const viewMeds = () => API.get("/Patient/viewMed");
 export const getMeds = (id) => API.get(`/Patient/getMed/${id}`);
-export const addMedicineToCart = ( medicineName, quantity) => API.post("/Patient/addMedicineInCart", { medicineName, quantity });
-export const removeMedicineFromCart = ( medicineName) => API.delete("/Patient/removecart", { medicineName });
+export const addMedicineToCart = (medicineName, quantity) =>
+  API.post("/Patient/addMedicineInCart", { medicineName, quantity });
+export const removeMedicineFromCart = (medicineName) =>
+  API.delete("/Patient/removecart", { medicineName });
 export const viewAllOrders = () => API.get("/Patient/viewListOfOrders");
+export const patientReg = (patient) =>
+  API.post("/Patient/createPatient", patient);
+export const pharmacistReg = (pharmacist) =>
+  API.post("/Guest/regPharma", pharmacist);
 
 export default API;
