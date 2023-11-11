@@ -26,9 +26,10 @@ router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
 
 
-router.get('/carts' , patientController.viewCartItems)
-router.delete('/removecart' , patientController.removeCartItems)
+router.get('/viewCartItems/:id' , patientController.viewCartItems)
+router.delete('/removeCartItems/:id' , patientController.removeCartItems)
 router.post('/checkout' , patientController.checkout)
+router.get('/addressesByPatientId/:id' , patientController.addressesByPatientId)
 
 
 

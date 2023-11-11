@@ -121,7 +121,11 @@ const addMedicineToCart = async (req, res) => {
 
 const changeCartItemAmount = async (req, res) => {
   const { medicineName, quantity } = req.body;
+  
   const patientId = req.params.id;
+  console.log('Received request with patient ID:', req.params.id);
+  console.log('Medicine name:', req.body.medicineName);
+  console.log('New quantity:', req.body.quantity);
   try {
     const patient = await Patient.findById(patientId);
 
@@ -304,7 +308,7 @@ const getPatients = asyncHandler(async (req, res) => {
   }
 });
 const viewCartItems = async (req, res) => {
-  const patientId = req.user;
+  const patientId = req.params.id;
 
   try {
     const patient = await Patient.findById(patientId);
@@ -338,9 +342,9 @@ const viewCartItems = async (req, res) => {
 };
 
 const removeCartItems = async (req, res) => {
+  console.log('Received request with patient ID:', req.params.id);
   const { medicinename } = req.body;
-  const patientId = '653834d73faf860a7aa9b6d0';
-
+  const patientId = req.params.id;
   try {
     const patient = await Patient.findById(patientId);
 
@@ -348,7 +352,6 @@ const removeCartItems = async (req, res) => {
       return res.status(404).json({ error: "Patient not found" });
     }
     const cart = patient.cart;
-    console.log(cart)
     const medicineIndex = cart.findIndex(
       (item) => item.medicineName === medicinename
     );
@@ -535,6 +538,24 @@ const generateToken = (id) => {
   });
 };
 
+
+const addressesByPatientId = async (req, res) => {
+  const patientId = req.params.id;
+
+  try {
+      const patient = await Patient.findById(patientId);
+
+      if (!patient) {
+          return res.status(404).json({ error: 'Patient not found' });
+      }
+
+      const addresses = patient.addresses; 
+      res.status(200).json({ addresses });
+  } catch (error) {
+      res.status(500).json({ error: 'Error' });
+  }
+};
+
 module.exports = {
   viewMed,
   searchFilter,
@@ -552,5 +573,6 @@ module.exports = {
   loginPatient,
   sendOTP,
   resetPassword,
-  verifyOTP,getMed
+  verifyOTP,getMed,
+  addressesByPatientId
 };
