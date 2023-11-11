@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Paper } from "@mui/material";
-
+// import {Typography, Paper } from "@mui/material";
+import { Grid }  from "@mui/material";
 import { useParams } from 'react-router-dom';
 import { viewOrderDetails,cancelOrder } from '../services/api';
 import { mainListItems } from '../components/ListItems';
