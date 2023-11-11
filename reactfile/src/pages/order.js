@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { viewAllOrders } from "../services/api";
 import List from '@mui/material/List';
 import { mainListItems } from '../components/ListItems';
+import { Link } from 'react-router-dom';
+
 
 const Orders = () => {
 //   const id = '653853e1af653f0d70d44763';
@@ -39,18 +41,19 @@ const Orders = () => {
         {error && <div>{error}</div>}
         {orders && (
           <div>
-            {orders.map((order) => (  // Corrected variable name
-              <Paper
-                style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
-              >
-                <div>
-                <Typography variant="subtitle1">Order ID: {order._id}</Typography>
-                  <Typography variant="subtitle1">Order Status:{order.status}</Typography>
-                  <Typography variant="subtitle1">Total Price: {order.totalPrice}</Typography>
-                  <Typography variant="subtitle1">Date Of Order: {order.dateOfOrder}</Typography>
-                </div>
-                
-              </Paper>
+            {orders.map((order) => (
+              <Link to={`/orderDetails/${order._id}`} key={order._id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Paper
+                  style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
+                >
+                  <div>
+                    <Typography variant="subtitle1">Order ID: {order._id}</Typography>
+                    <Typography variant="subtitle1">Order Status: {order.status}</Typography>
+                    <Typography variant="subtitle1">Total Price: {order.totalPrice}</Typography>
+                    <Typography variant="subtitle1">Date Of Order: {order.dateOfOrder}</Typography>
+                  </div>
+                </Paper>
+              </Link>
             ))}
           </div>
         )}

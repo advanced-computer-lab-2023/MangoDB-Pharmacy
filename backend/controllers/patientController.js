@@ -190,11 +190,11 @@ const addAddress = async (req, res) => {
 const viewListOfOrders = async (req, res) => {
   // const {patientId} = req.body
   const patientId = '653834d73faf860a7aa9b6d0';
-  console.log(patientId)
+  // console.log(patientId)
 
   try {
     const orders = await Order.find({ patientId });
-    console.log(orders)
+    // console.log(orders)
 
     if (orders.length === 0) {
       return res
@@ -214,10 +214,11 @@ const viewOrderDetails = async (req, res) => {
 
   try {
     const order = await Order.findById(orderId);
-
+     console.log(order)
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
+
 
     return res.status(200).json(order);
   } catch (error) {
@@ -236,8 +237,8 @@ const cancelOrder = async (req, res) => {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    if (order.status !== "pending") {
-      return res.status(400).json({ error: "Order cannot be canceled" });
+    if (order.status !== "preparing") {
+      return res.status(200).json({ error: "Order cannot be canceled" });
     }
 
     order.status = "cancelled";
@@ -363,8 +364,8 @@ const removeCartItems = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
-  const { deliveryAddress, paymentMethod } = req.body;
-  const patientId = req.user;
+  const { patientId,deliveryAddress, paymentMethod } = req.body;
+  // const patientId = req.body;
   let totalPrice = 0;
   try {
     const patient = await Patient.findById(patientId);

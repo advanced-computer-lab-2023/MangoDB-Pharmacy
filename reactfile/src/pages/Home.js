@@ -10,12 +10,6 @@ const Home = () => {
       <button onClick={() => history.push("/")}>Home</button>
       <button onClick={() => history.push("/dashboard")}>Dashboard</button>
       <button onClick={() => history.push("/viewMeds")}>Get meds</button>
-      <button onClick={() => history.push("/patientReg")}>
-        Register as a patient
-      </button>
-      <button onClick={() => history.push("/pharmaReg")}>
-        Register as a pharmacist
-      </button>
     </div>
   );
 };
