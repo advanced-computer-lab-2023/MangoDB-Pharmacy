@@ -1,10 +1,7 @@
-import { Grid, Typography, Paper, TextField, InputAdornment } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem } from "@mui/material";
 import { Link } from 'react-router-dom';
-
-import { useEffect, useState } from "react";
-import { viewMeds } from "../services/api";
-// import List from '@mui/material/List';
-
+import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
 import { mainListItems } from '../components/ListItems';
 
 const ViewMeds = () => {
@@ -12,8 +9,20 @@ const ViewMeds = () => {
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUse, setSelectedUse] = useState('');
+  const [medicineUses, setMedicineUses] = useState([]);
 
   useEffect(() => {
+    // Fetch all medicine uses when the component mounts
+    getAllMedicineUses()
+      .then((response) => {
+        setMedicineUses(response.data.uses);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+
+    // Fetch all medicines
     viewMeds()
       .then((response) => {
         setMeds(response.data);
@@ -30,8 +39,34 @@ const ViewMeds = () => {
     setSearchTerm(e.target.value);
   };
 
+  const handleUseChange = async (e) => {
+    setSelectedUse(e.target.value);
+
+    // Fetch medicines based on the selected use
+    if (e.target.value) {
+      try {
+        const response = await getMedicinesByUse(e.target.value);
+        setMeds(response.data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+      }
+    } else {
+      // If no use is selected, fetch all medicines
+      viewMeds()
+        .then((response) => {
+          setMeds(response.data);
+          setError(null);
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    }
+  };
+
   return (
     <Grid container>
+      {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
         {mainListItems}
       </Grid>
@@ -44,22 +79,36 @@ const ViewMeds = () => {
 
         {/* Search Bar */}
         <TextField
-  label="Search for Medicine Name"
-  variant="outlined"
-  fullWidth
-  size="small" // Set size to small
-  margin="normal"
-  onChange={handleSearchChange}
-  value={searchTerm}
-  InputProps={{
-    startAdornment: (
-      <InputAdornment position="start">
-        {/* You can add a search icon here if needed */}
-      </InputAdornment>
-    ),
-  }}
-  sx={{ borderRadius: "20px" }} // Set border-radius for rounded edges
-/>
+          label="Search for Medicine Name"
+          variant="outlined"
+          fullWidth
+          size="small"
+          margin="normal"
+          onChange={handleSearchChange}
+          value={searchTerm}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                {/* You can add a search icon here if needed */}
+              </InputAdornment>
+            ),
+          }}
+          sx={{ borderRadius: "20px" }}
+        />
+
+        {/* Dropdown for Medicine Uses */}
+        <Select
+          label="Select Medicine Use"
+          variant="outlined"
+          value={selectedUse}
+          onChange={handleUseChange}
+          style={{ marginLeft: '1rem', minWidth: '150px' }}
+        >
+          <MenuItem value="">All Uses</MenuItem>
+          {medicineUses.map((use) => (
+            <MenuItem key={use} value={use}>{use}</MenuItem>
+          ))}
+        </Select>
 
         {isPending && <div>Loading...</div>}
         {error && <div>{error}</div>}

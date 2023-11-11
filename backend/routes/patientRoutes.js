@@ -30,6 +30,9 @@ router.get('/viewCartItems/:id' , patientController.viewCartItems)
 router.delete('/removeCartItems/:id' , patientController.removeCartItems)
 router.post('/checkout' , patientController.checkout)
 router.get('/addressesByPatientId/:id' , patientController.addressesByPatientId)
+router.get('/getMeds',patientController.getMeds);
+router.get('/getMedicinesByUse',patientController.getMedicinesByUse);
+router.get('/getAllMedicineUses',patientController.getAllMedicineUses);
 
 
 
