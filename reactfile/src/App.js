@@ -35,6 +35,11 @@ function App() {
               <ViewMeds />
             </Route>
 
+
+            <Route path="/addMed">
+              <AddMed />
+            </Route>
+            
             <Route path="/cart/:id">
               <ViewCartItems />
             </Route>
