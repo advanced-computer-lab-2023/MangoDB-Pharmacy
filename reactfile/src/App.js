@@ -8,7 +8,7 @@ import Orders from "./pages/order";
 import OrderDetails from "./pages/orderDetails";
 import PharmacistReg from "./pages/pharmaReg";
 import PatientReg from "./pages/patientReg";
-
+import AddMed from "./pages/addMed";
 function App() {
   return (
     <Router>
@@ -18,23 +18,27 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-             <Route path="/dashboard">
+            <Route path="/dashboard">
               <Dashboard />
-            </Route> 
-      
+            </Route>
+
             <Route path="/patientReg">
               <PatientReg />
             </Route>
             <Route path="/pharmaReg">
               <PharmacistReg />
             </Route>
-            
+
             <Route path="/viewMeds">
               <ViewMeds />
             </Route>
             <Route path="/medicine/:id">
               <GetMeds />
             </Route>
+            <Route path="/addMed">
+              <AddMed />
+            </Route>
+
             <Route path="/order">
               <Orders />
             </Route>
