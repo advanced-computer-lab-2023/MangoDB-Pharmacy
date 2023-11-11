@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
 import { mainListItems } from '../components/ListItems';
 
 const ViewMeds = () => {
   const [meds, setMeds] = useState([]);
+  const [medicineUses, setMedicineUses] = useState([]);
+  const [selectedUse, setSelectedUse] = useState("");
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedUse, setSelectedUse] = useState('');
-  const [medicineUses, setMedicineUses] = useState([]);
 
   useEffect(() => {
+    // Fetch medicine uses when the component mounts
     getAllMedicineUses()
       .then((response) => {
-        setMedicineUses(response.data.uses);
+        setMedicineUses(response.data);
       })
       .catch((err) => {
         console.error(err.message);
       });
 
+    // Fetch medicine data
     viewMeds()
       .then((response) => {
         setMeds(response.data);
@@ -37,22 +39,23 @@ const ViewMeds = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleUseChange = async (e) => {
+  const handleUseChange = (e) => {
     setSelectedUse(e.target.value);
 
+    // Fetch medicines for the selected use
     if (e.target.value) {
-      try {
-        const response = await getMedicinesByUse(e.target.value);
-        setMeds(response.data);
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-      }
+      getMedicinesByUse(e.target.value)
+        .then((response) => {
+          setMeds(response.data.medicines); // Corrected line
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
     } else {
+      // If no use selected, fetch all medicines
       viewMeds()
         .then((response) => {
           setMeds(response.data);
-          setError(null);
         })
         .catch((err) => {
           setError(err.message);
@@ -62,15 +65,34 @@ const ViewMeds = () => {
 
   return (
     <Grid container>
+      {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
         {mainListItems}
       </Grid>
 
+      {/* Main Content */}
       <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
         <Typography variant="h4" gutterBottom>
           Medicines
         </Typography>
 
+        {/* Display Medicine Uses */}
+        <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
+          <InputLabel id="medicineUseLabel">Select Medicine Use</InputLabel>
+          <Select
+            labelId="medicineUseLabel"
+            id="medicineUse"
+            value={selectedUse}
+            onChange={handleUseChange}
+          >
+            <MenuItem value="">All Uses</MenuItem>
+            {medicineUses.map((use, index) => (
+              <MenuItem key={index} value={use}>{use}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Search Bar */}
         <TextField
           label="Search for Medicine Name"
           variant="outlined"
@@ -82,25 +104,14 @@ const ViewMeds = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
+                {/* You can add a search icon here if needed */}
               </InputAdornment>
             ),
           }}
           sx={{ borderRadius: "20px" }}
         />
 
-        <Select
-          label="Select Medicine Use"
-          variant="outlined"
-          value={selectedUse}
-          onChange={handleUseChange}
-          style={{ marginLeft: '1rem', minWidth: '150px' }}
-        >
-          <MenuItem value="">All Uses</MenuItem>
-          {medicineUses.map((use) => (
-            <MenuItem key={use} value={use}>{use}</MenuItem>
-          ))}
-        </Select>
-
+        {/* Display Medicines */}
         {isPending && <div>Loading...</div>}
         {error && <div>{error}</div>}
         {meds && (

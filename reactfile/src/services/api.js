@@ -66,4 +66,9 @@ export const addMed = (medicine) =>
       console.error("Error adding medicine:", error);
       throw error; // Rethrow the error to be caught in the component
     });
+
+
+ export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
+ export const getMedicinesByUse = (use) => API.get("/Patient/getMedicinesByUse", { params: { use } });
+
 export default API;
