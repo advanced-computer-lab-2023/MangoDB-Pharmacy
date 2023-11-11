@@ -8,6 +8,8 @@ import Orders from "./pages/order";
 import OrderDetails from "./pages/orderDetails";
 import PharmacistReg from "./pages/pharmaReg";
 import PatientReg from "./pages/patientReg";
+import ViewCartItems from './pages/cart';
+import Checkout from './pages/checkout';
 
 function App() {
   return (
@@ -32,9 +34,17 @@ function App() {
             <Route path="/viewMeds">
               <ViewMeds />
             </Route>
+
+            <Route path="/cart/:id">
+            <ViewCartItems />
+            </Route>
+
             <Route path="/medicine/:id">
               <GetMeds />
             </Route>
+
+            <Route path="/checkout" exact component={Checkout} />
+
             <Route path="/order">
               <Orders />
             </Route>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { mainListItems } from '../components/ListItems';
 import { getMeds } from "../services/api";

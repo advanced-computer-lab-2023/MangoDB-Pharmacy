@@ -9,11 +9,12 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 
 import TodayIcon from '@mui/icons-material/Today';
 import PeopleIcon from '@mui/icons-material/People';
-import LayersIcon from '@mui/icons-material/Layers';
+// import LayersIcon from '@mui/icons-material/Layers';
 import MedicationIcon from '@mui/icons-material/Medication';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 export const mainListItems = (
   <React.Fragment>
@@ -61,6 +62,15 @@ export const mainListItems = (
   </ListItemIcon>
 
       <ListItemText primary="Pharmacy" />
+    </ListItemButton>
+
+
+    <ListItemButton component={Link} to="/cart">
+    <ListItemIcon>
+      <ShoppingCartIcon />
+
+      </ListItemIcon>
+      <ListItemText primary="View Cart" />
     </ListItemButton>
 
     <ListItemButton component={Link} to="/order">
