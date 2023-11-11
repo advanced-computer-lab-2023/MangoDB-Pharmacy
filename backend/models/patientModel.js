@@ -4,8 +4,7 @@ const User = require("./userModel");
 
 const emailValidator = function (email) {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
-};
+  return emailRegex.test(email);}
 
 const phoneNumberValidator = function (phoneNumber) {
   const numberRegex = /^(\+20|0020)?(10|11|12|15)[0-9]{8}$/;
@@ -21,7 +20,7 @@ const patientSchema = mongoose.Schema(
     },
     passwordResetOTP: {
         type: String,
-        default: ''
+        default: "",
     },
     addresses: {
       type: [String], 

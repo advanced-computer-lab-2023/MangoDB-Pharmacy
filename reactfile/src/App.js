@@ -6,6 +6,8 @@ import ViewMeds from "./pages/viewMeds";
 import GetMeds from "./pages/medicine";
 import Orders from "./pages/order";
 import OrderDetails from "./pages/orderDetails";
+import PharmacistReg from "./pages/pharmaReg";
+import PatientReg from "./pages/patientReg";
 
 
 function App() {
@@ -20,6 +22,13 @@ function App() {
              <Route path="/dashboard">
               <Dashboard />
             </Route> 
+      
+            <Route path="/patientReg">
+              <PatientReg />
+            </Route>
+            <Route path="/pharmaReg">
+              <PharmacistReg />
+            </Route>
             <Route path="/viewMeds">
               <ViewMeds />
             </Route>
