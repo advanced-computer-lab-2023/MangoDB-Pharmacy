@@ -80,4 +80,10 @@ export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
     throw new Error(error.response?.data?.error || 'Failed to edit medicine');
   }
 };
+
+
+
+export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
+export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
+
 export default API;

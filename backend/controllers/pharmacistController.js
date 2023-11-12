@@ -389,6 +389,30 @@ const generateToken = (id) => {
     })
 }
 
+const viewPharmacists = asyncHandler(async (req, res) => {
+  try {
+    const pharmacists = await Pharmacist.find();
+    res.status(200).json(pharmacists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const getPharmacist = asyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const pharmacist = await Pharmacist.findById(id)
+    
+    res.status(200).json(pharmacist);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+
+});
+
+
+
 module.exports = {
   addMedicine,
   getMedicine,
@@ -399,5 +423,7 @@ module.exports = {
   loginPharmacist,
   sendOTP,
   verifyOTP,
-  resetPassword
+  resetPassword,
+  viewPharmacists,
+  getPharmacist
 };

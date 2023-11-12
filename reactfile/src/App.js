@@ -15,6 +15,8 @@ import AddMed from "./pages/addMed";
 import EditMed from "./pages/editMed";
 import ViewMedsPharma from "./pages/viewMedsPharma";
 import GetMedPharma from "./pages/medicinePharma";
+import ViewPharmacists from "./pages/viewPharmacists";
+import PharmacistDetails from "./pages/pharmacistDetails";
 
 
 function App() {
@@ -64,7 +66,24 @@ function App() {
               <ViewCartItems />
             </Route>
 
+      
 
+
+            <Route path="/viewPharmacists">
+            <ViewPharmacists />
+            </Route>s
+          
+
+
+            <Route path="/pharmacistDetails/:id">
+  <PharmacistDetails />
+</Route>
+
+
+
+
+
+            
             <Route path="/medicinePharma/:id">
               <GetMedPharma />
             </Route>

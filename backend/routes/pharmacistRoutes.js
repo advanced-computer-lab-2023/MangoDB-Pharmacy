@@ -38,4 +38,10 @@ router.get("/query", pharmacistController.searchFilter);
 router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
+
+router.get('/getPharmacists',pharmacistController.viewPharmacists);
+router.get('/getPharmacist/:id', pharmacistController.getPharmacist);
+
+
+
 module.exports = router;
