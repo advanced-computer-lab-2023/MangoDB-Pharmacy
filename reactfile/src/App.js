@@ -21,6 +21,9 @@ import ViewPharmacists from "./pages/viewPharmacists";
 import PharmacistDetails from "./pages/pharmacistDetails";
 import ViewPatients from "./pages/viewPatients";
 import PatientDetails from "./pages/patientDetails";
+import ViewMedsAdmin from "./pages/viewMedsAdmin";
+import MedicineAdmin from "./pages/medicineAdmin";
+
 
 
 
@@ -42,6 +45,14 @@ function App() {
             </Route>
             <Route path="/editMed">
               <EditMed />
+            </Route>
+
+            <Route path="/medicineAdmin/:id">
+              <MedicineAdmin />
+            </Route>
+
+            <Route path="/viewMedsAdmin">
+              <ViewMedsAdmin/>
             </Route>
 
             <Route path="/patientReg">

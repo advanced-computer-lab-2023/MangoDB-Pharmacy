@@ -60,7 +60,6 @@ const PatientDetails = () => {
                 </Typography>
               </Typography>
               <Typography>Email: {patient.email}</Typography>
-              <Typography>Affiliation: {patient.affiliation}</Typography>
               <Typography>Gender: {patient.gender}</Typography>
               <Typography>Mobile: {patient.mobile}</Typography>
               <Typography>

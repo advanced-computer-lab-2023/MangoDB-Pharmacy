@@ -65,7 +65,7 @@ const ViewPatients = () => {
                   </Typography>
                   <Typography variant="h6">{patient.name}</Typography>
                   <Typography>Email: {patient.email}</Typography>
-                  <Typography>Affiliation: {patient.affiliation}</Typography>
+                  <Typography>Username: {patient.username}</Typography>
                  
                   <Button onClick={() => handlePatientClick(patient._id)}>
                     View Details
