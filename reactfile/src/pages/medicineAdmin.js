@@ -71,17 +71,23 @@ const MedicineAdmin = () => {
                   }}
                 />
                 <Typography variant="body1" gutterBottom>
-                  Description: {medicine.description}
-                </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  Details: {medicine.details}
-                </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  Price: {medicine.price}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Uses: {medicine.use}
-                </Typography>
+                      Description: {medicine.description}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Details: {medicine.details}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      quantity: {medicine.quantity}
+                    </Typography>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Price: {medicine.price}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      sales: {medicine.sales}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                      Use: {medicine.use}
+                    </Typography>
               </div>
             ) : (
               <div>Loading...</div>
