@@ -7,8 +7,8 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EditIcon from '@mui/icons-material/Edit';
+// import AddCircleIcon from '@mui/icons-material/AddCircle';
+// import EditIcon from '@mui/icons-material/Edit';
 
 export const pharmacistListItems = (
   <React.Fragment>
@@ -19,13 +19,7 @@ export const pharmacistListItems = (
       <ListItemText primary="Logout" />
     </ListItemButton>
 
-    <ListItemButton component={Link} to="/addMed">
-      <ListItemIcon>
-        <AddCircleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Add Medicine" />
-    </ListItemButton>
-
+    
     <ListItemButton component={Link} to="/viewMedsPharma">
       <ListItemIcon>
         <LocalPharmacyIcon />
@@ -33,12 +27,7 @@ export const pharmacistListItems = (
       <ListItemText primary="View Medicines" />
     </ListItemButton>
 
-    <ListItemButton component={Link} to="/editMed">
-      <ListItemIcon>
-        <EditIcon />
-      </ListItemIcon>
-      <ListItemText primary="Edit Medicine" />
-    </ListItemButton>
+  
 
     
 
