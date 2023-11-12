@@ -66,4 +66,6 @@ export const addMed = (medicine) =>
       console.error("Error adding medicine:", error);
       throw error; // Rethrow the error to be caught in the component
     });
+
+export const editMed = (medicine) => API.put("/Pharmacist/updateMed", medicine);
 export default API;

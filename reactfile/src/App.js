@@ -11,6 +11,7 @@ import PatientReg from "./pages/patientReg";
 import ViewCartItems from "./pages/cart";
 import Checkout from "./pages/checkout";
 import AddMed from "./pages/addMed";
+import EditMed from "./pages/editMed";
 function App() {
   return (
     <Router>
@@ -22,6 +23,12 @@ function App() {
             </Route>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/addMed">
+              <AddMed />
+            </Route>
+            <Route path="/editMed">
+              <EditMed />
             </Route>
 
             <Route path="/patientReg">

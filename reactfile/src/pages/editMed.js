@@ -1,4 +1,4 @@
-// AddMed.js
+// EditMed.js
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
@@ -13,16 +13,12 @@ import {
   DialogActions,
   CircularProgress,
 } from "@mui/material";
-import { addMed } from "../services/api";
+import { editMed } from "../services/api";
 
-const AddMed = () => {
+const EditMed = () => {
   const [medicine, setMedicine] = useState({
-    name: "",
+    id: "",
     price: "",
-    use: "",
-    description: "",
-    quantity: "",
-    sales: "",
     details: "",
   });
 
@@ -30,6 +26,11 @@ const AddMed = () => {
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const history = useHistory();
+
+  const handleSuccessClose = () => {
+    setSuccessOpen(false);
+    history.push("/"); // Redirect to the home page after successful update
+  };
 
   const handleErrorClose = () => {
     setErrorOpen(false);
@@ -45,42 +46,39 @@ const AddMed = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsPending(true);
 
     try {
-      await addMed(medicine);
+      await editMed(medicine);
+
       setIsPending(false);
       setSuccessOpen(true);
 
       // Redirect to home after 7 seconds
       setTimeout(() => {
         history.push("/");
-      }, 7000);
+      }, 4000);
     } catch (error) {
-      console.error("Error adding medicine:", error);
+      console.error("Error editing medicine:", error.message);
       setIsPending(false);
       setErrorOpen(true);
     }
-  };
-
-  const handleSuccessClose = () => {
-    setSuccessOpen(false);
-    // Redirect to home after success if needed
-    history.push("/");
   };
 
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
       <Grid item xs={12} md={8} lg={6}>
         <Paper elevation={3} style={{ padding: "2rem" }}>
-          <h2>Add a medicine</h2>
+          <h2>Edit Medicine</h2>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
+              {/* Include the ID field */}
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Name"
-                  name="name"
-                  value={medicine.name}
+                  label="ID"
+                  name="id"
+                  value={medicine.id}
                   onChange={handleChange}
                   fullWidth
                   required
@@ -92,50 +90,6 @@ const AddMed = () => {
                   label="Price"
                   name="price"
                   value={medicine.price}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Use"
-                  name="use"
-                  value={medicine.use}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Description"
-                  name="description"
-                  value={medicine.description}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Quantity"
-                  name="quantity"
-                  value={medicine.quantity}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  margin="normal"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Sales"
-                  name="sales"
-                  value={medicine.sales}
                   onChange={handleChange}
                   fullWidth
                   required
@@ -163,7 +117,7 @@ const AddMed = () => {
               {isPending ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
-                "Add"
+                "Edit"
               )}
             </Button>
           </form>
@@ -171,12 +125,9 @@ const AddMed = () => {
       </Grid>
 
       <Dialog open={successOpen} onClose={handleSuccessClose}>
-        <DialogTitle>{"Medicine Added Successfully"}</DialogTitle>
+        <DialogTitle>{"Medicine Updated Successfully"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Medicine was successfully added. You will be redirected to the home
-            page shortly.
-          </DialogContentText>
+          <DialogContentText>Succesfully updated</DialogContentText>
         </DialogContent>{" "}
         <DialogActions>
           <Button onClick={handleSuccessClose} autoFocus>
@@ -184,11 +135,13 @@ const AddMed = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
+      {/* Error Dialog */}
       <Dialog open={errorOpen} onClose={handleErrorClose}>
-        <DialogTitle>{"Probably worked"}</DialogTitle>
+        <DialogTitle>{"Failed to Update Medicine"}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Check db for a surprise 😉</DialogContentText>
+          <DialogContentText>
+            Failed to update. Please try again.
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleErrorClose} autoFocus>
@@ -200,4 +153,4 @@ const AddMed = () => {
   );
 };
 
-export default AddMed;
+export default EditMed;
