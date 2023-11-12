@@ -75,11 +75,27 @@ const Checkout = () => {
   };
   const handlePlaceOrder = async () => {
     try {
-      // Add logic to call the placeOrder API function
-      await placeOrder(id, selectedAddress, paymentMethod);
+      if (paymentMethod === 'visa-mastercard') {
+        const items = cartItems.map(item => ({
+          id: item._id, // or some unique identifier
+          quantity: item.quantity,
+        }));
 
-      // Optionally, you can handle success or redirect to a confirmation page
-      console.log('Order placed successfully!');
+        const response = await payment(id, items, calculateTotalPrice());
+        // Check if the Visa/Mastercard payment was successful
+        if (response.status === 200) {
+          // Payment successful, proceed to place the order
+          const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+          console.log('Order placed successfully! Order ID:', orderId);
+        } else {
+          console.error('Visa/Mastercard payment failed');
+          // Handle payment failure as needed
+        }
+      } else {
+        // For other payment methods, directly place the order
+        const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+        console.log('Order placed successfully! Order ID:', orderId);
+      }
     } catch (err) {
       setError(err.message);
     }
