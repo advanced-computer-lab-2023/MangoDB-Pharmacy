@@ -8,8 +8,23 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const Wallet = require('../models/walletModel')
 
-//const asyncHandler = require('express-async-handler')
+// const createWallet =(async (req, res) => {
+//   try {
+//     const {user,balance} = req.body;
+//     const wallet = new Wallet({
+//       user,
+//       balance
+    
+//     });
+//     const savedwallet= await wallet.save();
 
+// console.log (savedwallet)
+//     res.status(200).json(savedwallet);
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error" });
+//   }
+
+// });
 //view a list of all available medicine
 const viewMed = asyncHandler(async (req, res) => {
   try {
@@ -315,6 +330,7 @@ const viewCartItems = async (req, res) => {
 
   try {
     const patient = await Patient.findById(patientId);
+    console.log ("ITEMS")
 
     if (!patient) {
       return res.status(404).json({ error: "Patient not found" });
@@ -328,11 +344,13 @@ const viewCartItems = async (req, res) => {
 
       if (medicine) {
         const item = {
+          id : medicine._id,
           name: medicine.name,
           picture: medicine.picture,
           price: cartItem.price,
           quantity: cartItem.quantity,
         };
+        console.log (item,"ITEMSJKHSDFAJKDDHKSDHKFDJFHKSJDHFKDJKHJKDAH")
         medInfo.push(item);
       } else {
         res.status(500).json({ error: "medicine not found" });
@@ -393,7 +411,7 @@ const checkout = async (req, res) => {
       orderdetails.push(item);
       await medicine.save();
     }
-    if (paymentMethod == "Wallet" ){
+    if (paymentMethod == "wallet" ){
 
       payFromWallet(patientId,totalPrice)
     }
@@ -609,7 +627,6 @@ const getAllMedicineUses = async (req, res) => {
 
 
 const payFromWallet = async (patientId, paymentAmount) => {
-  console.log("entered")
 
   try {
     if (!patientId || !paymentAmount) {

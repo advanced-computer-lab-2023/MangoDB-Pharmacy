@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
   const { id } = useParams(); // Get the id parameter from the URL
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
@@ -32,7 +33,7 @@ const Checkout = () => {
 
       const fetchedCartItems = await viewCartItems(patientId);
       setCartItems(fetchedCartItems.data);
-
+      console.log ("FETCHED DATA" ,fetchedCartItems.data )
       const fetchedAddresses = await addressesByPatientId(patientId);
       setAddresses(fetchedAddresses);
 
@@ -68,6 +69,7 @@ const Checkout = () => {
     setSelectedAddress(event.target.value);
   };
   const handlePaymentMethodSelect = (event) => {
+    // setTimeout({setPaymentMethod(event.target.value)},1000)
     setPaymentMethod(event.target.value);
   };
   const calculateTotalPrice = () => {
@@ -76,13 +78,18 @@ const Checkout = () => {
   const handlePlaceOrder = async () => {
     setTimeout( async () => {
       try {
+        console.log (cartItems)
+
         if (paymentMethod === 'visa-mastercard') {
           const items = cartItems.map(item => ({
-            id: 1,
+            itemId : item.id,
             quantity: item.quantity,
+            name:item.name,
+            price:item.price/item.quantity
           }));
+          console.log (items)
       const total =calculateTotalPrice()
-          const response = await payment(id, items);
+          const response = await payment( id,items, total);
           // Check if the Visa/Mastercard payment was successful
           if (response.status === 200) {
             const { url } = response.data;
@@ -100,13 +107,29 @@ const Checkout = () => {
           // For other payment methods, directly place the order
           const orderId = await placeOrder(id, selectedAddress, paymentMethod);
           console.log('Order placed successfully! Order ID:', orderId);
+          if (paymentMethod === 'cash-on-delivery' || paymentMethod === 'wallet') {
+            setShowSuccessMessage(true);
+          }
         }
       } catch (err) {
         setError(err.message);
       }
-    }, 2000);
+    }, 1000);
   };
 
+// if (response.status === 200) {
+//         const { url } = response.data;
+//         console.log('Checkout Session:', response.data);
+//         // Handle the session object as needed (e.g., redirect to the checkout page)
+//         window.location = url;
+//       } else {
+//         console.error('Failed to create checkout session');
+//         // Handle error as needed
+//       }
+//     } catch (error) {
+//       console.error('Error during checkout:', error);
+//       // Handle error as needed
+//     }
 
   return (
     <Grid container spacing={3}>
@@ -250,6 +273,11 @@ const Checkout = () => {
       >
         Place an Order
       </Button>
+      {showSuccessMessage && (
+        <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
+          Order placed successfully!
+        </Typography>
+      )}
       </Grid>
     </Grid>
   );
