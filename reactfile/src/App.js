@@ -2,6 +2,8 @@ import "./App.css";
 import Home from "./pages/Home";
 import Dashboard from "./components/Dashboard";
 import DashboardPharma from "./components/DashboardPharma";
+import DashboardAdmin from "./components/DashboardAdmin";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ViewMeds from "./pages/viewMeds";
 import GetMeds from "./pages/medicine";
@@ -60,6 +62,10 @@ function App() {
           
             <Route path="/DashboardPharma">
               <DashboardPharma/>
+            </Route>
+
+            <Route path="/DashboardAdmin">
+              <DashboardAdmin/>
             </Route>
 
             <Route path="/addMed">

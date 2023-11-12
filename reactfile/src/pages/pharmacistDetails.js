@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPharmacist } from "../services/api";
-import { Typography, Paper } from "@mui/material";
+import { Typography, Paper, Grid } from "@mui/material";
+import { AdminListItems } from '../components/ListItemsAdmin';
 
 const PharmacistDetails = () => {
   const { id } = useParams();
@@ -27,41 +28,51 @@ const PharmacistDetails = () => {
   }, [id]);
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Pharmacist Details
-      </Typography>
+    <Grid container>
+      {/* Sidebar */}
+      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
+        {AdminListItems}
+      </Grid>
 
-      {loading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
-      {pharmacist && (
-        <Paper
-          style={{
-            padding: "1rem",
-            marginBottom: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-          }}
-        >
-          <Typography variant="h6">
-            {pharmacist.firstname} {pharmacist.lastname}
-            <Typography variant="h6">
-                Name: {pharmacist.firstName} {pharmacist.lastName}
-              </Typography>
+      {/* Main content */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10}>
+        <div>
+          <Typography variant="h4" gutterBottom>
+            Pharmacist Details
           </Typography>
-          <Typography>Email: {pharmacist.email}</Typography>
-          <Typography>Affiliation: {pharmacist.affiliation}</Typography>
-          <Typography>Gender: {pharmacist.gender}</Typography>
-          <Typography>Rate: {pharmacist.rate}</Typography>
-          <Typography>Education: {pharmacist.education}</Typography>
-          <Typography>Status: {pharmacist.status}</Typography>
-          <Typography>Username: {pharmacist.username}</Typography>
-          <Typography>DOB: {pharmacist.dob}</Typography>
-          <Typography>Account Status: {pharmacist.accountStatus}</Typography>
-        </Paper>
-      )}
-    </div>
+
+          {loading && <div>Loading...</div>}
+          {error && <div>{error}</div>}
+          {pharmacist && (
+            <Paper
+              style={{
+                padding: "1rem",
+                marginBottom: "1rem",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+              }}
+            >
+              <Typography variant="h6">
+                {pharmacist.firstname} {pharmacist.lastname}
+                <Typography variant="h6">
+                  Name: {pharmacist.firstName} {pharmacist.lastName}
+                </Typography>
+              </Typography>
+              <Typography>Email: {pharmacist.email}</Typography>
+              <Typography>Affiliation: {pharmacist.affiliation}</Typography>
+              <Typography>Gender: {pharmacist.gender}</Typography>
+              <Typography>Rate: {pharmacist.rate}</Typography>
+              <Typography>Education: {pharmacist.education}</Typography>
+              <Typography>Status: {pharmacist.status}</Typography>
+              <Typography>Username: {pharmacist.username}</Typography>
+              <Typography>DOB: {pharmacist.dob}</Typography>
+              <Typography>Account Status: {pharmacist.accountStatus}</Typography>
+            </Paper>
+          )}
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 
