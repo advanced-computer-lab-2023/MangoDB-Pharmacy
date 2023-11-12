@@ -78,13 +78,17 @@ const Checkout = () => {
       try {
         if (paymentMethod === 'visa-mastercard') {
           const items = cartItems.map(item => ({
-            id: item._id, // or some unique identifier
+            id: 1,
             quantity: item.quantity,
           }));
-  
-          const response = await payment(id, items, calculateTotalPrice());
+      const total =calculateTotalPrice()
+          const response = await payment(id, items);
           // Check if the Visa/Mastercard payment was successful
           if (response.status === 200) {
+            const { url } = response.data;
+        console.log('Checkout Session:', response.data);
+//         // Handle the session object as needed (e.g., redirect to the checkout page)
+        window.location = url;
             // Payment successful, proceed to place the order
             const orderId = await placeOrder(id, selectedAddress, paymentMethod);
             console.log('Order placed successfully! Order ID:', orderId);
@@ -100,7 +104,7 @@ const Checkout = () => {
       } catch (err) {
         setError(err.message);
       }
-    }, 1000);
+    }, 2000);
   };
 
 

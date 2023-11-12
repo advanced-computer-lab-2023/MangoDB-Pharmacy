@@ -1,17 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+const stripe = require('stripe')('sk_test_51O5E1tGcxLxGfGifF01UebA7RcC5SaFlaxYtLlkdDoe6FKcbKwBrjeBDvsBkuqsEK0MiKPfGtDtSSwRldMuG1cCM00tnesPpg4');
+const Patient = require('../models/patientModel');
 
 
 router.post('/create-checkout-session/:id', async (req, res) => {
     try {
-        
-       
-          const total=req.body.total;
-          
+        const { id } = req.params;
+        console.log(req.body);
+        const total = req.body.total;
         // Retrieve the package type from the associated healthPackage
+        console.log('ma3lesh');
+        const patient = await Patient.findById(id);
+        console.log(patient);
+        console.log('ma3lesh 2');
+
+
         const packageType = patient.healthPackage ? patient.healthPackage.name : null;
-        
+        console.log('ma3lesh 3');
         let Discount = 0;
         
           
@@ -28,31 +34,31 @@ router.post('/create-checkout-session/:id', async (req, res) => {
                Discount = 0.4; break;
           
             default:
-                
+                console.log('ma3lesh 4');
                 Discount = 0;
         }
           
               
-        const paymentAmount = total - (total * doctorSessionDiscount);
+        const paymentAmount = 800 - (800 * Discount);
 
         const storeItems = new Map([
-            [1, { priceInCents: paymentAmount * 100, name: `Appointment for ${ patient.firstName } - Dr. ${ doctor.firstName }` }], // priceInSharks = pounds * 100
+            [1, { priceInCents: paymentAmount * 100, name: '3ayat'}], // priceInSharks = pounds * 100
            
         ])
         // END OF PASTE
 
-
+        console.log('ma3lesh 5')
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
             line_items: req.body.items.map(item => {
                 const storeItem = storeItems.get(item.id);
-
+                console.log(item);
                 if (!storeItem) {
                     throw new Error("Item does not exists");
                 }
-
+                console.log(storeItem);
                 return {
                     price_data: {
                         currency: 'egp',
