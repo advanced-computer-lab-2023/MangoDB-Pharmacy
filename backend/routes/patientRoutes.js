@@ -33,7 +33,7 @@ router.get('/addressesByPatientId/:id' , patientController.addressesByPatientId)
 router.get('/getMeds',patientController.getMeds);
 router.get('/getMedicinesByUse',patientController.getMedicinesByUse);
 router.get('/getAllMedicineUses',patientController.getAllMedicineUses);
-
+router.post('/payFromWallet/:patientId', patientController.payFromWallet);
 
 
 module.exports = router

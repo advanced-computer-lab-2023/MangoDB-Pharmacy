@@ -6,6 +6,7 @@ const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
+const Wallet = require('../models/walletModel')
 
 //const asyncHandler = require('express-async-handler')
 
@@ -599,6 +600,81 @@ const getAllMedicineUses = async (req, res) => {
 };
 
 
+const payFromWallet = async (req, res) => {
+  try 
+  {
+    const patientId = req.params.patientId;
+    const paymentAmount=req.body;
+    if (!patientId) {
+      return res.status(404).json({ error: 'Patient ID not found' });
+    }
+    const patient = await Patient.findById(patientId).populate('healthPackage');
+     
+    if (!patient) 
+    {
+      return res.status(404).json({ error: 'Patient not found' });
+    }
+    const packageType = patient.healthPackage ? patient.healthPackage.name : null;
+
+    let  medicineDiscount = 0;
+
+    if(packageType)
+      {
+      switch (packageType) 
+      {
+        case 'Silver':
+          medicineDiscount= 0.2;
+         break;
+         case 'Gold':
+          medicineDiscount= 0.3;
+         break;
+         case 'Platinum':
+         medicineDiscount= 0.4;
+         break;
+
+        default:
+          // Handle the case where an invalid package type is provided
+          // console.error('Invalid package type');
+          // return res.status(400).json({ error: 'Invalid package type' });
+          medicineDiscount= 0;
+    
+      }
+      }
+
+      paymentAmount -= medicineDiscount;
+      const wallet = await Wallet.findOne({ user: patientId });
+      
+      if (!wallet) {
+        throw new Error('Wallet not found');
+      }
+
+      if (wallet.balance < paymentAmount) {
+        throw new Error('Insufficient funds in the wallet');
+      }
+
+      // Deduct the payment amount from the wallet balance
+      console.log(wallet.balance);
+      wallet.balance -= paymentAmount;
+      console.log(wallet.balance);
+      // Record the transaction in the wallet
+      wallet.transactions.push({
+        type: 'debit',
+        amount: paymentAmount,
+        date: new Date(),
+      });
+
+      // Save the updated wallet
+      await wallet.save();
+      res.json({ success: true, message: 'Payment successful' });
+
+  }
+ catch(error){
+  throw new Error(error.message);
+}
+}
+
+
+
 module.exports = {
   viewMed,
   searchFilter,
@@ -620,5 +696,6 @@ module.exports = {
   addressesByPatientId,
   getMeds,
   getMedicinesByUse,
-  getAllMedicineUses
+  getAllMedicineUses,
+  payFromWallet
 };
