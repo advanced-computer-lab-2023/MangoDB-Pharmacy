@@ -306,6 +306,22 @@ const getPatients = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+
+const getPatient = asyncHandler(async (req, res) => {
+  try {
+    const id = req.params.id;
+    const patient = await Patient.findById(id)
+    
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+
+});
+
+
+
 const viewCartItems = async (req, res) => {
   const patientId = req.params.id;
 
@@ -697,5 +713,6 @@ module.exports = {
   getMeds,
   getMedicinesByUse,
   getAllMedicineUses,
-  payFromWallet
+  payFromWallet,
+  getPatient
 };

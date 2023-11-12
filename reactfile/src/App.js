@@ -17,6 +17,10 @@ import ViewMedsPharma from "./pages/viewMedsPharma";
 import GetMedPharma from "./pages/medicinePharma";
 import ViewPharmacists from "./pages/viewPharmacists";
 import PharmacistDetails from "./pages/pharmacistDetails";
+import ViewPatients from "./pages/viewPatients";
+import PatientDetails from "./pages/patientDetails";
+
+
 
 
 function App() {
@@ -70,10 +74,18 @@ function App() {
             <Route path="/viewPharmacists">
             <ViewPharmacists />
             </Route>s
+
+            <Route path="/viewPatients">
+            <ViewPatients />
+            </Route>s
           
 
             <Route path="/pharmacistDetails/:id">
             <PharmacistDetails />
+            </Route>
+
+            <Route path="/patientDetails/:id">
+            <PatientDetails />
             </Route>
 
             

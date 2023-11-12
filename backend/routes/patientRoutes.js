@@ -35,5 +35,7 @@ router.get('/getMedicinesByUse',patientController.getMedicinesByUse);
 router.get('/getAllMedicineUses',patientController.getAllMedicineUses);
 router.post('/payFromWallet/:patientId', patientController.payFromWallet);
 
+router.get('/getPatient/:id', patientController.getPatient);
+
 
 module.exports = router

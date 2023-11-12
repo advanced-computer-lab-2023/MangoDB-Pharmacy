@@ -86,4 +86,9 @@ export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
 export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
 
+export const viewPatients = () => API.get("/Patient/getPatients");
+export const getPatient = (id) => API.get(`/Patient/getPatient/${id}`);
+
+
+
 export default API;
