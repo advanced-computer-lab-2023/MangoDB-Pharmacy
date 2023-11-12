@@ -18,6 +18,12 @@ const Home = () => {
       </button>
       <button onClick={() => history.push("/addMed")}>Add Med</button>
       <button onClick={() => history.push("/editMed")}>Edit Med</button>
+      <button onClick={() => history.push("/viewPharmacistInfo")}>
+        View a pharmacist info
+      </button>
+      <button onClick={() => history.push("/viewAllPatients")}>
+        View all patients
+      </button>
     </div>
   );
 };

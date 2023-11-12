@@ -12,6 +12,8 @@ import ViewCartItems from "./pages/cart";
 import Checkout from "./pages/checkout";
 import AddMed from "./pages/addMed";
 import EditMed from "./pages/editMed";
+import ViewPharmacistInfo from "./pages/viewPharmacistInfo";
+import ViewAllPatients from "./pages/viewAllPatients";
 function App() {
   return (
     <Router>
@@ -23,6 +25,12 @@ function App() {
             </Route>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/viewAllPatients">
+              <ViewAllPatients />
+            </Route>
+            <Route path="/viewPharmacistInfo">
+              <ViewPharmacistInfo />
             </Route>
             <Route path="/addMed">
               <AddMed />
@@ -42,11 +50,10 @@ function App() {
               <ViewMeds />
             </Route>
 
-
             <Route path="/addMed">
               <AddMed />
             </Route>
-            
+
             <Route path="/cart/:id">
               <ViewCartItems />
             </Route>

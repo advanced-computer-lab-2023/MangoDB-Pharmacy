@@ -68,4 +68,14 @@ export const addMed = (medicine) =>
     });
 
 export const editMed = (medicine) => API.put("/Pharmacist/updateMed", medicine);
+
+export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
+export const getMedicinesByUse = (use) =>
+  API.get("/Patient/getMedicinesByUse", { params: { use } });
+
+export const viewPharmacistInfo = (id) =>
+  API.get(`/Admin/viewPharmacistInfo/${id}`);
+
+export const viewAllPatients = () => API.get("/Admin/viewAllPatients");
+
 export default API;
