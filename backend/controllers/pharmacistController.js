@@ -8,6 +8,7 @@ const asyncHandler = require("express-async-handler");
 
 // Define your addMedicine function
 const addMedicine = (req, res) => {
+  console.log("entered");
   // Check if req.file is defined before using it
   
     const medicine = new Medicine({
@@ -17,7 +18,9 @@ const addMedicine = (req, res) => {
       description: req.body.description,
       quantity: req.body.quantity,
       sales: req.body.sales,
-      details: req.body.details,})
+      details: req.body.details,
+      prescribed : req.body.prescribed
+    })
     if (req.file) {  
       console.log("error here");
 

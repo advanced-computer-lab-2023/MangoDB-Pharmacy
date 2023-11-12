@@ -24,8 +24,10 @@ const AddMed = () => {
     quantity: "",
     sales: "",
     details: "",
+    prescribed:""
   });
 
+  
   const [isPending, setIsPending] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -139,6 +141,17 @@ const AddMed = () => {
                       margin="normal"
                     />
                   </Grid>
+                  <Grid item xs={12} sm={6}>
+  <TextField
+    label="Prescribed"
+    name="prescribed"  // Use lowercase "p"
+    value={medicine.prescribed}
+    onChange={handleChange}
+    fullWidth
+    required
+    margin="normal"
+  />
+</Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       label="Sales"

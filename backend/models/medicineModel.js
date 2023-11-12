@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const allowedUses = []; // Add your allowed values here
 
 const medicineSchema = mongoose.Schema(
   {
@@ -32,6 +33,11 @@ const medicineSchema = mongoose.Schema(
     details: {
       type: String,
       required: [true, "Active ingredients"],
+    },
+    prescribed: {
+      type: String,
+      enum: ['required', 'not required'],
+      required: true,
     },
   },
   {

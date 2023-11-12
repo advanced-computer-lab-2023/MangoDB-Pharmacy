@@ -55,16 +55,23 @@ const Medicine = () => {
           // Handle errors
           console.error('Error adding item to cart:', error);
   
+          // Extract the error message from the error object
+          const errorMessage = error.response?.data?.error || 'An error occurred';
+  
           // Check if the error response contains a quantity not available message
-          if (error.response && error.response.data && error.response.data.error.includes('Quantity not available')) {
+          if (
+            errorMessage.includes('Quantity not available') &&
+            errorMessage.includes('This medicine requires a prescription')
+          ) {
             // Display the error message to the user
-            alert(error.response.data.error);
+            alert('This medicine requires a prescription. Please consult your doctor.');
+          } else {
+            // Handle other errors if needed
+            alert(errorMessage);
           }
         });
-    } 
+    }
   };
-  
-  
   
   
   

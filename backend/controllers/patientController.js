@@ -79,10 +79,14 @@ const addMedicineToCart = async (req, res) => {
     if (!medicine) {
       return res.status(404).json({ error: "Medicine not found" });
     }
+    if (medicine.prescribed == "required"){
+      return res.status(400).json({
+        error: "This medicine requires a prescription"})
+    }
 
     if (cartItem) {
       const totalQuantity = cartItem.quantity + quantity;
-
+   
       if (totalQuantity > medicine.quantity) {
         return res.status(400).json({
           error: `Quantity not available. Available quantity for ${medicineName}: ${
@@ -366,8 +370,8 @@ const removeCartItems = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
-  const { patientId,deliveryAddress, paymentMethod } = req.body;
-  // const patientId = req.body;
+  const { deliveryAddress, paymentMethod } = req.body;
+  const patientId = req.params.id;
   let totalPrice = 0;
   try {
     const patient = await Patient.findById(patientId);
@@ -388,6 +392,10 @@ const checkout = async (req, res) => {
       };
       orderdetails.push(item);
       await medicine.save();
+    }
+    if (paymentMethod == "Wallet" ){
+
+      payFromWallet(patientId,totalPrice)
     }
     const dateOfOrder = new Date();
     const dateOfDelivery = new Date(dateOfOrder);
@@ -600,79 +608,70 @@ const getAllMedicineUses = async (req, res) => {
 };
 
 
-const payFromWallet = async (req, res) => {
-  try 
-  {
-    const patientId = req.params.patientId;
-    const paymentAmount=req.body;
-    if (!patientId) {
-      return res.status(404).json({ error: 'Patient ID not found' });
+const payFromWallet = async (patientId, paymentAmount) => {
+  console.log("entered")
+
+  try {
+    if (!patientId || !paymentAmount) {
+      throw new Error('Patient ID and payment amount are required');
     }
-    const patient = await Patient.findById(patientId).populate('healthPackage');
-     
-    if (!patient) 
-    {
-      return res.status(404).json({ error: 'Patient not found' });
+
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      throw new Error('Patient not found');
     }
+
     const packageType = patient.healthPackage ? patient.healthPackage.name : null;
+    let medicineDiscount = 0;
 
-    let  medicineDiscount = 0;
-
-    if(packageType)
-      {
-      switch (packageType) 
-      {
+    if (packageType) {
+      switch (packageType) {
         case 'Silver':
-          medicineDiscount= 0.2;
-         break;
-         case 'Gold':
-          medicineDiscount= 0.3;
-         break;
-         case 'Platinum':
-         medicineDiscount= 0.4;
-         break;
-
+          medicineDiscount = 0.2;
+          break;
+        case 'Gold':
+          medicineDiscount = 0.3;
+          break;
+        case 'Platinum':
+          medicineDiscount = 0.4;
+          break;
         default:
           // Handle the case where an invalid package type is provided
           // console.error('Invalid package type');
           // return res.status(400).json({ error: 'Invalid package type' });
-          medicineDiscount= 0;
-    
+          medicineDiscount = 0;
       }
-      }
+    }
 
-      paymentAmount -= medicineDiscount;
-      const wallet = await Wallet.findOne({ user: patientId });
-      
-      if (!wallet) {
-        throw new Error('Wallet not found');
-      }
+    paymentAmount -= medicineDiscount;
+    const wallet = await Wallet.findOne({ user: patientId });
 
-      if (wallet.balance < paymentAmount) {
-        throw new Error('Insufficient funds in the wallet');
-      }
+    if (!wallet) {
+      throw new Error('Wallet not found');
+    }
 
-      // Deduct the payment amount from the wallet balance
-      console.log(wallet.balance);
-      wallet.balance -= paymentAmount;
-      console.log(wallet.balance);
-      // Record the transaction in the wallet
-      wallet.transactions.push({
-        type: 'debit',
-        amount: paymentAmount,
-        date: new Date(),
-      });
+    if (wallet.balance < paymentAmount) {
+      throw new Error('Insufficient funds in the wallet');
+    }
 
-      // Save the updated wallet
-      await wallet.save();
-      res.json({ success: true, message: 'Payment successful' });
+    // Deduct the payment amount from the wallet balance
+    wallet.balance -= paymentAmount;
 
+    // Record the transaction in the wallet
+    wallet.transactions.push({
+      type: 'debit',
+      amount: paymentAmount,
+      date: new Date(),
+    });
+
+    // Save the updated wallet
+    await wallet.save();
+    return { success: true, message: 'Payment successful' };
+
+  } catch (error) {
+    throw new Error(error.message);
   }
- catch(error){
-  throw new Error(error.message);
-}
-}
-
+};
 
 
 module.exports = {

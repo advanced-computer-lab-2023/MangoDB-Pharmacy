@@ -169,7 +169,7 @@ const PatientReg = () => {
 
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="Date of Birth"
+                //   label="Date of Birth"
                   type="date"
                   name="dob"
                   value={patient.dob}

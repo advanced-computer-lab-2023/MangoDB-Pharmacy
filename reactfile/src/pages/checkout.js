@@ -10,15 +10,20 @@ import {
   FormControl,
   Button,
 } from '@mui/material';
-import { addressesByPatientId, addAddress, viewCartItems } from '../services/api';
+import { addressesByPatientId, addAddress, viewCartItems,placeOrder } from '../services/api';
 import { mainListItems } from '../components/ListItems';
+import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
+  const { id } = useParams(); // Get the id parameter from the URL
+
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
   const [newAddress, setNewAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState(''); 
+
   const [showAddAddress, setShowAddAddress] = useState(false);
 
   const fetchData = async () => {
@@ -38,8 +43,8 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(id);
+  }, [id]);
 
   const handleAddAddress = async () => {
     try {
@@ -62,10 +67,24 @@ const Checkout = () => {
   const handleAddressSelect = (event) => {
     setSelectedAddress(event.target.value);
   };
-
+  const handlePaymentMethodSelect = (event) => {
+    setPaymentMethod(event.target.value);
+  };
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
+  const handlePlaceOrder = async () => {
+    try {
+      // Add logic to call the placeOrder API function
+      await placeOrder(id, selectedAddress, paymentMethod);
+
+      // Optionally, you can handle success or redirect to a confirmation page
+      console.log('Order placed successfully!');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
 
   return (
     <Grid container spacing={3}>
@@ -149,7 +168,6 @@ const Checkout = () => {
             ))}
           </Select>
         </FormControl>
-
         {!showAddAddress && (
           <Button
             variant="contained"
@@ -185,6 +203,31 @@ const Checkout = () => {
         {error && (
           <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>
         )}
+        <FormControl fullWidth style={{ marginBottom: '1rem' }}>
+          <InputLabel id="payment-method-label">Choose Payment Method</InputLabel>
+          <Select
+            labelId="payment-method-label"
+            id="payment-method"
+            value={paymentMethod}
+            onChange={handlePaymentMethodSelect}
+          >
+            <MenuItem value="" disabled>
+              Choose Payment Method
+            </MenuItem>
+            <MenuItem value="cash-on-delivery">Cash on Delivery</MenuItem>
+            <MenuItem value="wallet">Wallet</MenuItem>
+            <MenuItem value="visa-mastercard">Visa/Mastercard</MenuItem>
+          </Select>
+        </FormControl>
+
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={handlePlaceOrder}
+        style={{ marginTop: '1rem' }}
+      >
+        Place an Order
+      </Button>
       </Grid>
     </Grid>
   );
