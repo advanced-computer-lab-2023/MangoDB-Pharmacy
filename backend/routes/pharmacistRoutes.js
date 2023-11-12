@@ -35,7 +35,7 @@ router.get("/medDetails/:id", pharmacistController.getDetails);
 //test
 router.get("/query", pharmacistController.searchFilter);
 // router.put('/:id ', pharmacistController.editMedPrice)
-router.put("/updateMed", pharmacistController.editMedPrice);
+router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 module.exports = router;

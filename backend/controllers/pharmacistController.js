@@ -118,7 +118,7 @@ const getMedicine = asyncHandler(async (req, res) => {
 // })
 
 //edit medicine price
-const editMedPrice = asyncHandler(async (req, res) => {
+const editMedPrice2 = asyncHandler(async (req, res) => {
   try {
     const { id, details, price } = req.body;
     const update = {};
@@ -147,6 +147,43 @@ const editMedPrice = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+const editMedPrice = async (req, res) => {
+  const { id } = req.params;
+  const { price, details } = req.body;
+  console.log(id , price, details)
+
+  try {
+    if (!price && !details) {
+      return res.status(400).json({ error: 'Price or details parameter is required for editing' });
+    }
+
+    // Find the medicine by ID
+    const medicine = await Medicine.findById(id);
+
+    if (!medicine) {
+      return res.status(404).json({ error: 'Medicine not found' });
+    }
+
+    // Update the medicine based on the provided fields
+    if (price !== undefined) {
+      medicine.price = price;
+    }
+
+    if (details !== undefined) {
+      medicine.details = details;
+    }
+
+    // Save the updated medicine
+    await medicine.save();
+
+    res.status(200).json({ message: 'Medicine updated successfully', medicine });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 // const editMedDetails =asyncHandler( async (req,res) =>{
 //     const med = await Medicine.findById(req.params.id)

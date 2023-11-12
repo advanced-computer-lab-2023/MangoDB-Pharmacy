@@ -13,7 +13,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { addMed } from "../services/api";
-import { mainListItems } from '../components/ListItems';
+import { pharmacistListItems } from '../components/ListItemsPharma';
 
 const AddMed = () => {
   const [medicine, setMedicine] = useState({
@@ -73,7 +73,7 @@ const AddMed = () => {
     <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {pharmacistListItems}
       </Grid>
 
       {/* Main Content */}

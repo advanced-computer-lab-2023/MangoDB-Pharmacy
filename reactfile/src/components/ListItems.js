@@ -15,7 +15,6 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export const mainListItems = (
   <React.Fragment>
@@ -65,13 +64,6 @@ export const mainListItems = (
       <ListItemText primary="Pharmacy" />
     </ListItemButton>
 
-
-    <ListItemButton component={Link} to="/addMed">
-      <ListItemIcon>
-        <AddCircleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Add Medicine" />
-    </ListItemButton>
 
 
     <ListItemButton component={Link} to="/cart">

@@ -1,6 +1,7 @@
 import "./App.css";
 import Home from "./pages/Home";
 import Dashboard from "./components/Dashboard";
+import DashboardPharma from "./components/DashboardPharma";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ViewMeds from "./pages/viewMeds";
 import GetMeds from "./pages/medicine";
@@ -12,6 +13,10 @@ import ViewCartItems from "./pages/cart";
 import Checkout from "./pages/checkout";
 import AddMed from "./pages/addMed";
 import EditMed from "./pages/editMed";
+import ViewMedsPharma from "./pages/viewMedsPharma";
+import GetMedPharma from "./pages/medicinePharma";
+
+
 function App() {
   return (
     <Router>
@@ -42,13 +47,26 @@ function App() {
               <ViewMeds />
             </Route>
 
+            <Route path="/viewMedsPharma">
+              <ViewMedsPharma />
+            </Route>
+
+          
+            <Route path="/DashboardPharma">
+              <DashboardPharma/>
+            </Route>
 
             <Route path="/addMed">
               <AddMed />
             </Route>
-            
+
             <Route path="/cart/:id">
               <ViewCartItems />
+            </Route>
+
+
+            <Route path="/medicinePharma/:id">
+              <GetMedPharma />
             </Route>
 
             <Route path="/medicine/:id">
