@@ -74,5 +74,6 @@ export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
  export const wallet = (patientId) => API.post(`/patient/payFromWallet/${ patientId }`);
  export const placeOrder = (patientId,deliveryAddress,paymentMethod,) => API.post(`Patient/checkout/${ patientId }`,{ deliveryAddress, paymentMethod });
 
-
+//payments
+export const payment = (id, items,total) => API.post(`/payments/create-checkout-session/${ id }`, { items,total });
 export default API;

@@ -3,14 +3,46 @@ const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 
-const storeItems = new Map([
-    [1, { priceInCents: 10000, name: "Learn React Today" }], // priceInSharks = pounds * 100
-    [2, { priceInCents: 20000, name: "Learn CSS Today" }],
-])
-
-
-router.post('/create-checkout-session', async (req, res) => {
+router.post('/create-checkout-session/:id', async (req, res) => {
     try {
+        
+       
+          const total=req.body.total;
+          
+        // Retrieve the package type from the associated healthPackage
+        const packageType = patient.healthPackage ? patient.healthPackage.name : null;
+        
+        let Discount = 0;
+        
+          
+        // Calculate discounts based on the packageType
+        // switch (patient.healthPackage.name) {
+        switch (packageType) {
+            case 'Silver':
+                Discount = 0.2; break;
+          
+            case 'Gold':
+                Discount = 0.3; break;
+          
+            case 'Platinum':
+               Discount = 0.4; break;
+          
+            default:
+                
+                Discount = 0;
+        }
+          
+              
+        const paymentAmount = total - (total * doctorSessionDiscount);
+
+        const storeItems = new Map([
+            [1, { priceInCents: paymentAmount * 100, name: `Appointment for ${ patient.firstName } - Dr. ${ doctor.firstName }` }], // priceInSharks = pounds * 100
+           
+        ])
+        // END OF PASTE
+
+
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
