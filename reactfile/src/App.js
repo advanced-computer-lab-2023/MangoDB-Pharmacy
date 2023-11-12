@@ -42,6 +42,11 @@ function App() {
               <ViewMeds />
             </Route>
 
+
+            <Route path="/addMed">
+              <AddMed />
+            </Route>
+            
             <Route path="/cart/:id">
               <ViewCartItems />
             </Route>
@@ -55,6 +60,7 @@ function App() {
             <Route path="/orderDetails/:id">
               <OrderDetails />
             </Route>
+            <Route path="/checkout" exact component={Checkout} />
           </Switch>
         </div>
       </div>

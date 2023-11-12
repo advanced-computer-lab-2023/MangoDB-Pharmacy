@@ -123,9 +123,7 @@ const changeCartItemAmount = async (req, res) => {
   const { medicineName, quantity } = req.body;
   
   const patientId = req.params.id;
-  console.log('Received request with patient ID:', req.params.id);
-  console.log('Medicine name:', req.body.medicineName);
-  console.log('New quantity:', req.body.quantity);
+  
   try {
     const patient = await Patient.findById(patientId);
 
@@ -556,6 +554,51 @@ const addressesByPatientId = async (req, res) => {
   }
 };
 
+const getMeds = asyncHandler(async (req, res) => {
+  try {
+    const meds = await Medicine.find();
+    res.status(200).json(meds);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+const getMedicinesByUse = async (req, res) => {
+  const { use } = req.query;
+  try {
+    if (!use) {
+      return res.status(400).json({ error: 'Use parameter is required' });
+    }
+
+    const medicines = await Medicine.find({ use: { $regex: use, $options: 'i' } });
+
+    if (!medicines || medicines.length === 0) {
+      return res.status(404).json({ error: 'Medicines not found for the specified use' });
+    }
+
+    res.status(200).json({ medicines });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getAllMedicineUses = async (req, res) => {
+  try {
+    const uniqueUses = await Medicine.distinct('use');
+    console.log(uniqueUses)
+    res.status(200).json(uniqueUses);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+};
+
+
 module.exports = {
   viewMed,
   searchFilter,
@@ -574,5 +617,8 @@ module.exports = {
   sendOTP,
   resetPassword,
   verifyOTP,getMed,
-  addressesByPatientId
+  addressesByPatientId,
+  getMeds,
+  getMedicinesByUse,
+  getAllMedicineUses
 };

@@ -45,7 +45,7 @@ const Checkout = () => {
     try {
      
       if (!newAddress.trim()) {
-      
+        // If empty, do nothing
         return;
       }
 
