@@ -14,7 +14,6 @@ import PatientReg from "./pages/patientReg";
 import ViewCartItems from "./pages/cart";
 import Checkout from "./pages/checkout";
 import AddMed from "./pages/addMed";
-import EditMed from "./pages/editMed";
 import ViewMedsPharma from "./pages/viewMedsPharma";
 import GetMedPharma from "./pages/medicinePharma";
 import ViewPharmacists from "./pages/viewPharmacists";
@@ -43,9 +42,7 @@ function App() {
             <Route path="/addMed">
               <AddMed />
             </Route>
-            <Route path="/editMed">
-              <EditMed />
-            </Route>
+           
 
             <Route path="/medicineAdmin/:id">
               <MedicineAdmin />
