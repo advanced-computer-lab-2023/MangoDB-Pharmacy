@@ -137,11 +137,17 @@ const MedicinePharma = () => {
                     <Typography variant="subtitle1" gutterBottom>
                       Details: {medicine.details}
                     </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      quantity: {medicine.quantity}
+                    </Typography>
                     <Typography variant="subtitle1" gutterBottom>
                       Price: {medicine.price}
                     </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      sales: {medicine.sales}
+                    </Typography>
                     <Typography variant="body2" gutterBottom>
-                      Uses: {medicine.use}
+                      Use: {medicine.use}
                     </Typography>
                     <Button onClick={handleEditClick} variant="contained" color="primary" style={{ marginTop: '1rem' }}>
                       Edit Medicine
