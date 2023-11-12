@@ -66,22 +66,15 @@ function App() {
               <ViewCartItems />
             </Route>
 
-      
-
 
             <Route path="/viewPharmacists">
             <ViewPharmacists />
             </Route>s
           
 
-
             <Route path="/pharmacistDetails/:id">
-  <PharmacistDetails />
-</Route>
-
-
-
-
+            <PharmacistDetails />
+            </Route>
 
             
             <Route path="/medicinePharma/:id">

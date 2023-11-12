@@ -27,7 +27,6 @@ const ViewPharmacists = () => {
   }, []);
 
   const handlePharmacistClick = (id) => {
-    // Navigate to the pharmacist details page with the pharmacist's ID
     history.push(`/pharmacistDetails/${id}`);
   };
 
@@ -59,7 +58,6 @@ const ViewPharmacists = () => {
               <Typography>Email: {pharmacist.email}</Typography>
               <Typography>Affiliation: {pharmacist.affiliation}</Typography>
              
-              {/* Add a button to view pharmacist details */}
               <Button onClick={() => handlePharmacistClick(pharmacist._id)}>
                 View Details
               </Button>

@@ -59,7 +59,6 @@ const PharmacistDetails = () => {
           <Typography>Username: {pharmacist.username}</Typography>
           <Typography>DOB: {pharmacist.dob}</Typography>
           <Typography>Account Status: {pharmacist.accountStatus}</Typography>
-          {/* Add more details if needed */}
         </Paper>
       )}
     </div>
