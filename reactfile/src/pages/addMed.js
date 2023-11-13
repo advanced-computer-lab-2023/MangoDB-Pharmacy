@@ -24,6 +24,7 @@ const AddMed = () => {
     quantity: "",
     sales: "",
     details: "",
+    prescribed: "", // New field
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -155,6 +156,17 @@ const AddMed = () => {
                       label="Details"
                       name="details"
                       value={medicine.details}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                      margin="normal"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Prescribed"
+                      name="prescribed"
+                      value={medicine.prescribed}
                       onChange={handleChange}
                       fullWidth
                       required

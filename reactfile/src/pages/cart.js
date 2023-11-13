@@ -116,7 +116,7 @@ const ViewCartItems = () => {
           variant="contained"
           color="primary"
           component={Link}
-          to="/checkout"
+          to={`/checkout/${id}`} 
           style={{ marginTop: '1rem' }}
         >
           Checkout

@@ -10,15 +10,22 @@ import {
   FormControl,
   Button,
 } from '@mui/material';
-import { addressesByPatientId, addAddress, viewCartItems } from '../services/api';
+import { addressesByPatientId, addAddress, viewCartItems,placeOrder,payment } from '../services/api';
 import { mainListItems } from '../components/ListItems';
+import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
+  const { id } = useParams(); 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState(null);
   const [newAddress, setNewAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState(''); 
+
   const [showAddAddress, setShowAddAddress] = useState(false);
 
   const fetchData = async () => {
@@ -27,7 +34,7 @@ const Checkout = () => {
 
       const fetchedCartItems = await viewCartItems(patientId);
       setCartItems(fetchedCartItems.data);
-
+      console.log ("FETCHED DATA" ,fetchedCartItems.data )
       const fetchedAddresses = await addressesByPatientId(patientId);
       setAddresses(fetchedAddresses);
 
@@ -38,14 +45,13 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(id);
+  }, [id]);
 
   const handleAddAddress = async () => {
     try {
      
       if (!newAddress.trim()) {
-        // If empty, do nothing
         return;
       }
 
@@ -62,10 +68,56 @@ const Checkout = () => {
   const handleAddressSelect = (event) => {
     setSelectedAddress(event.target.value);
   };
-
+  const handlePaymentMethodSelect = (event) => {
+    setPaymentMethod(event.target.value);
+  };
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
+  const handlePlaceOrder = async () => {
+    setTimeout( async () => {
+      try {
+        console.log (cartItems)
+
+        if (paymentMethod === 'visa-mastercard') {
+          const items = cartItems.map(item => ({
+            itemId : item.id,
+            quantity: item.quantity,
+            name:item.name,
+            price:item.price/item.quantity
+          }));
+          console.log (items)
+      const total =calculateTotalPrice()
+          const response = await payment( id,items, total);
+          if (response.status === 200) {
+            const { url } = response.data;
+        console.log('Checkout Session:', response.data);
+        window.location = url;
+            const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+            console.log('Order placed successfully! Order ID:', orderId);
+          } else {
+            console.error('Visa/Mastercard payment failed');
+          }
+        } else {
+          const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+          console.log('Order placed successfully! Order ID:', orderId);
+          if (paymentMethod === 'cash-on-delivery' || paymentMethod === 'wallet') {
+            setShowSuccessMessage(true);
+          }
+        }
+      } catch (err) {
+        if (err.message.includes('Insufficient funds in the wallet')) {
+          setErrorMessage('Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.');
+          return; 
+
+        } else {
+          setErrorMessage(err.message);
+        }
+      }
+    }, 1000);
+  };
+
+
 
   return (
     <Grid container spacing={3}>
@@ -149,7 +201,6 @@ const Checkout = () => {
             ))}
           </Select>
         </FormControl>
-
         {!showAddAddress && (
           <Button
             variant="contained"
@@ -185,6 +236,45 @@ const Checkout = () => {
         {error && (
           <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>
         )}
+        <FormControl fullWidth style={{ marginBottom: '1rem' }}>
+          <InputLabel id="payment-method-label">Choose Payment Method</InputLabel>
+          <Select
+            labelId="payment-method-label"
+            id="payment-method"
+            value={paymentMethod}
+            onChange={handlePaymentMethodSelect}
+          >
+            <MenuItem value="" disabled>
+              Choose Payment Method
+            </MenuItem>
+            <MenuItem value="cash-on-delivery">Cash on Delivery</MenuItem>
+            <MenuItem value="wallet">Wallet</MenuItem>
+            <MenuItem value="visa-mastercard">Visa/Mastercard</MenuItem>
+          </Select>
+        </FormControl>
+        {error && (
+          <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>
+        )}
+        {/* {errorMessage && (
+          <div style={{ color: 'red', marginTop: '1rem' }}>{errorMessage}</div>
+        )} */}
+
+
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={handlePlaceOrder}
+        style={{ marginTop: '1rem' }}
+      >
+        Place an Order
+      </Button>
+      {(showSuccessMessage && (
+        <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
+          Order placed successfully!
+        </Typography>
+      ) ) || (errorMessage &&  <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
+ Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.   
+  </Typography>) }
       </Grid>
     </Grid>
   );

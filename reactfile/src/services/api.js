@@ -88,6 +88,9 @@ export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
 
 export const viewPatients = () => API.get("/Patient/getPatients");
 export const getPatient = (id) => API.get(`/Patient/getPatient/${id}`);
+export const placeOrder = (patientId,deliveryAddress,paymentMethod,) => API.post(`Patient/checkout/${ patientId }`,{ deliveryAddress, paymentMethod });
+export const payment = (id, items, total) => API.post(`/payments/create-checkout-session/${ id }`, { total :total ,items: items });
+
 
 
 

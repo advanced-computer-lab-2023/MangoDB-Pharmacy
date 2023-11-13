@@ -25,6 +25,7 @@ import {
   addMed as addMedicineApi,
 } from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
+const prescribedOptions = ["required", "not required"];
 
 const ViewMedsPharma = () => {
   const [meds, setMeds] = useState([]);
@@ -42,6 +43,7 @@ const ViewMedsPharma = () => {
     quantity: "",
     sales: "",
     details: "",
+    prescribed :"",
   });
 
   const [isAddMedPending, setIsAddMedPending] = useState(false);
@@ -308,6 +310,26 @@ const ViewMedsPharma = () => {
                     margin="normal"
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="prescribed-label">Prescribed</InputLabel>
+                  <Select
+                    labelId="prescribed-label"
+                    id="prescribed"
+                    name="prescribed"
+                    value={addMedicine.prescribed}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                  >
+                    {prescribedOptions.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="Quantity"

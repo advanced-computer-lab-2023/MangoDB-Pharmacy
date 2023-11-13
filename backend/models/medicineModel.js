@@ -33,6 +33,11 @@ const medicineSchema = mongoose.Schema(
       type: String,
       required: [true, "Active ingredients"],
     },
+    prescribed: {
+      type: String,
+      enum: ['required', 'not required'],
+      // required: true,
+    },
   },
   {
     timestamps: true,

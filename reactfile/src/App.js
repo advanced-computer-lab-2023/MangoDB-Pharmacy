@@ -116,8 +116,10 @@ function App() {
             <Route path="/orderDetails/:id">
               <OrderDetails />
             </Route>
-            <Route path="/checkout" exact component={Checkout} />
-          </Switch>
+            <Route path="/checkout/:id" exact component={Checkout}>
+              <Checkout />
+            </Route>
+                      </Switch>
         </div>
       </div>
     </Router>

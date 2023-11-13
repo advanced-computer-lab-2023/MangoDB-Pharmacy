@@ -17,7 +17,8 @@ const addMedicine = (req, res) => {
       description: req.body.description,
       quantity: req.body.quantity,
       sales: req.body.sales,
-      details: req.body.details,})
+      details: req.body.details,
+    prescribed : req.body.prescribed})
     if (req.file) {  
       console.log("error here");
 

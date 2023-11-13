@@ -28,12 +28,13 @@ router.post('/cancelOrder/:id', patientController.cancelOrder);
 
 router.get('/viewCartItems/:id' , patientController.viewCartItems)
 router.delete('/removeCartItems/:id' , patientController.removeCartItems)
-router.post('/checkout' , patientController.checkout)
+router.post('/checkout/:id' , patientController.checkout)
 router.get('/addressesByPatientId/:id' , patientController.addressesByPatientId)
 router.get('/getMeds',patientController.getMeds);
 router.get('/getMedicinesByUse',patientController.getMedicinesByUse);
 router.get('/getAllMedicineUses',patientController.getAllMedicineUses);
 router.post('/payFromWallet/:patientId', patientController.payFromWallet);
+router.post('/createWallet', patientController.createWallet);
 
 router.get('/getPatient/:id', patientController.getPatient);
 

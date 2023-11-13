@@ -55,16 +55,23 @@ const Medicine = () => {
           // Handle errors
           console.error('Error adding item to cart:', error);
   
+          // Extract the error message from the error object
+          const errorMessage = error.response?.data?.error || 'An error occurred';
+  
           // Check if the error response contains a quantity not available message
-          if (error.response && error.response.data && error.response.data.error.includes('Quantity not available')) {
+          if (
+            errorMessage.includes('Quantity not available') &&
+            errorMessage.includes('This medicine requires a prescription')
+          ) {
             // Display the error message to the user
-            alert(error.response.data.error);
+            alert('This medicine requires a prescription. Please consult your doctor.');
+          } else {
+            // Handle other errors if needed
+            alert(errorMessage);
           }
         });
-    } 
+    }
   };
-  
-  
   
   
   
@@ -115,23 +122,17 @@ const Medicine = () => {
                   }}
                 />
                 <Typography variant="body1" gutterBottom>
-                      Description: {medicine.description}
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Details: {medicine.details}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      quantity: {medicine.quantity}
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Price: {medicine.price}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      sales: {medicine.sales}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      Use: {medicine.use}
-                    </Typography>
+                  Description: {medicine.description}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Details: {medicine.details}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Price: {medicine.price}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  Uses: {medicine.use}
+                </Typography>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <IconButton onClick={handleDecreaseQuantity}>
                     <RemoveIcon />
