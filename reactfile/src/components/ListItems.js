@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 import TodayIcon from '@mui/icons-material/Today';
 import PeopleIcon from '@mui/icons-material/People';
@@ -68,10 +68,9 @@ export const mainListItems = (
 
 
 
-    <ListItemButton component={Link} to="/cart">
-    <ListItemIcon>
-      <ShoppingCartIcon />
-
+    <ListItemButton component={Link} to={`/cart/65538d9e4617ffa5e6fd6b7a`}>
+      <ListItemIcon>
+        <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="View Cart" />
     </ListItemButton>
