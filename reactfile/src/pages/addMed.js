@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   TextField,
@@ -30,7 +30,7 @@ const AddMed = () => {
   const [isPending, setIsPending] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleErrorClose = () => {
     setErrorOpen(false);
@@ -55,7 +55,7 @@ const AddMed = () => {
 
       // Redirect to home after 7 seconds
       setTimeout(() => {
-        history.push("/");
+        navigate("/");
       }, 7000);
     } catch (error) {
       console.error("Error adding medicine:", error);
@@ -67,7 +67,7 @@ const AddMed = () => {
   const handleSuccessClose = () => {
     setSuccessOpen(false);
     // Redirect to home after success if needed
-    history.push("/");
+    navigate("/");
   };
 
   return (

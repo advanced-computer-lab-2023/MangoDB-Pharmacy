@@ -1,18 +1,20 @@
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div className="home">
       <h2>Home Page</h2>
       <p>This is the home page</p>
-      <button onClick={() => history.push("/")}>Login</button>
-      <button onClick={() => history.push("/dashboard")}>Dashboard</button>
-      <button onClick={() => history.push("/patientReg")}>
+      <button onClick={() => navigate("/admin")}>Admin Dashboard</button>
+      <button onClick={() => navigate("/admin/login")}>Login admin</button>
+      <button onClick={() => navigate("/login")}>Login user</button>
+      <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+      <button onClick={() => navigate("/patientReg")}>
         Register as a patient
       </button>
-      <button onClick={() => history.push("/pharmaReg")}>
+      <button onClick={() => navigate("/pharmaReg")}>
         Register as a pharmacist
       </button>
     </div>

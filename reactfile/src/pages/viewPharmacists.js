@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { viewPharmacists } from "../services/api";
 import { Typography, Paper, Button } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AdminListItems } from '../components/ListItemsAdmin'; 
 import { Grid } from "@mui/material";
 
@@ -11,7 +11,7 @@ const ViewPharmacists = () => {
   const [pharmacists, setPharmacists] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +31,7 @@ const ViewPharmacists = () => {
   }, []);
 
   const handlePharmacistClick = (id) => {
-    history.push(`/pharmacistDetails/${id}`);
+    navigate(`/pharmacistDetails/${id}`);
   };
 
   return (

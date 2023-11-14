@@ -4,7 +4,7 @@ import Dashboard from "./components/Dashboard";
 import DashboardPharma from "./components/DashboardPharma";
 import DashboardAdmin from "./components/DashboardAdmin";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ViewMeds from "./pages/viewMeds";
 import GetMeds from "./pages/medicine";
 import Orders from "./pages/order";
@@ -22,106 +22,77 @@ import ViewPatients from "./pages/viewPatients";
 import PatientDetails from "./pages/patientDetails";
 import ViewMedsAdmin from "./pages/viewMedsAdmin";
 import MedicineAdmin from "./pages/medicineAdmin";
-
-
-
-
+import LoginPage from "./pages/LoginAdminPage";
+import ForgotPasswordAdminPage from "./pages/ForgotPasswordAdminPage";
+import ForgotPasswordUserPage from "./pages/ForgotPasswordUserPage";
+// import AddAdminPage from "./pages/AddAdminPage";
+// import RequestedDoctorsPage from "./pages/RequestedDoctorsPage";
+import LoginUser from "./components/LoginUser";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <div className="content">
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/dashboard">
-              <Dashboard />
-            </Route>
-            <Route path="/addMed">
-              <AddMed />
-            </Route>
+          <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+
+          <Route path='/addMed' element={<AddMed />} />
            
+          <Route path='/medicineAdmin/:id' element={<MedicineAdmin />} />
 
-            <Route path="/medicineAdmin/:id">
-              <MedicineAdmin />
-            </Route>
+          <Route path='/viewMedsAdmin' element={<ViewMedsAdmin />} />
 
-            <Route path="/viewMedsAdmin">
-              <ViewMedsAdmin/>
-            </Route>
+          <Route path='/patientReg' element={<PatientReg />} />
 
-            <Route path="/patientReg">
-              <PatientReg />
-            </Route>
-            <Route path="/pharmaReg">
-              <PharmacistReg />
-            </Route>
+          <Route path='/pharmaReg' element={<PharmacistReg />} />
 
-            <Route path="/viewMeds">
-              <ViewMeds />
-            </Route>
+          <Route path='/viewMeds' element={<ViewMeds />} />
 
-            <Route path="/viewMedsPharma">
-              <ViewMedsPharma />
-            </Route>
+          <Route path='/viewMedsPharma' element={<ViewMedsPharma />} />
 
+          <Route path='/DashboardPharma' element={<DashboardPharma />} />
+
+          <Route path='/addMed' element={<AddMed />} />
+
+          <Route path='/cart/:id' element={<ViewCartItems />} />
+
+          <Route path='/viewPharmacists' element={<ViewPharmacists />} />
+
+          <Route path='/viewPatients' element={<ViewPatients />} />
+
+          <Route path='/pharmacistDetails/:id' element={<PharmacistDetails />} />
           
-            <Route path="/DashboardPharma">
-              <DashboardPharma/>
-            </Route>
+          <Route path="/patientDetails/:id" element={<PatientDetails />} />
 
-            <Route path="/DashboardAdmin">
-              <DashboardAdmin/>
-            </Route>
+          <Route path="/medicinePharma/:id" element={<GetMedPharma />} />
 
-            <Route path="/addMed">
-              <AddMed />
-            </Route>
+          <Route path="/medicine/:id" element={<GetMeds />} />
 
-            <Route path="/cart/:id">
-              <ViewCartItems />
-            </Route>
+          <Route path='/order' element={<Orders />} />
 
+          <Route path="/orderDetails/:id" element={<OrderDetails />} />
 
-            <Route path="/viewPharmacists">
-            <ViewPharmacists />
-            </Route>s
+          <Route path="/checkout/:id" element={<Checkout />} />
 
-            <Route path="/viewPatients">
-            <ViewPatients />
-            </Route>s
-          
+          {/* ===================Admin Routes=================== */}
 
-            <Route path="/pharmacistDetails/:id">
-            <PharmacistDetails />
-            </Route>
+          <Route path='/admin' element={<DashboardAdmin />} />
+					<Route path='/admin/login' element={<LoginPage />} />
+					<Route path='/login' element={<LoginUser />} />
 
-            <Route path="/patientDetails/:id">
-            <PatientDetails />
-            </Route>
+					<Route
+						path='/admin/forgot-password'
+						element={<ForgotPasswordAdminPage />}
+					/>
 
-            
-            <Route path="/medicinePharma/:id">
-              <GetMedPharma />
-            </Route>
+					<Route path='/forgot-password' element={<ForgotPasswordUserPage />} />
+					{/* <Route path='/admin/add-admin' element={<AddAdminPage />} /> */}
+					{/* <Route
+						path='/admin/requested-doctors'
+						element={<RequestedDoctorsPage />}
+					/> */}
 
-            <Route path="/medicine/:id">
-              <GetMeds />
-            </Route>
-            <Route path="/order">
-              <Orders />
-            </Route>
-            <Route path="/orderDetails/:id">
-              <OrderDetails />
-            </Route>
-            <Route path="/checkout/:id" exact component={Checkout}>
-              <Checkout />
-            </Route>
-                      </Switch>
-        </div>
-      </div>
+        </Routes>
     </Router>
   );
 }

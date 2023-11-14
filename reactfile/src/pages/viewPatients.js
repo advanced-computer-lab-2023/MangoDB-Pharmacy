@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { viewPatients } from "../services/api";
 import { Typography, Paper, Button, Grid } from "@mui/material"; 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AdminListItems } from '../components/ListItemsAdmin'; 
 
 const ViewPatients = () => {
   const [patient, setPatient] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,7 @@ const ViewPatients = () => {
   }, []);
 
   const handlePatientClick = (id) => {
-    history.push(`/patientDetails/${id}`);
+    navigate(`/patientDetails/${id}`);
   };
 
   return (
