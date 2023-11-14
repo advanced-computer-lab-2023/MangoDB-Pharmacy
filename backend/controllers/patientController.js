@@ -471,6 +471,7 @@ const loginPatient = asyncHandler(async (req, res) => {
   // Check for username
   const patient = await Patient.findOne({ username });
 
+console.log (patient)
   if (patient && (await bcrypt.compare(password, patient.password))) {
     res.status(200).json({
       message: "Successful Login",
@@ -573,7 +574,7 @@ function generateOTP() {
 
 // Generate Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, "abc123", {
     expiresIn: "30d",
   });
 };
