@@ -11,9 +11,12 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  Input,
 } from "@mui/material";
 import { addMed } from "../services/api";
-import { pharmacistListItems } from '../components/ListItemsPharma';
+import { pharmacistListItems } from "../components/ListItemsPharma";
 
 const AddMed = () => {
   const [medicine, setMedicine] = useState({
@@ -25,6 +28,7 @@ const AddMed = () => {
     sales: "",
     details: "",
     prescribed: "", // New field
+    picture: null, // New field
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -37,11 +41,19 @@ const AddMed = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMedicine((prevMedicine) => ({
-      ...prevMedicine,
-      [name]: value,
-    }));
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      setMedicine((prevMedicine) => ({
+        ...prevMedicine,
+        [name]: files[0], // Assuming only one file is selected
+      }));
+    } else {
+      setMedicine((prevMedicine) => ({
+        ...prevMedicine,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +61,14 @@ const AddMed = () => {
     setIsPending(true);
 
     try {
-      await addMed(medicine);
+      const formData = new FormData();
+
+      // Append other fields to formData
+      Object.entries(medicine).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      await addMed(formData);
       setIsPending(false);
       setSuccessOpen(true);
 
@@ -73,12 +92,32 @@ const AddMed = () => {
   return (
     <Grid container>
       {/* Sidebar */}
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
+      <Grid
+        item
+        xs={12}
+        sm={3}
+        md={2}
+        lg={2}
+        xl={2}
+        style={{
+          background: "#f0f0f0",
+          minHeight: "100vh",
+          paddingTop: "2rem",
+        }}
+      >
         {pharmacistListItems}
       </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        md={10}
+        lg={10}
+        xl={10}
+        style={{ paddingLeft: "2rem" }}
+      >
         <Grid container justifyContent="center" style={{ padding: "2rem" }}>
           <Grid item xs={12} md={8} lg={6}>
             <Paper elevation={3} style={{ padding: "2rem" }}>
@@ -173,6 +212,17 @@ const AddMed = () => {
                       margin="normal"
                     />
                   </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Upload Picture (png or pdf)</InputLabel>
+                      <Input
+                        type="file"
+                        name="picture"
+                        onChange={handleChange}
+                        style={{ marginBottom: "1rem" }}
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
                 <Button
                   variant="contained"
@@ -194,8 +244,8 @@ const AddMed = () => {
             <DialogTitle>{"Medicine Added Successfully"}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Medicine was successfully added. You will be redirected to the home
-                page shortly.
+                Medicine was successfully added. You will be redirected to the
+                home page shortly.
               </DialogContentText>
             </DialogContent>{" "}
             <DialogActions>

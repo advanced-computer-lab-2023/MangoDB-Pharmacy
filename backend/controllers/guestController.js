@@ -26,7 +26,6 @@ const regPatient = (req, res) => {
   //console.log(patient.username,  patient.password)
 };
 
-
 const regPharmaView = (req, res) => {
   res.status(200).render("pharmacistRegistration");
 };
@@ -35,6 +34,17 @@ const regPharma = (req, res) => {
   const body = { ...req.body, userType: "pharmacist" };
   const pharma = new Pharma(body);
 
+  if (req.files) {
+    for (const file of req.files) {
+      const url = `http://localhost:4000/uploads/${file.originalname}`;
+      const document = {
+        name: file.originalname,
+        file: url,
+      };
+      pharma.documents.push(document);
+    }
+    //await user.save();
+  }
   pharma
     .save()
     .then((result) => {
@@ -46,4 +56,4 @@ const regPharma = (req, res) => {
   //console.log(patient.username,  patient.password)
 };
 
-module.exports = { regPatient, regPharma, regPatientView,regPharmaView };
+module.exports = { regPatient, regPharma, regPatientView, regPharmaView };

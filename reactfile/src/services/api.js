@@ -20,8 +20,8 @@ export const viewOrderDetails = (id) =>
 export const cancelOrder = (id) => API.post(`/Patient/cancelOrder/${id}`);
 export const patientReg = (patient) =>
   API.post("/Patient/createPatient", patient);
-export const pharmacistReg = (pharmacist) =>
-  API.post("/Guest/regPharma", pharmacist);
+// export const pharmacistReg = (pharmacist) =>
+//   API.post("/Guest/regPharma", pharmacist);
 
 export const viewCartItems = (id) => API.get(`/Patient/ViewCartItems/${id}`);
 export const changeCartItemAmount = async (id, medicineName, quantity) => {
@@ -51,10 +51,67 @@ export const addAddress = async (patientId, address) => {
   }
 };
 
+export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
+export const getMedicinesByUse = (use) =>
+  API.get("/Patient/getMedicinesByUse", { params: { use } });
+export const wallet = (patientId) =>
+  API.post(`/patient/payFromWallet/${patientId}`);
+
+export const editMedPrice = async (id, details, price) => {
+  try {
+    const response = await API.put(`/Pharmacist/updateMed/${id}`, {
+      details,
+      price,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Failed to edit medicine");
+  }
+};
+
+export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
+export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
+
+export const viewPatients = () => API.get("/Patient/getPatients");
+export const getPatient = (id) => API.get(`/Patient/getPatient/${id}`);
+export const placeOrder = (patientId, deliveryAddress, paymentMethod) =>
+  API.post(`Patient/checkout/${patientId}`, { deliveryAddress, paymentMethod });
+export const payment = (id, items, total) =>
+  API.post(`/payments/create-checkout-session/${id}`, {
+    total: total,
+    items: items,
+  });
+
+const API2 = axios.create({
+  baseURL: `http://localhost:4000`,
+  timeout: 5000,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+export const pharmacistReg = (pharmacist) =>
+  API2.post("/Guest/regPharma", pharmacist);
+
+// export const addMed = (medicine) =>
+//   API2.post("/Pharmacist/addMedicine", medicine)
+//     .then((response) => {
+//       console.log("API response:", response);
+
+//       if (!response.ok) {
+//         throw new Error(`Failed to add medicine: ${response.statusText}`);
+//       }
+
+//       return response.json();
+//     })
+//     .catch((error) => {
+//       console.error("Error adding medicine:", error);
+//       throw error;
+//     });
+
 export const addMed = (medicine) =>
-  API.post("/Pharmacist/addMedicine", medicine)
+  API2.post("/Pharmacist/addMedicine", medicine)
     .then((response) => {
-      console.log("API response:", response); 
+      console.log("API response:", response);
 
       if (!response.ok) {
         throw new Error(`Failed to add medicine: ${response.statusText}`);
@@ -64,34 +121,7 @@ export const addMed = (medicine) =>
     })
     .catch((error) => {
       console.error("Error adding medicine:", error);
-      throw error; 
+      throw error;
     });
-
-
-export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
- export const getMedicinesByUse = (use) => API.get("/Patient/getMedicinesByUse", { params: { use } });
- export const wallet = (patientId) => API.post(`/patient/payFromWallet/${ patientId }`);
-
- export const editMedPrice = async (id, details, price) => {
-  try {
-    const response = await API.put(`/Pharmacist/updateMed/${id}`, { details, price });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response?.data?.error || 'Failed to edit medicine');
-  }
-};
-
-
-
-export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
-export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
-
-export const viewPatients = () => API.get("/Patient/getPatients");
-export const getPatient = (id) => API.get(`/Patient/getPatient/${id}`);
-export const placeOrder = (patientId,deliveryAddress,paymentMethod,) => API.post(`Patient/checkout/${ patientId }`,{ deliveryAddress, paymentMethod });
-export const payment = (id, items, total) => API.post(`/payments/create-checkout-session/${ id }`, { total :total ,items: items });
-
-
-
 
 export default API;
