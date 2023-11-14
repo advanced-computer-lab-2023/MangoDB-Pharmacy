@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const Pharmacist = require('../models/pharmacistModel')
+const dotenv = require("dotenv").config();
 
 const protectPharmacist = asyncHandler( async (req,res, next) => {
     let token

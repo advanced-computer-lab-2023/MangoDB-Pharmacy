@@ -65,11 +65,11 @@ const login = asyncHandler(async (req, res) => {
       res.status(400).json({ message: 'Password is incorrect' })
 
   const token = genToken(user._id);
-  res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
 
   res.status(200).json({
       _id: user.id,
       username: user.username,
+	  type :user.userType,
       token: token,
   })
 })
@@ -93,20 +93,6 @@ const registerAsPatient = asyncHandler(async (req, res) => {
 const regPharmaView = (req, res) => {
   res.status(200).render("pharmacistRegistration");
 };
-// const regPharma = (req, res) => {
-//   // create a new Admin instance
-//   const body = { ...req.body, userType: "pharmacist" };
-//   const pharma = new Pharma(body);
 
-//   pharma
-//     .save()
-//     .then((result) => {
-//       console.log("NEW PHARMACIST ADDED:", result);
-//       res.status(201).json({ message: req.body });
-//     })
-//     .catch((err) => console.log(err));
 
-//   //console.log(patient.username,  patient.password)
-// };
-
-module.exports = { registerAsPatient, registerAsPharmacist, regPatientView,regPharmaView };
+module.exports = { registerAsPatient, registerAsPharmacist, regPatientView,regPharmaView,login };

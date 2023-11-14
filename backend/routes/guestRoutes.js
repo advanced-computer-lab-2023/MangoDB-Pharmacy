@@ -11,5 +11,6 @@ router.post("/regPatient", guestController.registerAsPatient);
 
 router.get("/regPharma", guestController.regPharmaView);
 router.post("/regPharma", guestController.registerAsPharmacist);
+router.post("/login", guestController.login);
 
 module.exports = router;
