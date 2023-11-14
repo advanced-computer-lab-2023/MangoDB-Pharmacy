@@ -30,7 +30,7 @@ const Checkout = () => {
 
   const fetchData = async () => {
     try {
-      const patientId = '653834d73faf860a7aa9b6d0';
+      const patientId = '65538d9e4617ffa5e6fd6b7a';
 
       const fetchedCartItems = await viewCartItems(patientId);
       setCartItems(fetchedCartItems.data);
@@ -55,7 +55,7 @@ const Checkout = () => {
         return;
       }
 
-      const patientId = '653834d73faf860a7aa9b6d0';
+      const patientId = '65538d9e4617ffa5e6fd6b7a';
       await addAddress(patientId, newAddress);
       setNewAddress('');
       fetchData();
