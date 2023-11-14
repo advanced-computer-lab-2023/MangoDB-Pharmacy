@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   TextField,
@@ -7,6 +7,7 @@ import {
   InputLabel,
   Grid,
   Paper,
+  Typography,
   Input,
 } from "@mui/material";
 import { pharmacistReg as PharmacistRegService } from "../services/api";
