@@ -10,7 +10,6 @@ const Home = () => {
       <button onClick={() => navigate("/admin")}>Admin Dashboard</button>
       <button onClick={() => navigate("/admin/login")}>Login admin</button>
       <button onClick={() => navigate("/login")}>Login user</button>
-      <button onClick={() => navigate("/dashboard")}>Dashboard</button>
       <button onClick={() => navigate("/patientReg")}>
         Register as a patient
       </button>

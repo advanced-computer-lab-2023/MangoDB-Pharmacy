@@ -71,7 +71,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 
 const addMedicineToCart = async (req, res) => {
 	const { medicineName, quantity } = req.body;
-	const patientId = req.params.id;
+	const patientId = "65538d9e4617ffa5e6fd6b7a";
   console.log(patientId)
 	try {
 		const patient = await Patient.findById(patientId);
@@ -207,7 +207,7 @@ const addAddress = async (req, res) => {
 
 const viewListOfOrders = async (req, res) => {
 	// const {patientId} = req.body
-	const patientId = "653834d73faf860a7aa9b6d0";
+	const patientId = "65538d9e4617ffa5e6fd6b7a";
 	// console.log(patientId)
 
 	try {
