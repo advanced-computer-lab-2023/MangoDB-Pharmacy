@@ -3,8 +3,10 @@ import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem, F
 import { Link } from 'react-router-dom';
 import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
 import { mainListItems } from '../components/ListItems';
+import { useParams } from 'react-router-dom';
 
 const ViewMeds = () => {
+  const { id } = useParams();
   const [meds, setMeds] = useState([]);
   const [medicineUses, setMedicineUses] = useState([]);
   const [selectedUse, setSelectedUse] = useState("");

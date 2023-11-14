@@ -40,6 +40,7 @@ const registerUser = async (req, res, model, userType, fields) => {
 			email: user.email,
 			firstName: user.firstName,
 			lastName: user.lastName,
+			type:user.userType,
 			token: genToken(user._id),
 		});
 	} catch (error) {

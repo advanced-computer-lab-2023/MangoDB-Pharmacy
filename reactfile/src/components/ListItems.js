@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import { useParams } from 'react-router-dom';
 
 import TodayIcon from '@mui/icons-material/Today';
 import PeopleIcon from '@mui/icons-material/People';
@@ -15,6 +16,7 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 
 export const mainListItems = (
   <React.Fragment>
@@ -56,7 +58,7 @@ export const mainListItems = (
       <ListItemText primary="Wallet" />
     </ListItemButton>
 
-    <ListItemButton component={Link} to="/viewMeds">
+    <ListItemButton component={Link} to={"/viewMeds"}>
     <ListItemIcon>
     <LocalPharmacyIcon />
   </ListItemIcon>

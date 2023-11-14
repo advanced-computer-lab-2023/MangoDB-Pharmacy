@@ -46,7 +46,7 @@ const PatientReg = () => {
 
   const handleSuccessClose = () => {
     setSuccessOpen(false);
-    navigate("/Home"); // Redirect to the login page after successful registration
+    navigate("/"); // Redirect to the login page after successful registration
   };
 
   const handleErrorClose = () => {
