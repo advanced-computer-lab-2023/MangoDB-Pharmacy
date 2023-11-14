@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     },
     userType: {
         type: String,
-        enum: ['patient', 'pharmacist'],
+        enum: ['patient', 'Pharmacist'],
         required: true
     },
     accountStatus: {
