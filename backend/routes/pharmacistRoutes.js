@@ -43,6 +43,6 @@ router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
-router.post("/getPharmacist", pharmacistController.getPharmacist);
+router.get('/getPharmacist/:id', pharmacistController.getPharmacist);
 
 module.exports = router;

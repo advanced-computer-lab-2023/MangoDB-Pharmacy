@@ -38,6 +38,6 @@ router.get("/getAllMedicineUses", patientController.getAllMedicineUses);
 router.post("/payFromWallet/:patientId", patientController.payFromWallet);
 router.post("/createWallet", patientController.createWallet);
 
-router.post("/getPatient", patientController.getPatient);
+router.get('/getPatient/:id', patientController.getPatient);
 
 module.exports = router;

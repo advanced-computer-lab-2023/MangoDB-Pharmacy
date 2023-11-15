@@ -438,19 +438,16 @@ const viewPharmacists = asyncHandler(async (req, res) => {
 });
 
 const getPharmacist = asyncHandler(async (req, res) => {
-	const email = req.body.email;
 	try {
-		const pharmacist = await Pharmacist.findOne({ email: email });
-
-		if (!pharmacist) {
-			res.status(404).json({ message: "Pharmacist not found" });
-		} else {
-			res.status(200).json(pharmacist);
-		}
+	  const id = req.params.id;
+	  const pharmacist = await Pharmacist.findById(id)
+  
+	  res.status(200).json(pharmacist);
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+	  res.status(500).json({ message: "Server error" });
 	}
-});
+  
+  });
 
 module.exports = {
 	addMedicine,

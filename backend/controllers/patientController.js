@@ -71,7 +71,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 
 const addMedicineToCart = async (req, res) => {
 	const { medicineName, quantity } = req.body;
-	const patientId = "653834d73faf860a7aa9b6d0";
+	const patientId = "65538d9e4617ffa5e6fd6b7a";
 	try {
 		const patient = await Patient.findById(patientId);
 
@@ -206,7 +206,7 @@ const addAddress = async (req, res) => {
 
 const viewListOfOrders = async (req, res) => {
 	// const {patientId} = req.body
-	const patientId = "653834d73faf860a7aa9b6d0";
+	const patientId = "65538d9e4617ffa5e6fd6b7a";
 	// console.log(patientId)
 
 	try {
@@ -321,19 +321,16 @@ const getPatients = asyncHandler(async (req, res) => {
 });
 
 const getPatient = asyncHandler(async (req, res) => {
-	const email = req.body.email;
 	try {
-		const patient = await Patient.findOne({ email: email });
-
-		if (!patient) {
-			res.status(404).json({ error: "Patient not found" });
-		} else {
-			res.status(200).json(patient);
-		}
+	  const id = req.params.id;
+	  const patient = await Patient.findById(id)
+  
+	  res.status(200).json(patient);
 	} catch (error) {
-		res.status(500).json({ message: "Server error" });
+	  res.status(500).json({ message: "Server error" });
 	}
-});
+  
+  });
 
 const viewCartItems = async (req, res) => {
 	const patientId = req.params.id;

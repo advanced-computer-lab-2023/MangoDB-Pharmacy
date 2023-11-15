@@ -7,7 +7,7 @@ const router = express.Router();
 const { protectAdmin } = require("../middleware/adminMiddleware");
 
 router.get("/", (req, res) => {
-  res.render("../views/adminHome");
+	res.render("../views/adminHome");
 });
 
 router.get("/query", adminController.searchFilter);
@@ -21,17 +21,14 @@ router.post("/addPharma", adminController.add_pharmacist);
 router.post("/login", adminController.loginAdmin);
 router.post("/pharmacist-approval/:id", adminController.pharmacistApproval);
 router.post("/pharmacist-rejection/:id", adminController.pharmacistRejection);
-router.post("/verify-otp", protectAdmin, adminController.verifyOTP);
-router.post("/reset-password", protectAdmin, adminController.resetPassword);
+router.post("/verify-otp", adminController.verifyOTP);
+router.post("/reset-password", adminController.resetPassword);
 router.delete("/deletePharma/:id", adminController.deletePharmacist);
 router.delete("/deletePatient/:id", adminController.deletePatient);
 router.get("/getPendingPharma", adminController.getPendingPharma);
 router.get("/:id", adminController.viewPharmacistInfo);
-router.get("/request-otp", protectAdmin, adminController.sendOTP);
+router.get("/my-info", adminController.getMyInfo);
 
-// router.get('/', (req, res) => {
-//     res.status(200).render('Admin/Home');
-//   });
-//router.get('/:name' , adminController.searchMedicineByName)
+router.post("/request-otp", adminController.sendOTP);
 
 module.exports = router;
