@@ -7,6 +7,7 @@ import {
   InputLabel,
   Grid,
   Paper,
+  Typography,
   Input,
 } from "@mui/material";
 import { pharmacistReg as PharmacistRegService } from "../services/api";
@@ -28,7 +29,7 @@ const PharmacistReg = () => {
   const [documents, setDocuments] = useState();
   //Other
   const [isPending, setIsPending] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,7 +53,7 @@ const PharmacistReg = () => {
     PharmacistRegService(formData)
       .then(() => {
         setIsPending(false);
-        history.push("/");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error adding Pharmacist:", error);

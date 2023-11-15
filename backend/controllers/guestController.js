@@ -34,6 +34,17 @@ const registerUser = async (req, res, model, userType, fields) => {
       userType: userType,
       accountStatus: userType === "patient" ? "active" : "inactive",
     });
+    if (req.files && user.userType === "pharmacist") {
+      for (const file of req.files) {
+        const url = `http://localhost:4000/uploads/${file.originalname}`;
+        const document = {
+          name: file.originalname,
+          file: url,
+        };
+        user.documents.push(document);
+      }
+      await user.save();
+    }
     return res.status(201).json({
       _id: user._id,
       username: user.username,
@@ -48,7 +59,7 @@ const registerUser = async (req, res, model, userType, fields) => {
 };
 
 const registerAsPharmacist = asyncHandler(async (req, res) => {
-  await registerUser(req, res, Pharma, "Pharmacist", [
+  await registerUser(req, res, Pharma, "pharmacist", [
     "address",
     "rate",
     "affiliation",
@@ -104,17 +115,6 @@ const regPharmaView = (req, res) => {
 //   const body = { ...req.body, userType: "pharmacist" };
 //   const pharma = new Pharma(body);
 
-if (req.files) {
-  for (const file of req.files) {
-    const url = `http://localhost:4000/uploads/${file.originalname}`;
-    const document = {
-      name: file.originalname,
-      file: url,
-    };
-    pharma.documents.push(document);
-  }
-  //await user.save();
-}
 //   pharma
 //     .save()
 //     .then((result) => {
