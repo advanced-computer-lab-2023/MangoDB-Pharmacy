@@ -6,49 +6,44 @@ const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
-const Wallet = require('../models/walletModel')
+const Wallet = require("../models/walletModel");
 
-const createWallet =(async (req, res) => {
+const createWallet = async (req, res) => {
   try {
-    const {user,balance} = req.body;
+    const { user, balance } = req.body;
     const wallet = new Wallet({
       user,
-      balance
-    
+      balance,
     });
-    const savedwallet= await wallet.save();
+    const savedwallet = await wallet.save();
 
-console.log (savedwallet)
+    console.log(savedwallet);
     res.status(200).json(savedwallet);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-
-});
+};
 //view a list of all available medicine
 const viewMed = asyncHandler(async (req, res) => {
   try {
     const medicines = await Medicine.find();
-    medicines.forEach(medicine => {
-    });
+    medicines.forEach((medicine) => {});
 
     res.status(200).json(medicines);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-
 });
 
 const getMed = asyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
-    const medicine = await Medicine.findById(id)
-    
+    const medicine = await Medicine.findById(id);
+
     res.status(200).json(medicine);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-
 });
 const searchFilter = asyncHandler(async (req, res) => {
   try {
@@ -74,11 +69,10 @@ const searchFilter = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 const addMedicineToCart = async (req, res) => {
   const { medicineName, quantity } = req.body;
-  const patientId = '653834d73faf860a7aa9b6d0';
+  const patientId = "65538d9e4617ffa5e6fd6b7a";
+  console.log(patientId);
   try {
     const patient = await Patient.findById(patientId);
 
@@ -94,15 +88,16 @@ const addMedicineToCart = async (req, res) => {
     if (!medicine) {
       return res.status(404).json({ error: "Medicine not found" });
     }
-    if (medicine.prescribed == "required"){
+    if (medicine.prescribed == "required") {
       return res.status(400).json({
-        error: "This medicine requires a prescription"})
+        error: "This medicine requires a prescription",
+      });
     }
-    console.log (medicine.prescribed)
+    console.log(medicine.prescribed);
 
     if (cartItem) {
       const totalQuantity = cartItem.quantity + quantity;
-   
+
       if (totalQuantity > medicine.quantity) {
         return res.status(400).json({
           error: `Quantity not available. Available quantity for ${medicineName}: ${
@@ -142,9 +137,9 @@ const addMedicineToCart = async (req, res) => {
 
 const changeCartItemAmount = async (req, res) => {
   const { medicineName, quantity } = req.body;
-  
+
   const patientId = req.params.id;
-  
+
   try {
     const patient = await Patient.findById(patientId);
 
@@ -212,7 +207,7 @@ const addAddress = async (req, res) => {
 
 const viewListOfOrders = async (req, res) => {
   // const {patientId} = req.body
-  const patientId = '653834d73faf860a7aa9b6d0';
+  const patientId = "65538d9e4617ffa5e6fd6b7a";
   // console.log(patientId)
 
   try {
@@ -237,11 +232,10 @@ const viewOrderDetails = async (req, res) => {
 
   try {
     const order = await Order.findById(orderId);
-     console.log(order)
+    console.log(order);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
-
 
     return res.status(200).json(order);
   } catch (error) {
@@ -329,13 +323,12 @@ const getPatients = asyncHandler(async (req, res) => {
 const getPatient = asyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
-    const patient = await Patient.findById(id)
-    
+    const patient = await Patient.findById(id);
+
     res.status(200).json(patient);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
-
 });
 
 const viewCartItems = async (req, res) => {
@@ -356,7 +349,7 @@ const viewCartItems = async (req, res) => {
 
       if (medicine) {
         const item = {
-          id : medicine._id,
+          id: medicine._id,
           name: medicine.name,
           picture: medicine.picture,
           price: cartItem.price,
@@ -374,7 +367,7 @@ const viewCartItems = async (req, res) => {
 };
 
 const removeCartItems = async (req, res) => {
-  console.log('Received request with patient ID:', req.params.id);
+  console.log("Received request with patient ID:", req.params.id);
   const { medicinename } = req.body;
   const patientId = req.params.id;
   try {
@@ -422,14 +415,14 @@ const checkout = async (req, res) => {
       orderdetails.push(item);
       await medicine.save();
     }
-   
-  if (paymentMethod == "wallet") {
-    const paymentResponse = await payFromWallet(patientId, totalPrice);
-    
-    if (!paymentResponse.success) {
-      return res.status(400).json({ error: paymentResponse.message });
+
+    if (paymentMethod == "wallet") {
+      const paymentResponse = await payFromWallet(patientId, totalPrice);
+
+      if (!paymentResponse.success) {
+        return res.status(400).json({ error: paymentResponse.message });
+      }
     }
-  }
     const dateOfOrder = new Date();
     const dateOfDelivery = new Date(dateOfOrder);
     dateOfDelivery.setDate(dateOfOrder.getDate() + 2);
@@ -471,7 +464,7 @@ const loginPatient = asyncHandler(async (req, res) => {
   // Check for username
   const patient = await Patient.findOne({ username });
 
-console.log (patient)
+  console.log(patient);
   if (patient && (await bcrypt.compare(password, patient.password))) {
     res.status(200).json({
       message: "Successful Login",
@@ -579,21 +572,20 @@ const generateToken = (id) => {
   });
 };
 
-
 const addressesByPatientId = async (req, res) => {
   const patientId = req.params.id;
 
   try {
-      const patient = await Patient.findById(patientId);
+    const patient = await Patient.findById(patientId);
 
-      if (!patient) {
-          return res.status(404).json({ error: 'Patient not found' });
-      }
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
 
-      const addresses = patient.addresses; 
-      res.status(200).json({ addresses });
+    const addresses = patient.addresses;
+    res.status(200).json({ addresses });
   } catch (error) {
-      res.status(500).json({ error: 'Error' });
+    res.status(500).json({ error: "Error" });
   }
 };
 
@@ -607,64 +599,69 @@ const getMeds = asyncHandler(async (req, res) => {
   }
 });
 
-
 const getMedicinesByUse = async (req, res) => {
   const { use } = req.query;
   try {
     if (!use) {
-      return res.status(400).json({ error: 'Use parameter is required' });
+      return res.status(400).json({ error: "Use parameter is required" });
     }
 
-    const medicines = await Medicine.find({ use: { $regex: use, $options: 'i' } });
+    const medicines = await Medicine.find({
+      use: { $regex: use, $options: "i" },
+    });
 
     if (!medicines || medicines.length === 0) {
-      return res.status(404).json({ error: 'Medicines not found for the specified use' });
+      return res
+        .status(404)
+        .json({ error: "Medicines not found for the specified use" });
     }
 
     res.status(200).json({ medicines });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const getAllMedicineUses = async (req, res) => {
   try {
-    const uniqueUses = await Medicine.distinct('use');
-    console.log(uniqueUses)
+    const uniqueUses = await Medicine.distinct("use");
+    console.log(uniqueUses);
     res.status(200).json(uniqueUses);
-    
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
-
 };
-
 
 const payFromWallet = async (patientId, paymentAmount) => {
   try {
     if (!patientId || !paymentAmount) {
-      return { success: false, message: 'Patient ID and payment amount are required' };
+      return {
+        success: false,
+        message: "Patient ID and payment amount are required",
+      };
     }
 
     const patient = await Patient.findById(patientId);
     if (!patient) {
-      return { success: false, message: 'Patient not found' };
+      return { success: false, message: "Patient not found" };
     }
 
-    const packageType = patient.healthPackage ? patient.healthPackage.name : null;
+    const packageType = patient.healthPackage
+      ? patient.healthPackage.name
+      : null;
     let medicineDiscount = 0;
 
     if (packageType) {
       switch (packageType) {
-        case 'Silver':
+        case "Silver":
           medicineDiscount = 0.2;
           break;
-        case 'Gold':
+        case "Gold":
           medicineDiscount = 0.3;
           break;
-        case 'Platinum':
+        case "Platinum":
           medicineDiscount = 0.4;
           break;
         default:
@@ -679,11 +676,11 @@ const payFromWallet = async (patientId, paymentAmount) => {
     const wallet = await Wallet.findOne({ user: patientId });
 
     if (!wallet) {
-      return { success: false, message: 'Wallet not found' };
+      return { success: false, message: "Wallet not found" };
     }
 
     if (wallet.balance < paymentAmount) {
-      return { success: false, message: 'Insufficient funds in the wallet' };
+      return { success: false, message: "Insufficient funds in the wallet" };
     }
 
     // Deduct the payment amount from the wallet balance
@@ -691,28 +688,27 @@ const payFromWallet = async (patientId, paymentAmount) => {
 
     // Record the transaction in the wallet
     wallet.transactions.push({
-      type: 'debit',
+      type: "debit",
       amount: paymentAmount,
       date: new Date(),
     });
 
     // Save the updated wallet
     await wallet.save();
-    
-    return { success: true, message: 'Payment successful' };
 
+    return { success: true, message: "Payment successful" };
   } catch (error) {
     return { success: false, message: error.message };
   }
 };
-
 
 module.exports = {
   viewMed,
   searchFilter,
   addMedicineToCart,
   createPatient,
-  getPatients,getPatient,
+  getPatients,
+  getPatient,
   changeCartItemAmount,
   addAddress,
   viewListOfOrders,
@@ -724,10 +720,12 @@ module.exports = {
   loginPatient,
   sendOTP,
   resetPassword,
-  verifyOTP,getMed,
+  verifyOTP,
+  getMed,
   addressesByPatientId,
   getMeds,
   getMedicinesByUse,
   getAllMedicineUses,
-  payFromWallet,createWallet
+  payFromWallet,
+  createWallet,
 };
