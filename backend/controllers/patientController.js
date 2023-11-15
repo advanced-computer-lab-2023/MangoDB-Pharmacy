@@ -331,6 +331,20 @@ const getPatient = asyncHandler(async (req, res) => {
 	}
   
   });
+  const get_Patient = asyncHandler(async (req, res) => {
+	const email = req.body.email;
+	try {
+		const patient = await Patient.findOne({ email: email });
+
+		if (!patient) {
+			res.status(404).json({ error: "Patient not found" });
+		} else {
+			res.status(200).json(patient);
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Server error" });
+	}
+});
 
 const viewCartItems = async (req, res) => {
 	const patientId = req.params.id;
@@ -728,5 +742,5 @@ module.exports = {
 	getMedicinesByUse,
 	getAllMedicineUses,
 	payFromWallet,
-	createWallet,
+	createWallet,get_Patient
 };

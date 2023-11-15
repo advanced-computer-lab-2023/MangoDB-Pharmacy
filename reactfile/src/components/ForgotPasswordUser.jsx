@@ -64,7 +64,7 @@ export default function ForgotPasswordUser() {
 	const checkIfDoctor = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:4000/Pharmacist/getPharmacist",
+				"http://localhost:4000/Pharmacist/get_Pharmacist",
 				formDataRequest
 			);
 
@@ -83,7 +83,7 @@ export default function ForgotPasswordUser() {
 	const checkIfPatient = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:4000/Patient/getPatient",
+				"http://localhost:4000/Patient/get_Patient",
 				formDataRequest
 			);
 
@@ -100,6 +100,7 @@ export default function ForgotPasswordUser() {
 	};
 
 	const handleRequest = async () => {
+		console.log(entity)
 		if (await checkIfDoctor()) {
 			entity = "pharmacist";
 		} else if (await checkIfPatient()) {

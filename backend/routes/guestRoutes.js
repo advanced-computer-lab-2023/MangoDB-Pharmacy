@@ -16,5 +16,6 @@ router.post(
   upload.array("documents"),
   guestController.registerAsPharmacist
 );
+router.post("/login", guestController.login);
 
 module.exports = router;

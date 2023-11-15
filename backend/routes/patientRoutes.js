@@ -39,5 +39,7 @@ router.post("/payFromWallet/:patientId", patientController.payFromWallet);
 router.post("/createWallet", patientController.createWallet);
 
 router.get('/getPatient/:id', patientController.getPatient);
+router.post('/get_Patient', patientController.get_Patient);
+
 
 module.exports = router;

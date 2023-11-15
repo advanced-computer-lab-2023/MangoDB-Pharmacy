@@ -34,7 +34,7 @@ const registerUser = async (req, res, model, userType, fields) => {
       userType: userType,
       accountStatus: userType === "patient" ? "active" : "inactive",
     });
-    if (req.files && user.userType === "pharmacist") {
+    if (req.files && user.userType === "Pharmacist") {
       for (const file of req.files) {
         const url = `http://localhost:4000/uploads/${file.originalname}`;
         const document = {
@@ -59,7 +59,7 @@ const registerUser = async (req, res, model, userType, fields) => {
 };
 
 const registerAsPharmacist = asyncHandler(async (req, res) => {
-  await registerUser(req, res, Pharma, "pharmacist", [
+  await registerUser(req, res, Pharma, "Pharmacist", [
     "address",
     "rate",
     "affiliation",
@@ -78,11 +78,11 @@ const login = asyncHandler(async (req, res) => {
     res.status(400).json({ message: "Password is incorrect" });
 
   const token = genToken(user._id);
-  res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
 
   res.status(200).json({
     _id: user.id,
     username: user.username,
+    type:user.userType,
     token: token,
   });
 });
@@ -130,5 +130,5 @@ module.exports = {
   registerAsPatient,
   registerAsPharmacist,
   regPatientView,
-  regPharmaView,
+  regPharmaView,login
 };
