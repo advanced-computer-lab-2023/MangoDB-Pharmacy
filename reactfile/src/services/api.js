@@ -112,7 +112,6 @@ export const addMed = (medicine) =>
   API2.post("/Pharmacist/addMedicine", medicine)
     .then((response) => {
       console.log("API response:", response);
-
       if (!response.ok) {
         throw new Error(`Failed to add medicine: ${response.statusText}`);
       }
@@ -123,5 +122,7 @@ export const addMed = (medicine) =>
       console.error("Error adding medicine:", error);
       throw error;
     });
+    // export const get_Patient = (email) => API.post("/Patient/get_Patient",{email});
+
 
 export default API;

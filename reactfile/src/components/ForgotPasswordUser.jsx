@@ -64,7 +64,7 @@ export default function ForgotPasswordUser() {
 	const checkIfDoctor = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:4000/doctor/get_doctor",
+				"http://localhost:4000/Pharmacist/getPharmacist",
 				formDataRequest
 			);
 
@@ -83,7 +83,7 @@ export default function ForgotPasswordUser() {
 	const checkIfPatient = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:4000/patient/get_patient",
+				"http://localhost:4000/Patient/getPatient",
 				formDataRequest
 			);
 
@@ -101,7 +101,7 @@ export default function ForgotPasswordUser() {
 
 	const handleRequest = async () => {
 		if (await checkIfDoctor()) {
-			entity = "doctor";
+			entity = "pharmacist";
 		} else if (await checkIfPatient()) {
 			entity = "patient";
 		} else {
@@ -112,9 +112,9 @@ export default function ForgotPasswordUser() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				entity === "doctor"
-					? `http://localhost:4000/doctor/request-otp`
-					: `http://localhost:4000/patient/request-otp`,
+				entity === "pharmacist"
+					? `http://localhost:4000/Pharmacist/request-otp`
+					: `http://localhost:4000/Patient/request-otp`,
 				formDataRequest
 			);
 
@@ -136,9 +136,9 @@ export default function ForgotPasswordUser() {
 			setIsLoading(true);
 			console.log("Entity Verify: " + entity);
 			const response = await axios.post(
-				entity === "doctor"
-					? `http://localhost:4000/doctor/verify-otp`
-					: `http://localhost:4000/patient/verify-otp`,
+				entity === "pharmacist"
+					? `http://localhost:4000/Pharmacist/verify-otp`
+					: `http://localhost:4000/Patient/verify-otp`,
 				{
 					email: formDataRequest.email,
 					otp: formDataVerify.otp,
@@ -161,9 +161,9 @@ export default function ForgotPasswordUser() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				entity === "doctor"
-					? `http://localhost:4000/doctor/reset-password`
-					: `http://localhost:4000/patient/reset-password`,
+				entity === "pharmacist"
+					? `http://localhost:4000/Pharmacist/reset-password`
+					: `http://localhost:4000/Patient/reset-password`,
 				{
 					email: formDataRequest.email,
 					password: formDataReset.password,
