@@ -54,15 +54,15 @@ function App() {
 
           <Route path='/addMed' element={<AddMed />} />
 
-          <Route path='/cart/:id' element={<ViewCartItems />} />
+          <Route path='/cart' element={<ViewCartItems />} />
 
           <Route path='/viewPharmacists' element={<ViewPharmacists />} />
 
           <Route path='/viewPatients' element={<ViewPatients />} />
 
-          <Route path='/pharmacistDetails/:id' element={<PharmacistDetails />} />
+          <Route path='/pharmacistDetails' element={<PharmacistDetails />} />
           
-          <Route path="/patientDetails/:id" element={<PatientDetails />} />
+          <Route path="/patientDetails" element={<PatientDetails />} />
 
           <Route path="/medicinePharma/:id" element={<GetMedPharma />} />
 
@@ -72,7 +72,7 @@ function App() {
 
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 
-          <Route path="/checkout/:id" element={<Checkout />} />
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* ===================Admin Routes=================== */}
 

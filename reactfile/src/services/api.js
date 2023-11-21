@@ -23,28 +23,28 @@ export const patientReg = (patient) =>
 // export const pharmacistReg = (pharmacist) =>
 //   API.post("/Guest/regPharma", pharmacist);
 
-export const viewCartItems = (id) => API.get(`/Patient/ViewCartItems/${id}`);
-export const changeCartItemAmount = async (id, medicineName, quantity) => {
-  const response = await API.post(`/Patient/changeCartItemAmount/${id}`, {
+export const viewCartItems = () => API.get(`/Patient/ViewCartItems/`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const changeCartItemAmount = async ( medicineName, quantity) => {
+  const response = await API.post(`/Patient/changeCartItemAmount`, {
     medicineName,
     quantity,
-  });
+  },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   return response.data;
 };
-export const removeCartItems = async (id, medicineName) => {
-  await API.delete(`/Patient/removecartItems/${id}`, {
+export const removeCartItems = async ( medicineName) => {
+  await API.delete(`/Patient/removecartItems`, {
     data: { medicinename: medicineName },
-  });
+  },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 };
-export const addressesByPatientId = async (id) => {
-  const response = await API.get(`/Patient/addressesByPatientId/${id}`);
+export const addressesByPatientId = async () => {
+  const response = await API.get(`/Patient/addressesByPatientId`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   return response.data.addresses;
 };
-export const addAddress = async (patientId, address) => {
+export const addAddress = async ( address) => {
   try {
-    const response = await API.post(`/Patient/addAddress/${patientId}`, {
+    const response = await API.post(`/Patient/addAddress`, {
       address,
-    });
+    },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.error || "Failed to add address");
@@ -70,17 +70,17 @@ export const editMedPrice = async (id, details, price) => {
 };
 
 export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
-export const getPharmacist = (id) => API.get(`/Pharmacist/getPharmacist/${id}`);
+export const getPharmacist = () => API.get(`/Pharmacist/getPharmacist`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const viewPatients = () => API.get("/Patient/getPatients");
-export const getPatient = (id) => API.get(`/Patient/getPatient/${id}`);
-export const placeOrder = (patientId, deliveryAddress, paymentMethod) =>
-  API.post(`Patient/checkout/${patientId}`, { deliveryAddress, paymentMethod });
-export const payment = (id, items, total) =>
-  API.post(`/payments/create-checkout-session/${id}`, {
+export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const placeOrder = ( deliveryAddress, paymentMethod) =>
+  API.post(`Patient/checkout`, { deliveryAddress, paymentMethod },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const payment = ( items, total) =>
+  API.post(`/payments/create-checkout-session`, {
     total: total,
     items: items,
-  });
+  },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 const API2 = axios.create({
   baseURL: `http://localhost:4000`,

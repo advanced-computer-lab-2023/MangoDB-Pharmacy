@@ -15,7 +15,7 @@ import { mainListItems } from '../components/ListItems';
 import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
-  const { id } = useParams(); 
+  //const { id } = useParams(); 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -30,12 +30,12 @@ const Checkout = () => {
 
   const fetchData = async () => {
     try {
-      const patientId = '653834d73faf860a7aa9b6d0';
+      //const patientId = '653834d73faf860a7aa9b6d0';
 
-      const fetchedCartItems = await viewCartItems(patientId);
+      const fetchedCartItems = await viewCartItems();
       setCartItems(fetchedCartItems.data);
       console.log ("FETCHED DATA" ,fetchedCartItems.data )
-      const fetchedAddresses = await addressesByPatientId(patientId);
+      const fetchedAddresses = await addressesByPatientId();
       setAddresses(fetchedAddresses);
 
       setError(null);
@@ -45,8 +45,8 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    fetchData(id);
-  }, [id]);
+    fetchData();
+  }, []);
 
   const handleAddAddress = async () => {
     try {
@@ -55,8 +55,8 @@ const Checkout = () => {
         return;
       }
 
-      const patientId = '653834d73faf860a7aa9b6d0';
-      await addAddress(patientId, newAddress);
+     //const patientId = '653834d73faf860a7aa9b6d0';
+      await addAddress( newAddress);
       setNewAddress('');
       fetchData();
       setShowAddAddress(false);
@@ -88,18 +88,18 @@ const Checkout = () => {
           }));
           console.log (items)
       const total =calculateTotalPrice()
-          const response = await payment( id,items, total);
+          const response = await payment( items, total);
           if (response.status === 200) {
             const { url } = response.data;
         console.log('Checkout Session:', response.data);
         window.location = url;
-            const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+            const orderId = await placeOrder( selectedAddress, paymentMethod);
             console.log('Order placed successfully! Order ID:', orderId);
           } else {
             console.error('Visa/Mastercard payment failed');
           }
         } else {
-          const orderId = await placeOrder(id, selectedAddress, paymentMethod);
+          const orderId = await placeOrder( selectedAddress, paymentMethod);
           console.log('Order placed successfully! Order ID:', orderId);
           if (paymentMethod === 'cash-on-delivery' || paymentMethod === 'wallet') {
             setShowSuccessMessage(true);

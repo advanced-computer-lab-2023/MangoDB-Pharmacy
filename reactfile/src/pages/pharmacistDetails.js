@@ -5,7 +5,7 @@ import { Typography, Paper, Grid } from "@mui/material";
 import { AdminListItems } from '../components/ListItemsAdmin';
 
 const PharmacistDetails = () => {
-  const { id } = useParams();
+  //const { id } = useParams();
   const [pharmacist, setPharmacist] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ const PharmacistDetails = () => {
   useEffect(() => {
     const fetchPharmacistDetails = async () => {
       try {
-        const response = await getPharmacist(id);
+        const response = await getPharmacist();
         setPharmacist(response.data);
         setLoading(false);
         setError(null);
@@ -25,7 +25,7 @@ const PharmacistDetails = () => {
     };
 
     fetchPharmacistDetails();
-  }, [id]);
+  }, []);
 
   return (
     <Grid container>

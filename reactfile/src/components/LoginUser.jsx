@@ -50,17 +50,19 @@ export default function LoginUser() {
 			setIsLoading(true);
 			const response = await axios.post(
 				`http://localhost:4000/login`,
-				formData
+				formData.username,formData.password
 			);
+
+			console.log(formData.username);
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token);
 				switch (response.data.type) {
 					case "Patient":
-						navigate("/patientDashboard");
+						navigate("/dashboard");
 						break;
-					case "Doctor":
-						navigate("/doctorDashboard");
+					case "Pharmacist":
+						navigate("/dashboardPharma");
 						break;
 					default:
 						break;
@@ -68,6 +70,7 @@ export default function LoginUser() {
 			}
 		} catch (error) {
 			alert("Invalid Credentials");
+			console.log(error.message);
 		} finally {
 			setIsLoading(false);
 		}

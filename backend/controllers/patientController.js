@@ -71,7 +71,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 
 const addMedicineToCart = async (req, res) => {
 	const { medicineName, quantity } = req.body;
-	const patientId = req.params.id;
+	const patientId = req.user._id;
   console.log(patientId)
 	try {
 		const patient = await Patient.findById(patientId);
@@ -138,7 +138,7 @@ const addMedicineToCart = async (req, res) => {
 const changeCartItemAmount = async (req, res) => {
 	const { medicineName, quantity } = req.body;
 
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 
 	try {
 		const patient = await Patient.findById(patientId);
@@ -185,7 +185,7 @@ const changeCartItemAmount = async (req, res) => {
 
 const addAddress = async (req, res) => {
 	const { address } = req.body;
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 
 	try {
 		const patient = await Patient.findById(patientId);
@@ -207,7 +207,7 @@ const addAddress = async (req, res) => {
 
 const viewListOfOrders = async (req, res) => {
 	// const {patientId} = req.body
-	const patientId = "653834d73faf860a7aa9b6d0";
+	const patientId = req.user._id;
 	// console.log(patientId)
 
 	try {
@@ -338,7 +338,7 @@ const getPatient = asyncHandler(async (req, res) => {
 });
 
 const viewCartItems = async (req, res) => {
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 
 	try {
 		const patient = await Patient.findById(patientId);
@@ -375,7 +375,7 @@ const viewCartItems = async (req, res) => {
 const removeCartItems = async (req, res) => {
 	console.log("Received request with patient ID:", req.params.id);
 	const { medicinename } = req.body;
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 	try {
 		const patient = await Patient.findById(patientId);
 
@@ -399,7 +399,7 @@ const removeCartItems = async (req, res) => {
 
 const checkout = async (req, res) => {
 	const { deliveryAddress, paymentMethod } = req.body;
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 	let totalPrice = 0;
 	try {
 		const patient = await Patient.findById(patientId);
@@ -579,7 +579,7 @@ const generateToken = (id) => {
 };
 
 const addressesByPatientId = async (req, res) => {
-	const patientId = req.params.id;
+	const patientId = req.user._id;
 
 	try {
 		const patient = await Patient.findById(patientId);
@@ -640,8 +640,9 @@ const getAllMedicineUses = async (req, res) => {
 	}
 };
 
-const payFromWallet = async (patientId, paymentAmount) => {
+const payFromWallet = async ( paymentAmount) => {
 	try {
+		const patientId = req.user._id;
 		if (!patientId || !paymentAmount) {
 			return {
 				success: false,

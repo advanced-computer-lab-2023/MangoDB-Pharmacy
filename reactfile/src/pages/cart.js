@@ -6,7 +6,7 @@ import { viewCartItems, changeCartItemAmount, removeCartItems } from '../service
 import { useParams } from 'react-router-dom';
 
 const ViewCartItems = () => {
-  const { id } = useParams();
+ // const { id } = useParams();
 
   const [cartItems, setCartItems] = useState([]);
   const [isPending, setIsPending] = useState(true);
@@ -22,9 +22,9 @@ const ViewCartItems = () => {
   const handleUpdateQuantity = async (medicineName) => {
     try {
       const updatedQuantity = quantityByMedicine[medicineName] || 1;
-      await changeCartItemAmount(id, medicineName, updatedQuantity);
+      await changeCartItemAmount( medicineName, updatedQuantity);
      
-      const response = await viewCartItems(id);
+      const response = await viewCartItems();
       setCartItems(response.data);
       setQuantityByMedicine((prev) => ({ ...prev, [medicineName]: 1 })); 
       setError(null);
@@ -35,9 +35,9 @@ const ViewCartItems = () => {
 
   const handleRemoveItem = async (medicineName) => {
     try {
-      await removeCartItems(id, medicineName);
+      await removeCartItems( medicineName);
       
-      const response = await viewCartItems(id);
+      const response = await viewCartItems();
       setCartItems(response.data);
       setQuantityByMedicine((prev) => ({ ...prev, [medicineName]: 1 })); 
       setError(null);
@@ -47,7 +47,7 @@ const ViewCartItems = () => {
   };
 
   useEffect(() => {
-    viewCartItems(id)
+    viewCartItems()
       .then((response) => {
         setCartItems(response.data);
         setIsPending(false);
@@ -57,7 +57,7 @@ const ViewCartItems = () => {
         setIsPending(false);
         setError(err.message);
       });
-  }, [id, quantityByMedicine]);
+  }, [ quantityByMedicine]);
 
   return (
     <Grid container>
@@ -116,7 +116,7 @@ const ViewCartItems = () => {
           variant="contained"
           color="primary"
           component={Link}
-          to={`/checkout/${id}`} 
+          to={`/checkout/`} 
           style={{ marginTop: '1rem' }}
         >
           Checkout

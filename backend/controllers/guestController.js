@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const JWT_SECRET = 'abc123';
 const registerUser = async (req, res, model, userType, fields) => {
   const data = req.body;
   // for (const field of fields) {
@@ -28,6 +28,7 @@ const registerUser = async (req, res, model, userType, fields) => {
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
+    console.log(hashedPassword);
     const user = await model.create({
       ...data,
       password: hashedPassword,
@@ -69,8 +70,9 @@ const registerAsPharmacist = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
-
+console.log(username);
   const user = await User.findOne({ username });
+  console.log(user);
   if (!user) res.status(404).json({ message: "User not found" });
 
   const correctPassword = await bcrypt.compare(password, user.password);
@@ -88,7 +90,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const genToken = (id) => {
-  return jwt.sign({ id }, "abc123");
+  return jwt.sign({ id }, JWT_SECRET);
 };
 
 const maxAge = 3 * 24 * 60 * 60;

@@ -465,7 +465,7 @@ const viewPharmacists = asyncHandler(async (req, res) => {
 
 const getPharmacist = asyncHandler(async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = req.user._id;
     const pharmacist = await Pharmacist.findById(id);
 
     res.status(200).json(pharmacist);
