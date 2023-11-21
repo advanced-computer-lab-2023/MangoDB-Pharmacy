@@ -49,16 +49,17 @@ export default function LoginUser() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/login`,
-				formData.username,formData.password
+				`http://localhost:4000/Guest/login`,
+				formData
 			);
 
 			console.log(formData.username);
+			console.log(response.data.type);
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token);
 				switch (response.data.type) {
-					case "Patient":
+					case "patient":
 						navigate("/dashboard");
 						break;
 					case "Pharmacist":

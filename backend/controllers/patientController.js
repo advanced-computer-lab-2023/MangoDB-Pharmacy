@@ -72,7 +72,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 const addMedicineToCart = async (req, res) => {
 	const { medicineName, quantity } = req.body;
 	const patientId = req.user._id;
-  console.log(patientId)
+	console.log(patientId);
 	try {
 		const patient = await Patient.findById(patientId);
 
@@ -323,8 +323,8 @@ const getPatients = asyncHandler(async (req, res) => {
 
 const getPatient = asyncHandler(async (req, res) => {
 	try {
-		const patient = await Patient.findById(req.user._id);
-    console.log(patient)
+		const patient = await Patient.findOne({ email: req.body.email });
+		console.log(patient);
 
 		if (!patient) {
 			return res.status(404).json({ error: "No such patient found" });
@@ -490,7 +490,7 @@ const loginPatient = asyncHandler(async (req, res) => {
 // @route GET /patient/request-otp
 // @access Private
 const sendOTP = asyncHandler(async (req, res) => {
-	const patient = req.user;
+	const patient = await Patient.findOne({ email: req.body.email });
 
 	const otp = generateOTP();
 	patient.passwordResetOTP = otp;
@@ -530,7 +530,7 @@ const sendOTP = asyncHandler(async (req, res) => {
 // @access Private
 const verifyOTP = asyncHandler(async (req, res) => {
 	const { otp } = req.body;
-	const patient = req.user;
+	const patient = await Patient.findOne({ email: req.body.email });
 
 	if (otp === patient.passwordResetOTP) {
 		res.status(200).json({ message: "Correct OTP" });
@@ -545,8 +545,8 @@ const verifyOTP = asyncHandler(async (req, res) => {
 // @access Private
 const resetPassword = asyncHandler(async (req, res) => {
 	try {
-		const { newPassword } = req.body;
-		const patient = req.user;
+		const newPassword = req.body.password;
+		const patient = await Patient.findOne({ email: req.body.email });
 
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(newPassword, salt);
@@ -640,7 +640,7 @@ const getAllMedicineUses = async (req, res) => {
 	}
 };
 
-const payFromWallet = async ( paymentAmount) => {
+const payFromWallet = async (paymentAmount) => {
 	try {
 		const patientId = req.user._id;
 		if (!patientId || !paymentAmount) {

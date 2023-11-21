@@ -19,7 +19,7 @@ export const viewOrderDetails = (id) =>
   API.get(`/Patient/viewOrderDetails/${id}`);
 export const cancelOrder = (id) => API.post(`/Patient/cancelOrder/${id}`);
 export const patientReg = (patient) =>
-  API.post("/Patient/createPatient", patient);
+  API.post("/Guest/regPatient", patient);
 // export const pharmacistReg = (pharmacist) =>
 //   API.post("/Guest/regPharma", pharmacist);
 

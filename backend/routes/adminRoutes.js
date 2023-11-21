@@ -21,13 +21,13 @@ router.post("/addPharma", adminController.add_pharmacist);
 router.post("/login", adminController.loginAdmin);
 router.post("/pharmacist-approval/:id", adminController.pharmacistApproval);
 router.post("/pharmacist-rejection/:id", adminController.pharmacistRejection);
-router.post("/verify-otp", protectAdmin, adminController.verifyOTP);
-router.post("/reset-password", protectAdmin, adminController.resetPassword);
+router.post("/verify-otp", adminController.verifyOTP);
+router.post("/reset-password", adminController.resetPassword);
 router.delete("/deletePharma/:id", adminController.deletePharmacist);
 router.delete("/deletePatient/:id", adminController.deletePatient);
 router.get("/getPendingPharma", adminController.getPendingPharma);
 router.get("/:id", adminController.viewPharmacistInfo);
-router.get("/request-otp", protectAdmin, adminController.sendOTP);
+router.post("/request-otp", adminController.sendOTP);
 
 // router.get('/', (req, res) => {
 //     res.status(200).render('Admin/Home');

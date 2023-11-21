@@ -44,5 +44,6 @@ router.put("/updateMed/:id", pharmacistController.editMedPrice);
 
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
 router.post("/getPharmacist", pharmacistController.getPharmacist);
+router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);
 
 module.exports = router;

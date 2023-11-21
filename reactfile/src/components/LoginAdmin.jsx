@@ -49,7 +49,7 @@ export default function LoginAdmin() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/admin/login`,
+				`http://localhost:4000/Admin/login`,
 				formData
 			);
 

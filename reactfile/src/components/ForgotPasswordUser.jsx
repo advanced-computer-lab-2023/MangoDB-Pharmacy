@@ -64,7 +64,7 @@ export default function ForgotPasswordUser() {
 	const checkIfDoctor = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:4000/Pharmacist/getPharmacist",
+				"http://localhost:4000/Pharmacist/getPharmacistByEmail",
 				formDataRequest
 			);
 

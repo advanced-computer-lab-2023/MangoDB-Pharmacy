@@ -12,20 +12,18 @@ router.get("/viewMed", patientController.viewMed);
 router.get("/getMed/:id", patientController.getMed);
 
 router.get('/query', patientController.searchFilter)
-router.get('/request-otp' , protectPatient, patientController.sendOTP)
+router.post('/request-otp', patientController.sendOTP)
 router.post('/addMedicineInCart/:id',protectPatient, patientController.addMedicineToCart)
 router.post('/createPatient', patientController.createPatient);
 router.get('/getPatients',patientController.getPatients);
 router.post('/changeCartItemAmount' ,protectPatient, patientController.changeCartItemAmount)
 router.post('/addAddress',protectPatient , patientController.addAddress)
 router.post('/login' , patientController.loginPatient)
-router.post('/verify-otp' , protectPatient, patientController.verifyOTP)
-router.post('/reset-password' , protectPatient, patientController.resetPassword)
+router.post('/verify-otp', patientController.verifyOTP)
+router.post('/reset-password', patientController.resetPassword)
 router.get('/viewListOfOrders',protectPatient, patientController.viewListOfOrders);
 router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
-
-router.get('/get-patient', protectPatient,patientController.getPatient)
 
 
 router.get('/viewCartItems',protectPatient , patientController.viewCartItems)
@@ -38,7 +36,7 @@ router.get('/getAllMedicineUses',patientController.getAllMedicineUses);
 router.post('/payFromWallet',protectPatient, patientController.payFromWallet);
 router.post('/createWallet', patientController.createWallet);
 
-router.get('/getPatient',protectPatient, patientController.getPatient);
+router.post('/getPatient', patientController.getPatient);
 
 
 module.exports = router

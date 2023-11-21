@@ -488,7 +488,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
 // @route GET /admin/request-otp
 // @access Private
 const sendOTP = asyncHandler(async (req, res) => {
-  const admin = req.user;
+  const admin = await Admin.findOne({email: req.body.email});
 
   const otp = generateOTP();
   admin.passwordResetOTP = otp;
@@ -498,7 +498,7 @@ const sendOTP = asyncHandler(async (req, res) => {
     service: "Gmail",
     auth: {
       user: "omarelzaher93@gmail.com",
-      pass: "",
+      pass: "vtzilhuubkdtphww",
     },
   });
 
@@ -528,7 +528,7 @@ const sendOTP = asyncHandler(async (req, res) => {
 // @access Private
 const verifyOTP = asyncHandler(async (req, res) => {
   const { otp } = req.body;
-  const admin = req.user;
+  const admin = await Admin.findOne({email: req.body.email});
 
   if (otp === admin.passwordResetOTP) {
     res.status(200).json({ message: "Correct OTP" });
@@ -543,8 +543,8 @@ const verifyOTP = asyncHandler(async (req, res) => {
 // @access Private
 const resetPassword = asyncHandler(async (req, res) => {
   try {
-    const { newPassword } = req.body;
-    const admin = req.user;
+    const newPassword = req.body.password;
+    const admin = await Admin.findOne({ email: req.body.email });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
