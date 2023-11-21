@@ -92,12 +92,12 @@ module.exports = {
 };
 
 const getDetails = (req, res) => {
-  const medID = req.params.id;
-  const med = Medicine.findById(medID)
-    .then((result) => {
-      res.status(200).render("Pharmacist/medDetails", { medicine: result });
-    })
-    .catch((err) => console.log(err));
+	const medID = req.params.id;
+	const med = Medicine.findById(medID)
+		.then((result) => {
+			res.status(200).render("Pharmacist/medDetails", { medicine: result });
+		})
+		.catch((err) => console.log(err));
 };
 //view a list of all available medicine
 // const viewMed= asyncHandler( async (req,res) =>{
@@ -116,47 +116,47 @@ const getDetails = (req, res) => {
 //   //res.status(200).json(medicine)
 // })
 const viewMed = asyncHandler(async (req, res) => {
-  try {
-    const medicines = await Medicine.find();
+	try {
+		const medicines = await Medicine.find();
 
-    // Extract the name and mobile and bla bla  from each patient document
-    // const medInfo = medicines.map(medicine => ({
-    //     id: medicine.__id,
-    //     picture: medicine.picture,
-    //     price: medicine.price,
-    //     description: medicine.description,
-    // }));
+		// Extract the name and mobile and bla bla  from each patient document
+		// const medInfo = medicines.map(medicine => ({
+		//     id: medicine.__id,
+		//     picture: medicine.picture,
+		//     price: medicine.price,
+		//     description: medicine.description,
+		// }));
 
-    // res.status(200).json(medInfo);
-    res.status(200).render("Pharmacist/viewMeds", {
-      meds: medicines,
-      title: "Pharmacist | Meds",
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+		// res.status(200).json(medInfo);
+		res.status(200).render("Pharmacist/viewMeds", {
+			meds: medicines,
+			title: "Pharmacist | Meds",
+		});
+	} catch (error) {
+		res.status(500).json({ message: "Server error" });
+	}
 });
 
 const getMedicine = asyncHandler(async (req, res) => {
-  try {
-    const medicines = await Medicine.find();
+	try {
+		const medicines = await Medicine.find();
 
-    // Extract the name and mobile and bla bla  from each patient document
-    // const medInfo = medicines.map(medicine => ({
-    //     id: medicine.__id,
-    //     picture: medicine.picture,
-    //     price: medicine.price,
-    //     description: medicine.description,
-    // }));
+		// Extract the name and mobile and bla bla  from each patient document
+		// const medInfo = medicines.map(medicine => ({
+		//     id: medicine.__id,
+		//     picture: medicine.picture,
+		//     price: medicine.price,
+		//     description: medicine.description,
+		// }));
 
-    // res.status(200).json(medInfo);
-    res.status(200).render("Pharmacist/getMedicine", {
-      meds: medicines,
-      title: "Pharmacist | Meds",
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+		// res.status(200).json(medInfo);
+		res.status(200).render("Pharmacist/getMedicine", {
+			meds: medicines,
+			title: "Pharmacist | Meds",
+		});
+	} catch (error) {
+		res.status(500).json({ message: "Server error" });
+	}
 });
 
 // const editMedPrice =asyncHandler( async (req,res) =>{
@@ -176,33 +176,33 @@ const getMedicine = asyncHandler(async (req, res) => {
 
 //edit medicine price
 const editMedPrice2 = asyncHandler(async (req, res) => {
-  try {
-    const { id, details, price } = req.body;
-    const update = {};
-    if (details) {
-      update.details = details;
-    }
+	try {
+		const { id, details, price } = req.body;
+		const update = {};
+		if (details) {
+			update.details = details;
+		}
 
-    if (price) {
-      update.price = price;
-    }
+		if (price) {
+			update.price = price;
+		}
 
-    const updatedMed = await Medicine.findByIdAndUpdate(
-      id,
-      // { price: req.body.price }, // Update the price field with the new value
-      update,
-      { new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
-    );
+		const updatedMed = await Medicine.findByIdAndUpdate(
+			id,
+			// { price: req.body.price }, // Update the price field with the new value
+			update,
+			{ new: true } //The { new: true } option is used to specify that you want the method to return the updated document after the update is applied. When you set { new: true }, the findByIdAndUpdate method will return the modified document with the new price value.
+		);
 
-    if (!updatedMed) {
-      res.status(404).json({ message: "Medicine not found" });
-      return;
-    }
+		if (!updatedMed) {
+			res.status(404).json({ message: "Medicine not found" });
+			return;
+		}
 
-    res.status(200).json(updatedMed);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
+		res.status(200).json(updatedMed);
+	} catch (error) {
+		res.status(500).json({ message: "Server error" });
+	}
 });
 
 const editMedPrice = async (req, res) => {
@@ -217,24 +217,24 @@ const editMedPrice = async (req, res) => {
         .json({ error: "Price or details parameter is required for editing" });
     }
 
-    // Find the medicine by ID
-    const medicine = await Medicine.findById(id);
+		// Find the medicine by ID
+		const medicine = await Medicine.findById(id);
 
     if (!medicine) {
       return res.status(404).json({ error: "Medicine not found" });
     }
 
-    // Update the medicine based on the provided fields
-    if (price !== undefined) {
-      medicine.price = price;
-    }
+		// Update the medicine based on the provided fields
+		if (price !== undefined) {
+			medicine.price = price;
+		}
 
-    if (details !== undefined) {
-      medicine.details = details;
-    }
+		if (details !== undefined) {
+			medicine.details = details;
+		}
 
-    // Save the updated medicine
-    await medicine.save();
+		// Save the updated medicine
+		await medicine.save();
 
     res
       .status(200)
@@ -306,27 +306,27 @@ const editMedPrice = async (req, res) => {
 
 // search & filter
 const searchFilter = asyncHandler(async (req, res) => {
-  try {
-    const { search, use } = req.query;
-    const query = {};
-    if (search) {
-      query.name = { $regex: search, $options: "i" }; // Case-insensitive search
-    }
-    //And OR
-    if (use) {
-      // query.use = use;
-      query.use = { $regex: use, $options: "i" };
-    }
+	try {
+		const { search, use } = req.query;
+		const query = {};
+		if (search) {
+			query.name = { $regex: search, $options: "i" }; // Case-insensitive search
+		}
+		//And OR
+		if (use) {
+			// query.use = use;
+			query.use = { $regex: use, $options: "i" };
+		}
 
-    // Fetch medicines based on the query
-    const medicines = await Medicine.find(query);
+		// Fetch medicines based on the query
+		const medicines = await Medicine.find(query);
 
-    // Return the filtered medicines
-    res.render("Pharmacist/search", { medicines });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+		// Return the filtered medicines
+		res.render("Pharmacist/search", { medicines });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 // @desc Login pharmacist
@@ -443,7 +443,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+	return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 // Generate Token
@@ -454,13 +454,13 @@ const generateToken = (id) => {
 };
 
 const viewPharmacists = asyncHandler(async (req, res) => {
-  try {
-    const pharmacists = await Pharmacist.find();
-    res.status(200).json(pharmacists);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+	try {
+		const pharmacists = await Pharmacist.find();
+		res.status(200).json(pharmacists);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 const getPharmacist = asyncHandler(async (req, res) => {

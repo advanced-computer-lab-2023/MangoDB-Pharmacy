@@ -74,7 +74,7 @@ export default function ForgotPasswordAdmin() {
 				setVerifyOTP(true);
 			}
 		} catch (error) {
-			alert(error.response.data.message);
+			alert(error.response.data);
 		} finally {
 			setIsLoading(false);
 		}

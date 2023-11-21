@@ -1,15 +1,15 @@
-const express = require('express')
-const router = express.Router()
-const patientController = require('../controllers/patientController');
+const express = require("express");
+const router = express.Router();
+const patientController = require("../controllers/patientController");
 
-const {protectPatient} = require('../middleware/patientMiddleware')
+const { protectPatient } = require("../middleware/patientMiddleware");
 
 router.get("/", (req, res) => {
-    res.render("../views/patientHome");
-  });
+	res.render("../views/patientHome");
+});
 
-router.get('/viewMed', patientController.viewMed)
-router.get('/getMed/:id', patientController.getMed)
+router.get("/viewMed", patientController.viewMed);
+router.get("/getMed/:id", patientController.getMed);
 
 router.get('/query', patientController.searchFilter)
 router.get('/request-otp' , protectPatient, patientController.sendOTP)

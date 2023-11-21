@@ -323,7 +323,7 @@ const getPatients = asyncHandler(async (req, res) => {
 
 const getPatient = asyncHandler(async (req, res) => {
 	try {
-		const patient = await Patient.findById(req.user.id);
+		const patient = await Patient.findById(req.user._id);
     console.log(patient)
 
 		if (!patient) {
