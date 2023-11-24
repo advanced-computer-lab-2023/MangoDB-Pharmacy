@@ -13,7 +13,7 @@ router.get("/getMed/:id", patientController.getMed);
 
 router.get('/query', patientController.searchFilter)
 router.post('/request-otp', patientController.sendOTP)
-router.post('/addMedicineInCart/:id',protectPatient, patientController.addMedicineToCart)
+router.post('/addMedicineInCart',protectPatient, patientController.addMedicineToCart)
 router.post('/createPatient', patientController.createPatient);
 router.get('/getPatients',patientController.getPatients);
 router.post('/changeCartItemAmount' ,protectPatient, patientController.changeCartItemAmount)

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const Patient = require('../models/patientModel')
 const dotenv = require("dotenv").config();
-
+const JWT_SECRET = 'abc123';
 const protectPatient = asyncHandler( async (req,res, next) => {
     let token
 
@@ -12,7 +12,7 @@ const protectPatient = asyncHandler( async (req,res, next) => {
             token = req.headers.authorization.split(' ')[1]
         console.log ("the token", token)
             // Verify token
-            const decoded = jwt.verify(token, "abc123")
+            const decoded = jwt.verify(token, JWT_SECRET)
 
             const patient = await Patient.findById(decoded.id)
 

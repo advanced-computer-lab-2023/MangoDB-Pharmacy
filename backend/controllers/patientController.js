@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const Wallet = require("../models/walletModel");
+const JWT_SECRET = 'abc123';
 
 const createWallet = async (req, res) => {
 	try {
@@ -573,7 +574,7 @@ function generateOTP() {
 
 // Generate Token
 const generateToken = (id) => {
-	return jwt.sign({ id }, "abc123", {
+	return jwt.sign({ id },JWT_SECRET, {
 		expiresIn: "30d",
 	});
 };
