@@ -24,30 +24,14 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Logout" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/viewdoctors">
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Doctors" />
-    </ListItemButton>
-    <ListItemButton component={Link} to="/viewappointments">
-      <ListItemIcon>
-        <TodayIcon />
-      </ListItemIcon>
-      <ListItemText primary="Appointments" />
-    </ListItemButton>
+   
     <ListItemButton component={Link} to="/viewprescriptions">
       <ListItemIcon>
         <MedicationIcon />
       </ListItemIcon>
       <ListItemText primary="Prescriptions" />
     </ListItemButton>
-    <ListItemButton component={Link} to="/viewpackages">
-      <ListItemIcon>
-        <LoyaltyIcon />
-      </ListItemIcon>
-      <ListItemText primary="Packages" />
-    </ListItemButton>
+   
     <ListItemButton component={Link} to="/viewwallet">
       <ListItemIcon>
         <WalletIcon />

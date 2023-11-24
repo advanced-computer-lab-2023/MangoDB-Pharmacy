@@ -8,7 +8,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 
 const asyncHandler = require("express-async-handler");
-
+const JWT_SECRET = 'abc123';
 const add_admin = (req, res) => {
 	// create a new Admin instance
 	const admin = new Admin(req.body);
@@ -439,7 +439,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 
 // Generate Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, JWT_SECRET, {
     expiresIn: "30d",
   });
 };
