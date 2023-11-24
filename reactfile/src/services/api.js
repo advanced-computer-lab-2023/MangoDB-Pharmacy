@@ -11,10 +11,10 @@ const API = axios.create({
 export const viewMeds = () => API.get("/Patient/viewMed");
 export const getMeds = (id) => API.get(`/Patient/getMed/${id}`);
 export const addMedicineToCart = (medicineName, quantity) =>
-  API.post("/Patient/addMedicineInCart", { medicineName, quantity });
+  API.post("/Patient/addMedicineInCart", { medicineName, quantity },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const removeMedicineFromCart = (medicineName) =>
   API.delete("/Patient/removecart", { medicineName });
-export const viewAllOrders = () => API.get("/Patient/viewListOfOrders");
+export const viewAllOrders = () => API.get("/Patient/viewListOfOrders",{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const viewOrderDetails = (id) =>
   API.get(`/Patient/viewOrderDetails/${id}`);
 export const cancelOrder = (id) => API.post(`/Patient/cancelOrder/${id}`);
@@ -55,7 +55,7 @@ export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const getMedicinesByUse = (use) =>
   API.get("/Patient/getMedicinesByUse", { params: { use } });
 export const wallet = (patientId) =>
-  API.post(`/patient/payFromWallet/${patientId}`);
+  API.post(`/patient/payFromWallet/${patientId}`);/////////////////////
 
 export const editMedPrice = async (id, details, price) => {
   try {
