@@ -709,6 +709,40 @@ const payFromWallet = async (paymentAmount) => {
 	}
 };
 
+const changePassword = asyncHandler(async (req, res) => {
+    try {
+        const patient = req.user;
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
+        const confirmPassword = req.body.confirmPassword;
+
+        const salt = await bcrypt.genSalt(10);
+
+        if (!(await bcrypt.compare(oldPassword, patient.password))) {
+            res.status(400).json({ message: "Invalid Password" });
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.status(400).json({ message: "Passwords Do Not Match" });
+        } else {
+            if (await bcrypt.compare(newPassword, patient.password)) {
+                res.status(400).json({
+                    message: "New Password Cannot Be The Same As Old Password",
+                });
+            } else {
+                patient.password = await bcrypt.hash(newPassword, salt);
+                await patient.save();
+                res.status(200).json({
+                    message: "Password Changed Successfuly",
+                });
+            }
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
+
 module.exports = {
 	viewMed,
 	searchFilter,
@@ -736,4 +770,6 @@ module.exports = {
 	payFromWallet,
 	createWallet,
 	getPatient,
+	changePassword
+
 };

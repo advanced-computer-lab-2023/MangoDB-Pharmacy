@@ -81,6 +81,13 @@ export const mainListItems = (
       <ListItemText primary="Orders" />
     </ListItemButton>
 
+    <ListItemButton component={Link} to="/changePasswordPatient">
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Change Password" />
+    </ListItemButton>
+
     <ListItemButton component={Link} to="/viewprofile">
       <ListItemIcon>
         <AccountCircleIcon />

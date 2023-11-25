@@ -439,7 +439,7 @@ const searchFilter = asyncHandler(async (req, res) => {
 
 // Generate Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, "abc123", {
     expiresIn: "30d",
   });
 };
@@ -565,6 +565,42 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 
+
+const changePassword = asyncHandler(async (req, res) => {
+    try {
+        const admin = req.user;
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
+        const confirmPassword = req.body.confirmPassword;
+
+		console.log(oldPassword);
+		
+        const salt = await bcrypt.genSalt(10);
+
+        if (!(await bcrypt.compare(oldPassword, admin.password))) {
+            res.status(400).json({ message: "Invalid Password" });
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.status(400).json({ message: "Passwords Do Not Match" });
+        } else {
+            if (await bcrypt.compare(newPassword, admin.password)) {
+                res.status(400).json({
+                    message: "New Password Cannot Be The Same As Old Password",
+                });
+            } else {
+                admin.password = await bcrypt.hash(newPassword, salt);
+                await admin.save();
+                res.status(200).json({
+                    message: "Password Changed Successfuly",
+                });
+            }
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
 module.exports = {
 	add_admin,
 	add_pharmacist,
@@ -584,4 +620,5 @@ module.exports = {
 	pharmacistApproval,
 	pharmacistRejection,
 	getMyInfo,
+	changePassword
 };

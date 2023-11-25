@@ -28,6 +28,11 @@ import ForgotPasswordUserPage from "./pages/ForgotPasswordUserPage";
 // import AddAdminPage from "./pages/AddAdminPage";
 // import RequestedDoctorsPage from "./pages/RequestedDoctorsPage";
 import LoginUser from "./components/LoginUser";
+import ChangePasswordAdmin from "./pages/changePasswordAdmin";
+import ChangePasswordPatient from "./pages/changePasswordPatient";
+import ChangePasswordPharmacist from "./pages/changePasswordPharmacist";
+
+
 
 function App() {
   return (
@@ -74,7 +79,22 @@ function App() {
 
           <Route path="/checkout" element={<Checkout />} />
 
+          <Route
+          path='/changePasswordPatient'
+          element={<ChangePasswordPatient />}
+        />
+
+
+          <Route
+          path='/changePasswordPharmacist'
+          element={<ChangePasswordPharmacist />}
+           />
+
           {/* ===================Admin Routes=================== */}
+          <Route
+          path='/changePasswordAdmin'
+          element={<ChangePasswordAdmin />}
+        />
 
           <Route path='/admin' element={<DashboardAdmin />} />
 					<Route path='/admin/login' element={<LoginPage />} />

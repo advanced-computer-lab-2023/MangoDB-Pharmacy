@@ -124,4 +124,29 @@ export const addMed = (medicine) =>
       throw error;
     });
 
+
+    export const changePassword = ({ oldPassword, newPassword, confirmPassword }) => {
+      return API.post(
+        "/Admin/change-password",
+        { oldPassword, newPassword, confirmPassword },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+    };
+
+    export const changePassword2 = ({ oldPassword, newPassword, confirmPassword }) => {
+      return API.post(
+        "/Patient/change-password",
+        { oldPassword, newPassword, confirmPassword },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+    };
+
+    export const changePassword3 = ({ oldPassword, newPassword, confirmPassword }) => {
+      return API.post(
+        "/Pharmacist/change-password",
+        { oldPassword, newPassword, confirmPassword },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+    };
+
 export default API;
