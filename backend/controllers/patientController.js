@@ -374,8 +374,8 @@ const viewCartItems = async (req, res) => {
 };
 
 const removeCartItems = async (req, res) => {
-	console.log("Received request with patient ID:", req.params.id);
-	const { medicinename } = req.body;
+	console.log("Received request with patient ID:", req.user._id);
+	const  medicinename  = req.body.medicinename;
 	const patientId = req.user._id;
 	try {
 		const patient = await Patient.findById(patientId);

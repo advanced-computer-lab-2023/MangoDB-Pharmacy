@@ -31,11 +31,15 @@ export const changeCartItemAmount = async ( medicineName, quantity) => {
   },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   return response.data;
 };
-export const removeCartItems = async ( medicineName) => {
-  await API.delete(`/Patient/removecartItems`, {
-    data: { medicinename: medicineName },
-  },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const removeCartItems = async (medicinename) => {
+  console.log(medicinename);
+  console.log({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+  await API.delete(`/Patient/removeCartItems`, {
+    data: { medicinename },  // Correct way to send data in the request body
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+  });
 };
+
 export const addressesByPatientId = async () => {
   const response = await API.get(`/Patient/addressesByPatientId`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   return response.data.addresses;
