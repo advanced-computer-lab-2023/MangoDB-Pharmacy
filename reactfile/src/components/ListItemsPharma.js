@@ -28,7 +28,12 @@ export const pharmacistListItems = (
     </ListItemButton>
 
   
-
+    <ListItemButton component={Link} to="/changePasswordPharmacist">
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Change Password" />
+    </ListItemButton>
     
 
     <ListItemButton component={Link} to="/viewprofile">

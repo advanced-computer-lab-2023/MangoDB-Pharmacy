@@ -488,6 +488,40 @@ const getPharmacistByEmail = asyncHandler(async (req, res) => {
 	}
 });
 
+
+const changePassword = asyncHandler(async (req, res) => {
+    try {
+        const pharmacist = req.user;
+        const oldPassword = req.body.oldPassword;
+        const newPassword = req.body.newPassword;
+        const confirmPassword = req.body.confirmPassword;
+
+        const salt = await bcrypt.genSalt(10);
+
+        if (!(await bcrypt.compare(oldPassword, pharmacist.password))) {
+            res.status(400).json({ message: "Invalid Password" });
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.status(400).json({ message: "Passwords Do Not Match" });
+        } else {
+            if (await bcrypt.compare(newPassword, pharmacist.password)) {
+                res.status(400).json({
+                    message: "New Password Cannot Be The Same As Old Password",
+                });
+            } else {
+                pharmacist.password = await bcrypt.hash(newPassword, salt);
+                await pharmacist.save();
+                res.status(200).json({
+                    message: "Password Changed Successfuly",
+                });
+            }
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+});
+
 module.exports = {
 	addMedicine,
 	getMedicine,
@@ -502,4 +536,6 @@ module.exports = {
 	viewPharmacists,
 	getPharmacist,
 	getPharmacistByEmail,
+	changePassword
+
 };

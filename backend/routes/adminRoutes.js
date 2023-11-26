@@ -34,4 +34,7 @@ router.post("/request-otp", adminController.sendOTP);
 //   });
 //router.get('/:name' , adminController.searchMedicineByName)
 
+
+router.post("/change-password", protectAdmin, adminController.changePassword);
+
 module.exports = router;

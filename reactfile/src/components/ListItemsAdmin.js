@@ -46,12 +46,13 @@ export const AdminListItems = (
     </ListItemButton>
     
 
-    <ListItemButton component={Link} to="/viewprofile">
+    <ListItemButton component={Link} to="/changePasswordPatient">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>
-      <ListItemText primary="Profile" />
+      <ListItemText primary="Change Password" />
     </ListItemButton>
+
   </React.Fragment>
 );
 
