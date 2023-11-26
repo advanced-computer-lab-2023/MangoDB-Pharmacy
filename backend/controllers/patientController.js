@@ -741,6 +741,9 @@ const changePassword = asyncHandler(async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error", error });
     }
+
+
+	console.log("snl")
 });
 
 
