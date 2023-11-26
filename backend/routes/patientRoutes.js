@@ -38,6 +38,7 @@ router.post('/createWallet', patientController.createWallet);
 
 router.post('/getPatient', patientController.getPatient);
 router.post("/change-password", protectPatient, patientController.changePassword);
+router.post('/createPrescription', patientController.createPrescription);
 
 
 module.exports = router

@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const Patient = require("../models/patientModel");
 const Medicine = require("../models/medicineModel");
 const Pharmacist = require("../models/pharmacistModel");
+const Prescription = require("../models/prescriptionModel");
+
 const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -71,69 +73,80 @@ const searchFilter = asyncHandler(async (req, res) => {
 });
 
 const addMedicineToCart = async (req, res) => {
-	const { medicineName, quantity } = req.body;
-	const patientId = req.user._id;
-	console.log(patientId);
-	try {
-		const patient = await Patient.findById(patientId);
+    const { medicineName, quantity } = req.body;
+    const patientId = req.user._id;
+    console.log(patientId);
+    try {
+        const patient = await Patient.findById(patientId);
 
-		if (!patient) {
-			return res.status(404).json({ error: "Patient not found" });
-		}
+        if (!patient) {
+            return res.status(404).json({ error: "Patient not found" });
+        }
 
-		const cartItem = patient.cart.find(
-			(item) => item.medicineName === medicineName
-		);
-		const medicine = await Medicine.findOne({ name: medicineName });
+        const cartItem = patient.cart.find(
+            (item) => item.medicineName === medicineName
+        );
+        const medicine = await Medicine.findOne({ name: medicineName });
 
-		if (!medicine) {
-			return res.status(404).json({ error: "Medicine not found" });
-		}
-		if (medicine.prescribed == "required") {
-			return res.status(400).json({
-				error: "This medicine requires a prescription",
-			});
-		}
-		console.log(medicine.prescribed);
+        if (!medicine) {
+            return res.status(404).json({ error: "Medicine not found" });
+        }
 
-		if (cartItem) {
-			const totalQuantity = cartItem.quantity + quantity;
+         console.log(patientId, medicineName)
 
-			if (totalQuantity > medicine.quantity) {
-				return res.status(400).json({
-					error: `Quantity not available. Available quantity for ${medicineName}: ${
-						medicine.quantity - cartItem.quantity
-					}`,
-				});
-			}
+        if (medicine.prescribed === "required") {
+            const prescription = await Prescription.findOne({
+                patientId,
+                'medications.medicationName': medicineName,
+              });
+              
+              if (!prescription) {
+                return res.status(400).json({
+                  error: `This medicine requires a prescription, and the patient does not have a valid prescription.`,
+                });
+              }
+          }
 
-			const totalPrice = totalQuantity * medicine.price;
+        console.log(medicine.prescribed);
 
-			cartItem.quantity = totalQuantity;
-			cartItem.price = totalPrice;
-		} else {
-			if (quantity > medicine.quantity) {
-				return res.status(400).json({
-					error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity}`,
-				});
-			}
+        if (cartItem) {
+            const totalQuantity = cartItem.quantity + quantity;
 
-			const totalPrice = quantity * medicine.price;
+            if (totalQuantity > medicine.quantity) {
+                return res.status(400).json({
+                    error: `Quantity not available. Available quantity for ${medicineName}: ${
+                        medicine.quantity - cartItem.quantity
+                    }`,
+                });
+            }
 
-			patient.cart.push({
-				medicineName: medicine.name,
-				quantity: quantity,
-				price: totalPrice,
-			});
-		}
+            const totalPrice = totalQuantity * medicine.price;
 
-		await patient.save();
+            cartItem.quantity = totalQuantity;
+            cartItem.price = totalPrice;
+        } else {
+            if (quantity > medicine.quantity) {
+                return res.status(400).json({
+                    error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity}`,
+                });
+            }
 
-		return res.status(201).json({ message: "Medicine added to the cart" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ error: "Internal server error" });
-	}
+            const totalPrice = quantity * medicine.price;
+
+            patient.cart.push({
+                medicineName: medicine.name,
+                quantity: quantity,
+                price: totalPrice,
+            });
+        }
+
+        await patient.save();
+
+        return res.status(201).json({ message: "Medicine added to the cart" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
 };
 
 const changeCartItemAmount = async (req, res) => {
@@ -743,6 +756,33 @@ const changePassword = asyncHandler(async (req, res) => {
     }
 });
 
+const createPrescription = async (req, res) => {
+    try {
+        const {
+            patientId,
+            // doctorId,
+            medications,
+            date,
+            filled
+
+        } = req.body;
+
+        const newPrescription = new Prescription({
+            patientId,
+            // doctorId,
+            medications,
+            date,
+            filled
+        });
+
+        const savedPrescription = await newPrescription.save();
+
+        res.status(201).json(savedPrescription);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
 
 module.exports = {
 	viewMed,
@@ -771,6 +811,7 @@ module.exports = {
 	payFromWallet,
 	createWallet,
 	getPatient,
-	changePassword
+	changePassword,
+	createPrescription
 
 };
