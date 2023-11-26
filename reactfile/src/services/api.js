@@ -23,7 +23,7 @@ export const patientReg = (patient) =>
 // export const pharmacistReg = (pharmacist) =>
 //   API.post("/Guest/regPharma", pharmacist);
 
-export const viewCartItems = () => API.get(`/Patient/ViewCartItems/`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const viewCartItems = () => API.get(`/Patient/ViewCartItems`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const changeCartItemAmount = async ( medicineName, quantity) => {
   const response = await API.post(`/Patient/changeCartItemAmount`, {
     medicineName,
@@ -96,7 +96,7 @@ export const viewPatients = () => API.get("/Patient/getPatients");
 export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const placeOrder = ( deliveryAddress, paymentMethod) =>
   API.post(`Patient/checkout`, { deliveryAddress, paymentMethod },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
-export const payment = ( items, total) =>
+export const payment = (items, total) =>
   API.post(`/payments/create-checkout-session`, {
     total: total,
     items: items,
@@ -166,4 +166,12 @@ export const addMed = (medicine) =>
           throw error;
         });
     };
+
+    export const getPendingPharma = () => API.get("/Admin/getPendingPharma");
+
+
+    export const pharamacistApproval = (id) => API.post(`/Admin/pharmacist-approval/${id}`);
+    export const pharamacistRejection = (id) => API.post(`/Admin/pharmacist-rejection/${id}`);
+export const viewPharmacist = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);//////////////////
+
 export default API;

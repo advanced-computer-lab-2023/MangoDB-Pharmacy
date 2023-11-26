@@ -6,7 +6,6 @@ import { viewCartItems, changeCartItemAmount, removeCartItems } from '../service
 import { useParams } from 'react-router-dom';
 
 const ViewCartItems = () => {
- // const { id } = useParams();
 
   const [cartItems, setCartItems] = useState([]);
   const [isPending, setIsPending] = useState(true);
@@ -116,7 +115,7 @@ const ViewCartItems = () => {
           variant="contained"
           color="primary"
           component={Link}
-          to={`/checkout/`} 
+          to={`/checkout`} 
           style={{ marginTop: '1rem' }}
         >
           Checkout

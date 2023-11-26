@@ -15,7 +15,6 @@ import { mainListItems } from '../components/ListItems';
 import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
-  //const { id } = useParams(); 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -30,7 +29,6 @@ const Checkout = () => {
 
   const fetchData = async () => {
     try {
-      //const patientId = '653834d73faf860a7aa9b6d0';
 
       const fetchedCartItems = await viewCartItems();
       setCartItems(fetchedCartItems.data);
@@ -55,8 +53,7 @@ const Checkout = () => {
         return;
       }
 
-     //const patientId = '653834d73faf860a7aa9b6d0';
-      await addAddress( newAddress);
+      await addAddress(newAddress);
       setNewAddress('');
       fetchData();
       setShowAddAddress(false);
@@ -78,7 +75,9 @@ const Checkout = () => {
     setTimeout( async () => {
       try {
         console.log (cartItems)
-
+console.log(paymentMethod,selectedAddress);
+const token = localStorage.getItem("token");
+console.log("Token:", token);
         if (paymentMethod === 'visa-mastercard') {
           const items = cartItems.map(item => ({
             itemId : item.id,
@@ -86,9 +85,8 @@ const Checkout = () => {
             name:item.name,
             price:item.price/item.quantity
           }));
-          console.log (items)
       const total =calculateTotalPrice()
-          const response = await payment( items, total);
+          const response = await payment(items, total);
           if (response.status === 200) {
             const { url } = response.data;
         console.log('Checkout Session:', response.data);
@@ -99,7 +97,7 @@ const Checkout = () => {
             console.error('Visa/Mastercard payment failed');
           }
         } else {
-          const orderId = await placeOrder( selectedAddress, paymentMethod);
+          const orderId = await placeOrder(selectedAddress, paymentMethod);
           console.log('Order placed successfully! Order ID:', orderId);
           if (paymentMethod === 'cash-on-delivery' || paymentMethod === 'wallet') {
             setShowSuccessMessage(true);

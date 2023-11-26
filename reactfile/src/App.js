@@ -32,7 +32,8 @@ import ChangePasswordAdmin from "./pages/changePasswordAdmin";
 import ChangePasswordPatient from "./pages/changePasswordPatient";
 import ChangePasswordPharmacist from "./pages/changePasswordPharmacist";
 import ViewSales from "./pages/sales";
-
+import Requests from "./pages/requestedPharma";
+import PharamcistDetail from "./pages/Pharmacists";
 
 
 function App() {
@@ -102,7 +103,9 @@ function App() {
           <Route path='/admin' element={<DashboardAdmin />} />
 					<Route path='/admin/login' element={<LoginPage />} />
 					<Route path='/login' element={<LoginUser />} />
+          <Route path='/requestedPharma' element={<Requests />} />
 
+        <Route path='/Pharamcists/:id' element={<PharamcistDetail />} />
 					<Route
 						path='/admin/forgot-password'
 						element={<ForgotPasswordAdminPage />}

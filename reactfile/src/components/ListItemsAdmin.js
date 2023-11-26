@@ -45,8 +45,14 @@ export const AdminListItems = (
       <ListItemText primary="View Pharmacists" />
     </ListItemButton>
     
+    <ListItemButton component={Link} to="/requestedPharma">
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Requested Pharmacists" />
+    </ListItemButton>
 
-    <ListItemButton component={Link} to="/changePasswordPatient">
+    <ListItemButton component={Link} to="/changePasswordAdmin">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>
@@ -58,36 +64,3 @@ export const AdminListItems = (
 
 
 
-export const mainListItems = (
-	<React.Fragment>
-		<ListItemButton href='/admin'>
-			<ListItemIcon>
-				<DashboardIcon />
-			</ListItemIcon>
-			<ListItemText primary='Home' />
-		</ListItemButton>
-
-		<ListItemButton href='/admin/requested-doctors'>
-			<ListItemIcon>
-				<VaccinesIcon />
-			</ListItemIcon>
-			<ListItemText primary='Requested Doctors' />
-		</ListItemButton>
-
-		{/* TODO enter link href */}
-		<ListItemButton>
-			<ListItemIcon>
-				<PeopleIcon />
-			</ListItemIcon>
-			<ListItemText primary='User Management' />
-		</ListItemButton>
-
-		{/* TODO enter link href */}
-		<ListItemButton>
-			<ListItemIcon>
-				<LocalHospitalIcon />
-			</ListItemIcon>
-			<ListItemText primary='Health Packages' />
-		</ListItemButton>
-	</React.Fragment>
-);
