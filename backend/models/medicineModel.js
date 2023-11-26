@@ -17,6 +17,10 @@ const medicineSchema = mongoose.Schema(
       type: String,
       required: [true, "Uses"],
     },
+    mainActiveIngredient: {
+      type: String,
+      required: [true, "Enter main active ingredient"],
+    },
     description: {
       type: String,
       required: [true, "Enter brief description"],

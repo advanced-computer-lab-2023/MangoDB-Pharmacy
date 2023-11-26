@@ -36,56 +36,59 @@ const asyncHandler = require("express-async-handler");
 // };
 
 const addMedicine = (req, res) => {
-	try {
-		const {
-			name,
-			price,
-			use,
-			description,
-			quantity,
-			sales,
-			details,
-			prescribed,
-		} = req.body;
+    try {
+        const {
+            name,
+            price,
+            use,
+            description,
+            quantity,
+            sales,
+            details,
+            prescribed,
+            mainActiveIngredient,
+        } = req.body;
 
-		// Check if req.file is defined before using it
-		const medicine = new Medicine({
-			name,
-			price,
-			use,
-			description,
-			quantity,
-			sales,
-			details,
-			prescribed,
-		});
+        // Check if req.file is defined before using it
+        const medicine = new Medicine({
+            name,
+            price,
+            use,
+            description,
+            quantity,
+            sales,
+            details,
+            prescribed,
+            mainActiveIngredient,
 
-		if (req.file) {
-			// If a file is uploaded, set the picture path
-			medicine.picture = req.file.path;
-		}
+        });
 
-		medicine
-			.save()
-			.then((result) => {
-				console.log("NEW MEDICINE ADDED:", result);
-				res.status(201).json({
-					message: "Medicine added successfully",
-					medicine: result,
-				});
-			})
-			.catch((err) => {
-				console.log("Error saving medicine:", err);
-				res.status(500).json({
-					error: "Internal server error",
-				});
-			});
-	} catch (error) {
-		console.error("Error adding medicine:", error);
-		res.status(500).json({
-			error: "Internal server error",
-		});
-	}
+        if (req.file) {
+            // If a file is uploaded, set the picture path
+            medicine.picture = req.file.path;
+        }
+
+        medicine
+            .save()
+            .then((result) => {
+                console.log("NEW MEDICINE ADDED:", result);
+                res.status(201).json({
+                    message: "Medicine added successfully",
+                    medicine: result,
+                });
+            })
+            .catch((err) => {
+                console.log("Error saving medicine:", err);
+                res.status(500).json({
+                    error: "Internal server error",
+                });
+            });
+    } catch (error) {
+        console.error("Error adding medicine:", error);
+        res.status(500).json({
+            error: "Internal server error",
+        });
+    }
 };
 
 module.exports = {

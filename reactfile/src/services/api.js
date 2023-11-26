@@ -153,4 +153,17 @@ export const addMed = (medicine) =>
       );
     };
 
+    
+    export const getAlternativeMedicines = (medicineName) => {
+      console.log('Received request with medicine name:', medicineName);
+      return API.post("/Patient/getAlternativeMedicines", { medicineName: medicineName })
+        .then((response) => {
+          console.log('Received response from getAlternativeMedicines API:', response);
+          return response.data;
+        })
+        .catch((error) => {
+          console.error('Error fetching alternative medicines:', error);
+          throw error;
+        });
+    };
 export default API;
