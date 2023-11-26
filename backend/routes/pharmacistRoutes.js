@@ -42,6 +42,12 @@ router.get("/query", pharmacistController.searchFilter);
 router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
+
+router.post("/sales", pharmacistController.getSalesByMonth);
+
+
+
+
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
 router.post("/getPharmacist", pharmacistController.getPharmacist);
 router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);

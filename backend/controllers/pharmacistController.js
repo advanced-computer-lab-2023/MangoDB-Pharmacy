@@ -488,6 +488,53 @@ const getPharmacistByEmail = asyncHandler(async (req, res) => {
 	}
 });
 
+const getSalesByMonth = asyncHandler(async (req, res) => {
+	try {
+	  const { month } = req.body; // Assuming the month is passed in the request body
+  
+	  if (!month) {
+		res.status(400).json({ error: "Month parameter is required" });
+		return;
+	  }
+  
+	  // Convert the month to a format that MongoDB can query
+	  const startDate = new Date(`${month}-01T00:00:00.000Z`);
+	  const endDate = new Date(
+		new Date(startDate).setMonth(startDate.getMonth() + 1)
+	  );
+  
+	  const sales = await Order.find({
+		status: "delivered", // Assuming sales are only considered if the status is "delivered"
+		dateOfDelivery: {
+		  $gte: startDate,
+		  $lt: endDate,
+		},
+	  });
+  
+	  // Extract relevant information for the table
+	  const formattedSales = sales.map((order) => ({
+		orderId: order._id,
+		dateOfDelivery: order.dateOfDelivery,
+		totalPrice: order.totalPrice,
+		orderDetails: order.orderdetails.map((item) => ({
+		  medicineName: item.medicineName,
+		  quantity: item.quantity,
+		})),
+	  }));
+  
+	  res.status(200).json({
+		message: `Sales for ${month}`,
+		sales: formattedSales,
+	  });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
+  
+  
+  
+
 
 const changePassword = asyncHandler(async (req, res) => {
     try {
@@ -532,6 +579,7 @@ module.exports = {
 	loginPharmacist,
 	sendOTP,
 	verifyOTP,
+	getSalesByMonth,
 	resetPassword,
 	viewPharmacists,
 	getPharmacist,
