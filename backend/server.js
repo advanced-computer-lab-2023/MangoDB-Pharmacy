@@ -5,6 +5,7 @@ const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const { render } = require("ejs");
 const path = require('path');
+const { protectPatient } = require("./middleware/patientMiddleware");
 
 //const port =8000
 const port = process.env.port || 4000;
@@ -38,6 +39,8 @@ app.use("/Admin", require("./routes/adminRoutes"));
 app.use("/Pharmacist", require("./routes/pharmacistRoutes"));
 app.use("/Guest", require("./routes/guestRoutes"));
 app.use("/Patient", require("./routes/patientRoutes"));
+app.use(protectPatient);
+
 app.use('/payments', require('./middleware/stripeMiddleware'));
 
 //localhost:5000/

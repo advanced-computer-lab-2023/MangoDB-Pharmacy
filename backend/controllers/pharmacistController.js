@@ -673,7 +673,19 @@ const getSalesByMedicine = asyncHandler(async (req, res) => {
   
  
   
+  const getPharmacistById = asyncHandler(async (req, res) => {
+    try {
+        const pharmacist = await Pharmacist.findById(req.params.id)
 
+        if (pharmacist) {
+            res.status(200).json(pharmacist);
+        } else {
+            res.status(400).json({ message: "Pharmacist not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
 module.exports = {
 	addMedicine,
 	getMedicine,
@@ -693,6 +705,6 @@ module.exports = {
 	viewPharmacists,
 	getPharmacist,
 	getPharmacistByEmail,
-	changePassword
+	changePassword,getPharmacistById
 
 };

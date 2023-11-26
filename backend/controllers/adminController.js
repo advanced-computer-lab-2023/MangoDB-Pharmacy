@@ -119,99 +119,108 @@ const deletePharmacist = asyncHandler(async (req, res) => {
 // @route PUT /admin/pharmacist-approval/:id
 // @access Private
 const pharmacistApproval = asyncHandler(async (req, res) => {
-  try {
-    const pharmacist = await Pharmacist.findById(req.params.id);
-
-    if (!pharmacist) {
-      res.status(400);
-      throw new Error("Pharmacist not found");
-    }
-
-    if (pharmacist.accountStatus === "inactive") {
-      pharmacist.accountStatus = "active";
-      await pharmacist.save();
-
-      const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-          user: "omarelzaher93@gmail.com",
-          pass: "vtzilhuubkdtphww",
-        },
-      });
-
-      const mailOptions = {
-        from: "omarelzaher93@gmail.com",
-        to: pharmacist.email,
-        subject:
-          "[NO REPLY] Congratulations! You Have Been Approved To Use El7any!",
-        html: `<h1> Congratulations Dr. ${pharmacist.lastName}<h1>
-                <p>Everything looks good on your part and we have decided to accept you to use our service! <p>
-                <p>You can now login with your username and password as you like. <p>
-                <p>We wish you a fruitful experience using El7any!<p>
-                <p>This Is An Automated Message, Please Do Not Reply.<p>`,
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          res.status(500);
-          throw new Error("Something Went Wrong");
-        } else {
-          res.status(200).json({
-            message: "Pharmacist Has Been Approved And Email Has Been Sent!",
-          });
-        }
-      });
-    } else {
-      res.status(400).json({ message: "Pharmacist Is Already Active!" });
-    }
-  } catch (error) {
-    res.status(500);
-    throw new Error("Pharmacist Approval Failed");
-  }
-});
-
-// @desc Reject Pharmacist registration
-// @route GET /admin/pharmacist-rejection/:id
-// @access Private
-const pharmacistRejection = asyncHandler(async (req, res) => {
-  try {
-    const pharmacist = await pharmacist.findById(req.params.id);
-
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: "omarelzaher93@gmail.com",
-        pass: "vtzilhuubkdtphww",
-      },
-    });
-
-    const mailOptions = {
-      from: "omarelzaher93@gmail.com",
-      to: pharmacist.email,
-      subject: "[NO REPLY] Update On Your El7any Request To Join",
-      html: `<h1> Dear Dr. ${pharmacist.lastName}<h1>
-                <p>We regret to inform you that after extensive research, we have come to the conclusion of rejecting your pharmacist request<p>
-                <p>We hope this rejection will not alter your perception of our service.<p>
-                <p>This Is An Automated Message, Please Do Not Reply.<p>`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.status(500);
-        throw new Error("Something Went Wrong");
-      }
-    });
-
-    await Pharmacist.findByIdAndDelete(req.params.id);
-
-    res.status(200).json({
-      message: "Pharmacist Has Been Rejected, Deleted, and Informed via Email",
-    });
-  } catch (error) {
-    res.status(500);
-    throw new Error("Pharmacist Rejection Failed");
-  }
-});
+	try {
+	  const pharmacist = await Pharmacist.findById(req.params.id);
+  
+	  if (!pharmacist) {
+		res.status(400);
+		throw new Error("Pharmacist not found");
+	  }
+  
+	  if (pharmacist.accountStatus === "inactive") {
+		pharmacist.accountStatus = "active";
+		pharmacist.status = "hired"
+		await pharmacist.save();
+  
+		const transporter = nodemailer.createTransport({
+		  service: "Gmail",
+		  auth: {
+			user: "omarelzaher93@gmail.com",
+			pass: "vtzilhuubkdtphww",
+		  },
+		});
+  
+		const mailOptions = {
+		  from: "omarelzaher93@gmail.com",
+		  to: pharmacist.email,
+		  subject:
+			"[NO REPLY] Congratulations! You Have Been Approved To Use El7any!",
+		  html: `<h1> Congratulations Dr. ${pharmacist.lastName}<h1>
+				  <p>Everything looks good on your part and we have decided to accept you to use our service! <p>
+				  <p>You can now login with your username and password as you like. <p>
+				  <p>We wish you a fruitful experience using El7any!<p>
+				  <p>This Is An Automated Message, Please Do Not Reply.<p>`,
+		};
+  
+		transporter.sendMail(mailOptions, (error, info) => {
+		  if (error) {
+			res.status(500);
+			throw new Error("Something Went Wrong");
+		  } else {
+			res.status(200).json({
+			  message: "Pharmacist Has Been Approved And Email Has Been Sent!",
+			});
+		  }
+		});
+	  } else {
+		res.status(400).json({ message: "Pharmacist Is Already Active!" });
+	  }
+	} catch (error) {
+	  res.status(500);
+	  throw new Error("Pharmacist Approval Failed");
+	}
+  });
+  
+  // @desc Reject Pharmacist registration
+  // @route GET /admin/pharmacist-rejection/:id
+  // @access Private
+  const pharmacistRejection = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  console.log (id);
+	try {
+	  const pharmacist = await Pharmacist.findById(req.params.id);
+  
+	  if (!pharmacist) {
+		  res.status(400);
+		  throw new Error("Pharmacist not found");
+		}
+		
+	  const transporter = nodemailer.createTransport({
+		service: "Gmail",
+		auth: {
+		  user: "omarelzaher93@gmail.com",
+		  pass: "vtzilhuubkdtphww",
+		},
+	  });
+  
+	  const mailOptions = {
+		from: "omarelzaher93@gmail.com",
+		to: pharmacist.email,
+		subject: "[NO REPLY] Update On Your El7any Request To Join",
+		html: `<h1> Dear Dr. ${pharmacist.lastName}<h1>
+				  <p>We regret to inform you that after extensive research, we have come to the conclusion of rejecting your pharmacist request<p>
+				  <p>We hope this rejection will not alter your perception of our service.<p>
+				  <p>This Is An Automated Message, Please Do Not Reply.<p>`,
+	  };
+  
+	  transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+		  res.status(500);
+		  throw new Error("Something Went Wrong");
+		}
+	  });
+  
+	  await Pharmacist.findByIdAndDelete(req.params.id);
+  
+	  res.status(200).json({
+		message: "Pharmacist Has Been Rejected, Deleted, and Informed via Email",
+	  });
+	} catch (error) {
+	  res.status(500);
+	  throw new Error("Pharmacist Rejection Failed");
+	}
+  });
+  
 const deletePatient = asyncHandler(async (req, res) => {
 	const id = req.params.id;
 	Patient.findByIdAndDelete(id)

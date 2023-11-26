@@ -5,19 +5,23 @@ const Patient = require('../models/patientModel');
 const Medicine = require('../models/medicineModel');
 
 
-router.post('/create-checkout-session/:id', async (req, res) => {
+router.post('/create-checkout-session', async (req, res) => {
     try {
-        const { id } = req.params;
-        console.log(req.body);
+        const user = req.user;
+console.log(user,"THE FUCKING USER");
+    // Check if user is authenticated and has an ID
+    if (!user || !user._id) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+        const id = user._id;
         const total = req.body.total;
         const items = req.body.items
-        // Retrieve the package type from the associated healthPackage
 
         const patient = await Patient.findById(id);
 
 
         const packageType = patient.healthPackage ? patient.healthPackage.name : null;
-        // console.log('items',items);
 
         let Discount = 0;
         

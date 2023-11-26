@@ -10,7 +10,6 @@ const protectPatient = asyncHandler( async (req,res, next) => {
         try {
             // Get token from header
             token = req.headers.authorization.split(' ')[1]
-        console.log ("the token", token)
             // Verify token
             const decoded = jwt.verify(token, JWT_SECRET)
 

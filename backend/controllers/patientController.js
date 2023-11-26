@@ -94,7 +94,6 @@ const searchFilter = asyncHandler(async (req, res) => {
 const addMedicineToCart = async (req, res) => {
     const { medicineName, quantity } = req.body;
     const patientId = req.user._id;
-    console.log(patientId);
     try {
         const patient = await Patient.findById(patientId);
 
@@ -125,7 +124,6 @@ const addMedicineToCart = async (req, res) => {
               }
           }
 
-        console.log(medicine.prescribed);
 
         if (cartItem) {
             const totalQuantity = cartItem.quantity + quantity;
@@ -370,10 +368,9 @@ const getPatient = asyncHandler(async (req, res) => {
 });
 
 const viewCartItems = async (req, res) => {
-	const patientId = req.user._id;
 
 	try {
-		const patient = await Patient.findById(patientId);
+		const patient = await Patient.findById(req.user._id);
 
 		if (!patient) {
 			return res.status(404).json({ error: "Patient not found" });
@@ -395,7 +392,7 @@ const viewCartItems = async (req, res) => {
 				};
 				medInfo.push(item);
 			} else {
-				res.status(500).json({ error: "medicine not found" });
+				// res.status(500).json({ error: "medicine not found" });
 			}
 		}
 		res.status(200).json(medInfo);
@@ -405,7 +402,6 @@ const viewCartItems = async (req, res) => {
 };
 
 const removeCartItems = async (req, res) => {
-	console.log("Received request with patient ID:", req.user._id);
 	const  medicinename  = req.body.medicinename;
 	const patientId = req.user._id;
 	try {
@@ -430,10 +426,12 @@ const removeCartItems = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
+	console.log (req.body);
 	const { deliveryAddress, paymentMethod } = req.body;
 	const patientId = req.user._id;
 	let totalPrice = 0;
 	try {
+
 		const patient = await Patient.findById(patientId);
 		if (!patient) {
 			return res.status(404).json({ error: "Patient not found" });
@@ -442,7 +440,6 @@ const checkout = async (req, res) => {
 		const orderdetails = [];
 		for (const cartItem of finalorder) {
 			const medicine = await Medicine.findOne({ name: cartItem.medicineName });
-
 			medicine.quantity = medicine.quantity - cartItem.quantity;
 			totalPrice += cartItem.price;
 			const item = {
@@ -502,7 +499,6 @@ const loginPatient = asyncHandler(async (req, res) => {
 	// Check for username
 	const patient = await Patient.findOne({ username });
 
-	console.log(patient);
 	if (patient && (await bcrypt.compare(password, patient.password))) {
 		res.status(200).json({
 			message: "Successful Login",
@@ -672,9 +668,9 @@ const getAllMedicineUses = async (req, res) => {
 	}
 };
 
-const payFromWallet = async (paymentAmount) => {
+const payFromWallet = async (patientid,paymentAmount) => {
 	try {
-		const patientId = req.user._id;
+		const patientId = patientid;
 		if (!patientId || !paymentAmount) {
 			return {
 				success: false,
@@ -731,7 +727,7 @@ const payFromWallet = async (paymentAmount) => {
 			amount: paymentAmount,
 			date: new Date(),
 		});
-
+       console.log (wallet);
 		// Save the updated wallet
 		await wallet.save();
 
@@ -774,7 +770,6 @@ const changePassword = asyncHandler(async (req, res) => {
     }
 
 
-	console.log("snl")
 });
 
 
