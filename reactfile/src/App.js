@@ -31,6 +31,7 @@ import LoginUser from "./components/LoginUser";
 import ChangePasswordAdmin from "./pages/changePasswordAdmin";
 import ChangePasswordPatient from "./pages/changePasswordPatient";
 import ChangePasswordPharmacist from "./pages/changePasswordPharmacist";
+import ViewSales from "./pages/sales";
 
 
 
@@ -74,6 +75,8 @@ function App() {
           <Route path="/medicine/:id" element={<GetMeds />} />
 
           <Route path='/order' element={<Orders />} />
+
+          <Route path='/sales' element={<ViewSales />} />
 
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 

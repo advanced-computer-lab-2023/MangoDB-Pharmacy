@@ -54,6 +54,22 @@ export const addAddress = async ( address) => {
     throw new Error(error.response?.data?.error || "Failed to add address");
   }
 };
+export const getDifMeds = () => API.get("/Pharmacist/difMeds");
+export const getAllSales = () => API.get("/Pharmacist/allSales")
+  .then(response => response.data);  // Add this line
+
+  export const getSalesByMonth = (month) => API.post(`/Pharmacist/sales`, { month })
+  .then(response => response.data);  // Add this line
+
+  export const getSalesByDate = (date) => API.post(`/Pharmacist/sales/date`, { date })
+  .then(response => response.data);  // Add this line
+
+  export const getSalesByMedicine = (medicineName) => API.post(`/Pharmacist/salesMed`, { medicineName })
+  .then(response => response.data);  // Add this line
+
+
+
+
 
 export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const getMedicinesByUse = (use) =>
@@ -95,22 +111,6 @@ const API2 = axios.create({
 });
 export const pharmacistReg = (pharmacist) =>
   API2.post("/Guest/regPharma", pharmacist);
-
-// export const addMed = (medicine) =>
-//   API2.post("/Pharmacist/addMedicine", medicine)
-//     .then((response) => {
-//       console.log("API response:", response);
-
-//       if (!response.ok) {
-//         throw new Error(`Failed to add medicine: ${response.statusText}`);
-//       }
-
-//       return response.json();
-//     })
-//     .catch((error) => {
-//       console.error("Error adding medicine:", error);
-//       throw error;
-//     });
 
 export const addMed = (medicine) =>
   API2.post("/Pharmacist/addMedicine", medicine)

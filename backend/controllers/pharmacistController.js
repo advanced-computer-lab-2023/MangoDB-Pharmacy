@@ -1,5 +1,6 @@
 const Pharmacist = require("../models/pharmacistModel");
 const Medicine = require("../models/medicineModel");
+const Order = require("../models/orderModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -504,7 +505,7 @@ const getSalesByMonth = asyncHandler(async (req, res) => {
 	  );
   
 	  const sales = await Order.find({
-		status: "delivered", // Assuming sales are only considered if the status is "delivered"
+		status: "preparing", // Assuming sales are only considered if the status is "delivered"
 		dateOfDelivery: {
 		  $gte: startDate,
 		  $lt: endDate,
@@ -532,7 +533,32 @@ const getSalesByMonth = asyncHandler(async (req, res) => {
 	}
   });
   
+  const getSalesByDate = async (req, res) => {
+	try {
+	  const { date } = req.body;
+	  console.log(date);
+	  if (!date) {
+		return res.status(400).json({ success: false, error: 'Date is required in the request body.' });
+	  }
   
+	  // Convert the incoming date to a JavaScript Date object in UTC
+	  const selectedDate = new Date(date);
+  
+	  // Ensure the date range covers the entire day in UTC
+	  const startOfDay = new Date(selectedDate.toISOString().split('T')[0]);
+	  const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000);
+  
+	  // Query MongoDB for sales within the specified date
+	  const sales = await Order.find({ dateOfDelivery: { $gte: startOfDay, $lt: endOfDay } });
+  if(sales)
+	  res.json({ success: true, sales });
+	else{
+		res.json("No orders on this day");
+	}
+	} catch (error) {
+	  res.status(500).json({ success: false, error: error.message });
+	}
+  };
   
 
 
@@ -568,6 +594,82 @@ const changePassword = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 });
+const getSalesByMedicine = asyncHandler(async (req, res) => {
+	try {
+	  const { medicineName } = req.body; // Assuming the medicineName is passed in the request body
+  
+	  if (!medicineName) {
+		res.status(400).json({ error: "MedicineName parameter is required" });
+		return;
+	  }
+  
+	  const sales = await Order.find({
+		status: "preparing", // Assuming sales are only considered if the status is "delivered"
+		"orderdetails.medicineName": medicineName,
+	  });
+  
+	  // Extract relevant information for the table
+	  const formattedSales = sales.map((order) => ({
+		orderId: order._id,
+		dateOfDelivery: order.dateOfDelivery,
+		totalPrice: order.totalPrice,
+		orderDetails: order.orderdetails.map((item) => ({
+		  medicineName: item.medicineName,
+		  quantity: item.quantity,
+		})),
+	  }));
+  
+	  res.status(200).json({
+		message: `Sales for ${medicineName}`,
+		sales: formattedSales,
+	  });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
+  const getAllSales = asyncHandler(async (req, res) => {
+	try {
+	  const sales = await Order.find({ status: "preparing" }); // Assuming sales are only considered if the status is "delivered"
+  
+	  // Extract relevant information for the table
+	  const formattedSales = sales.map((order) => ({
+		orderId: order._id,
+		dateOfDelivery: order.dateOfDelivery,
+		totalPrice: order.totalPrice,
+		orderDetails: order.orderdetails.map((item) => ({
+		  medicineName: item.medicineName,
+		  quantity: item.quantity,
+		})),
+	  }));
+  
+	  res.status(200).json({
+		message: "All Sales",
+		sales: formattedSales,
+	  });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
+  
+  const getDifMeds = asyncHandler(async (req, res) => {
+	try {
+	  const distinctMedicineNames = await Medicine.distinct("name");
+  
+	  res.status(200).json({
+		message: "List of Different Medicine Names",
+		medicineNames: distinctMedicineNames,
+	  });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
+  
+  
+ 
+  
 
 module.exports = {
 	addMedicine,
@@ -579,7 +681,11 @@ module.exports = {
 	loginPharmacist,
 	sendOTP,
 	verifyOTP,
+	getSalesByMedicine,
 	getSalesByMonth,
+	getAllSales,
+	getDifMeds,
+	getSalesByDate,
 	resetPassword,
 	viewPharmacists,
 	getPharmacist,

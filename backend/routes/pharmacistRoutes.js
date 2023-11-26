@@ -42,11 +42,11 @@ router.get("/query", pharmacistController.searchFilter);
 router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
-
 router.post("/sales", pharmacistController.getSalesByMonth);
-
-
-
+router.post("/salesMed", pharmacistController.getSalesByMedicine);
+router.get("/allSales", pharmacistController.getAllSales);
+router.get("/difMeds", pharmacistController.getDifMeds);
+router.get('/sales/date/', pharmacistController.getSalesByDate);
 
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
 router.post("/getPharmacist", pharmacistController.getPharmacist);
