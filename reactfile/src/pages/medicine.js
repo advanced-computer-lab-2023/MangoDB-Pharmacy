@@ -158,130 +158,135 @@ const Medicine = () => {
               alignItems: 'center',
             }}
           >
-            <Typography variant="h4" gutterBottom>
-              {medicine.name}
-            </Typography>
-            <img
-              src={`http://localhost:4000/${medicine.picture}`}
-              alt={medicine.name}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '300px',
-                marginBottom: '1rem',
-              }}
-            />
-            <Typography variant="body1" gutterBottom>
-              Description: {medicine.description}
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Details: {medicine.details}
-            </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-              Price: {medicine.price}
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              Uses: {medicine.use}
-            </Typography>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton onClick={handleDecreaseQuantity}>
-                <RemoveIcon />
-              </IconButton>
-              <Typography variant="body2" style={{ margin: '0 1rem' }}>
-                {quantity}
-              </Typography>
-              <IconButton onClick={handleIncreaseQuantity}>
-                <AddIcon />
-              </IconButton>
-            </div>
-            <Button
-              variant="contained"
-              color={isAddedToCart ? 'secondary' : 'primary'}
-              onClick={handleAddToCart}
-              style={{ marginTop: '1rem' }}
-            >
-              {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleViewAlternatives}
-              style={{ marginTop: '1rem', alignSelf: 'flex-end' }}
-            >
-              View Alternatives
-            </Button>
-
-            {showAlternatives && (
-              <div style={{ marginTop: '1rem' }}>
-                <Typography variant="h5" gutterBottom>
-                  Alternative Medicines:
+            {medicine ? (
+              <div>
+                <Typography variant="h4" gutterBottom>
+                  {medicine.name}
                 </Typography>
-                {alternativeMedicines.length > 0 ? (
-                  <ul>
-                    {alternativeMedicines.map((alternative) => (
-                      <li key={alternative._id}>
-                        <div>
-                          <Typography variant="h6" gutterBottom>
-                            {alternative.name}
-                          </Typography>
-                          <img
-                            src={`http://localhost:4000/${alternative.picture}`}
-                            alt={alternative.name}
-                            style={{
-                              maxWidth: '100%',
-                              maxHeight: '150px',
-                              marginBottom: '0.5rem',
-                            }}
-                          />
-                          <Typography variant="body1" gutterBottom>
-                            Description: {alternative.description}
-                          </Typography>
-                          <Typography variant="subtitle1" gutterBottom>
-                            Details: {alternative.details}
-                          </Typography>
-                          <Typography variant="subtitle1" gutterBottom>
-                            Price: {alternative.price}
-                          </Typography>
-                          <Typography variant="body2" gutterBottom>
-                            Uses: {alternative.use}
-                          </Typography>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <IconButton
-                              onClick={() => handleDecreaseAlternativeQuantity(alternative._id)}
-                            >
-                              <RemoveIcon />
-                            </IconButton>
-                            <Typography variant="body2" style={{ margin: '0 1rem' }}>
-                              {alternativeQuantities[alternative._id]}
-                            </Typography>
-                            <IconButton
-                              onClick={() => handleIncreaseAlternativeQuantity(alternative._id)}
-                            >
-                              <AddIcon />
-                            </IconButton>
-                          </div>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleAddAlternativeToCart(alternative)}
-                            style={{ marginTop: '0.5rem' }}
-                          >
-                            Add to Cart
-                          </Button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <Typography>No alternative medicines found.</Typography>
+                <img
+                  src={`http://localhost:4000/${medicine.picture}`}
+                  alt={medicine.name}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '300px',
+                    marginBottom: '1rem',
+                  }}
+                />
+                <Typography variant="body1" gutterBottom>
+                  Description: {medicine.description}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Details: {medicine.details}
+                </Typography>
+                <Typography variant="subtitle1" gutterBottom>
+                  Price: {medicine.price}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  Uses: {medicine.use}
+                </Typography>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <IconButton onClick={handleDecreaseQuantity}>
+                    <RemoveIcon />
+                  </IconButton>
+                  <Typography variant="body2" style={{ margin: '0 1rem' }}>
+                    {quantity}
+                  </Typography>
+                  <IconButton onClick={handleIncreaseQuantity}>
+                    <AddIcon />
+                  </IconButton>
+                </div>
+                <Button
+                  variant="contained"
+                  color={isAddedToCart ? 'secondary' : 'primary'}
+                  onClick={handleAddToCart}
+                >
+                  {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleViewAlternatives}
+                  style={{ marginTop: '1rem' }}
+                >
+                  View Alternatives
+                </Button>
+
+                {showAlternatives && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <Typography variant="h5" gutterBottom>
+                      Alternative Medicines:
+                    </Typography>
+                    {alternativeMedicines.length > 0 ? (
+                      <ul>
+                        {alternativeMedicines.map((alternative) => (
+                          <li key={alternative._id}>
+                            <div>
+                              <Typography variant="h6" gutterBottom>
+                                {alternative.name}
+                              </Typography>
+                              <img
+                                src={`http://localhost:4000/${alternative.picture}`}
+                                alt={alternative.name}
+                                style={{
+                                  maxWidth: '100%',
+                                  maxHeight: '150px',
+                                  marginBottom: '0.5rem',
+                                }}
+                              />
+                              <Typography variant="body1" gutterBottom>
+                                Description: {alternative.description}
+                              </Typography>
+                              <Typography variant="subtitle1" gutterBottom>
+                                Details: {alternative.details}
+                              </Typography>
+                              <Typography variant="subtitle1" gutterBottom>
+                                Price: {alternative.price}
+                              </Typography>
+                              <Typography variant="body2" gutterBottom>
+                                Uses: {alternative.use}
+                              </Typography>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <IconButton
+                                  onClick={() => handleDecreaseAlternativeQuantity(alternative._id)}
+                                >
+                                  <RemoveIcon />
+                                </IconButton>
+                                <Typography variant="body2" style={{ margin: '0 1rem' }}>
+                                  {alternativeQuantities[alternative._id]}
+                                </Typography>
+                                <IconButton
+                                  onClick={() => handleIncreaseAlternativeQuantity(alternative._id)}
+                                >
+                                  <AddIcon />
+                                </IconButton>
+                              </div>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleAddAlternativeToCart(alternative)}
+                                style={{ marginTop: '0.5rem' }}
+                              >
+                                Add to Cart
+                              </Button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <Typography>No alternative medicines found.</Typography>
+                    )}
+                  </div>
+                )}
+
+                {isAddedToCart && (
+                  <Typography style={{ marginTop: '1rem', color: 'green' }}>
+                    Product added to cart successfully!
+                  </Typography>
                 )}
               </div>
-            )}
-
-            {isAddedToCart && (
-              <Typography style={{ marginTop: '1rem', color: 'green' }}>
-                Product added to cart successfully!
-              </Typography>
+            ) : (
+              <div>Loading...</div>
             )}
           </Paper>
         )}
