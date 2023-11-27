@@ -26,7 +26,12 @@ router.get("/addMedicine", (req, res) => {
 });
 
 // router.get('/', pharmacistController.home)
-
+router.post("/sales", pharmacistController.getSalesByMonth);
+router.post("/salesMed", pharmacistController.getSalesByMedicine);
+router.get("/allSales", pharmacistController.getAllSales);
+router.get("/difMeds", pharmacistController.getDifMeds);
+router.get('/sales/date/', pharmacistController.getSalesByDate);
+router.post("/change-password", protectPharmacist, pharmacistController.changePassword);
 router.post("/login", pharmacistController.loginPharmacist);
 router.post("/request-otp", pharmacistController.sendOTP);
 router.post("/verify-otp", pharmacistController.verifyOTP);

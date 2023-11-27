@@ -32,6 +32,8 @@ import ChangePasswordAdmin from "./pages/changePasswordAdmin";
 import ChangePasswordPatient from "./pages/changePasswordPatient";
 import ChangePasswordPharmacist from "./pages/changePasswordPharmacist";
 import ViewSales from "./pages/sales";
+import ViewSalesAdmin from "./pages/salesAdmin";
+
 import Requests from "./pages/requestedPharma";
 import PharamcistDetail from "./pages/Pharmacists";
 
@@ -78,6 +80,9 @@ function App() {
           <Route path='/order' element={<Orders />} />
 
           <Route path='/sales' element={<ViewSales />} />
+
+          <Route path='/salesAdmin' element={<ViewSalesAdmin />} />
+
 
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 

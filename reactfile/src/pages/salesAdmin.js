@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Typography, Paper, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Select, MenuItem } from '@mui/material';
-import { pharmacistListItems } from '../components/ListItemsPharma';
+import { AdminListItems } from '../components/ListItemsAdmin';
 import { getDifMeds, getAllSales, getSalesByMonth, getSalesByMedicine } from '../services/api';
 import { useParams } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
@@ -85,7 +85,7 @@ const ViewSales = () => {
   return (
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {pharmacistListItems}
+        {AdminListItems}
       </Grid>
 
       <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>

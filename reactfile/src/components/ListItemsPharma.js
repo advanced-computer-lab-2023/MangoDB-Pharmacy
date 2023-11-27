@@ -7,6 +7,8 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PeopleIcon from "@mui/icons-material/People";
+
 // import AddCircleIcon from '@mui/icons-material/AddCircle';
 // import EditIcon from '@mui/icons-material/Edit';
 
@@ -27,7 +29,12 @@ export const pharmacistListItems = (
       <ListItemText primary="View Medicines" />
     </ListItemButton>
 
-  
+    <ListItemButton component={Link} to="/sales">
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="View Sales" />
+    </ListItemButton>
     <ListItemButton component={Link} to="/changePasswordPharmacist">
       <ListItemIcon>
         <AccountCircleIcon />

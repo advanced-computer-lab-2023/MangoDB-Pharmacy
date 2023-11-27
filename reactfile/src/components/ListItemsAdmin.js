@@ -31,6 +31,13 @@ export const AdminListItems = (
       <ListItemText primary="View Medicines" />
     </ListItemButton>
 
+
+    <ListItemButton component={Link} to="/salesAdmin">
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="View Sales" />
+    </ListItemButton>
     
     <ListItemButton component={Link} to="/viewPatients">
       <ListItemIcon>
