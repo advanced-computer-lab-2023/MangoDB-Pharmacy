@@ -39,6 +39,7 @@ import PharamcistDetail from "./pages/Pharmacists";
 
 import WalletPage from "./pages/wallet";
 import WalletPharma from "./pages/walletPharma";
+import ArchivedMedicines from "./pages/archivedMedicines";
 
 function App() {
   return (
@@ -93,6 +94,7 @@ function App() {
           <Route path="/wallet" element={<WalletPage />} />
 
           <Route path="/walletPharma" element={<WalletPharma />} />
+          <Route path="/archivedMedicines" element={<ArchivedMedicines />} />
 
           <Route
           path='/changePasswordPatient'

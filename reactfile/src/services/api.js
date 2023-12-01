@@ -175,4 +175,25 @@ export const addMed = (medicine) =>
 export const viewPharmacist = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);//////////////////
 export const viewWallet  = () => API.get(`/Patient/viewWallet`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });//////////////////
 
+
+
+export const unarchiveMedicine = (medicineName) =>
+API.post("/Pharmacist/unarchiveMedicine", { medicineName })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error unarchiving medicine:", error);
+    throw error;
+  });
+
+  export const archiveMedicine = (medicineName) =>
+API.post("/Pharmacist/archiveMedicine", { medicineName })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error archiving medicine:", error);
+    throw error;
+  });
+
+  export const viewArchivedMeds = () => API.get("/Pharmacist/viewArchivedMeds");
+
+  
 export default API;
