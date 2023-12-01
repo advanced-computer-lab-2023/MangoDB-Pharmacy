@@ -32,7 +32,7 @@ export const mainListItems = (
       <ListItemText primary="Prescriptions" />
     </ListItemButton>
    
-    <ListItemButton component={Link} to="/viewwallet">
+    <ListItemButton component={Link} to="/wallet">
       <ListItemIcon>
         <WalletIcon />
         

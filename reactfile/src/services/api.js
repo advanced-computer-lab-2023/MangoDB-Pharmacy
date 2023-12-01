@@ -173,5 +173,6 @@ export const addMed = (medicine) =>
     export const pharamacistApproval = (id) => API.post(`/Admin/pharmacist-approval/${id}`);
     export const pharamacistRejection = (id) => API.post(`/Admin/pharmacist-rejection/${id}`);
 export const viewPharmacist = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);//////////////////
+export const viewWallet  = () => API.get(`/Patient/viewWallet`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });//////////////////
 
 export default API;

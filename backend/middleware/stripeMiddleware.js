@@ -8,8 +8,6 @@ const Medicine = require('../models/medicineModel');
 router.post('/create-checkout-session', async (req, res) => {
     try {
         const user = req.user;
-console.log(user,"THE FUCKING USER");
-    // Check if user is authenticated and has an ID
     if (!user || !user._id) {
       return res.status(401).json({ error: 'Unauthorized' });
     }

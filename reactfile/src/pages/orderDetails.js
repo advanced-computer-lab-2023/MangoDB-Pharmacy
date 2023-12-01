@@ -25,7 +25,9 @@ const OrderDetails = () => {
   console.log(orderDetails);
 
   const handleCancelOrder = () => {
-    // Assuming you have an API function to cancel an order
+
+    const token = localStorage.getItem("token");
+    console.log("Authorization Header:", `Bearer ${token}`);
     cancelOrder(id)
       .then((response) => {
         alert(response.data.message); // Display the response message to the user

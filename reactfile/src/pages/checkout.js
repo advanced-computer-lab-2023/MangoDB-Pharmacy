@@ -76,8 +76,7 @@ const Checkout = () => {
       try {
         console.log (cartItems)
 console.log(paymentMethod,selectedAddress);
-const token = localStorage.getItem("token");
-console.log("Token:", token);
+
         if (paymentMethod === 'visa-mastercard') {
           const items = cartItems.map(item => ({
             itemId : item.id,

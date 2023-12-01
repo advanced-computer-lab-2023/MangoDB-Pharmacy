@@ -11,6 +11,7 @@ import PeopleIcon from "@mui/icons-material/People";
 
 // import AddCircleIcon from '@mui/icons-material/AddCircle';
 // import EditIcon from '@mui/icons-material/Edit';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 export const pharmacistListItems = (
   <React.Fragment>
@@ -35,6 +36,13 @@ export const pharmacistListItems = (
       </ListItemIcon>
       <ListItemText primary="View Sales" />
     </ListItemButton>
+    <ListItemButton component={Link} to="/walletPharma">
+      <ListItemIcon>
+        <AccountBalanceWalletIcon />
+      </ListItemIcon>
+      <ListItemText primary= "Wallet" />
+    </ListItemButton>
+
     <ListItemButton component={Link} to="/changePasswordPharmacist">
       <ListItemIcon>
         <AccountCircleIcon />

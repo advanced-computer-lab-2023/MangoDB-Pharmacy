@@ -25,6 +25,8 @@ router.get('/viewListOfOrders',protectPatient, patientController.viewListOfOrder
 router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
 
+router.get('/viewWallet',protectPatient, patientController.viewWallet);
+
 
 router.get('/viewCartItems',protectPatient , patientController.viewCartItems)
 router.delete('/removeCartItems',protectPatient , patientController.removeCartItems)

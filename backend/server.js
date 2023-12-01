@@ -40,8 +40,5 @@ app.use("/Pharmacist", require("./routes/pharmacistRoutes"));
 app.use("/Guest", require("./routes/guestRoutes"));
 app.use("/Patient", require("./routes/patientRoutes"));
 app.use(protectPatient);
-
 app.use('/payments', require('./middleware/stripeMiddleware'));
 
-//localhost:5000/
-//localhost:5000/addpharma

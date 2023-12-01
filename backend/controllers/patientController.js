@@ -26,6 +26,27 @@ const createWallet = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+const viewWallet = asyncHandler(async (req, res) => {
+    try {
+        const patientId = req.user._id;
+
+        // Use await to wait for the query to execute and return the result
+        const wallet = await Wallet.findOne({ user: patientId });
+
+        // Check if a wallet was found
+        if (!wallet) {
+            return res.status(404).json({ message: 'Wallet not found' });
+        }
+
+        // Do something with the wallet, for example, send it in the response
+        res.status(200).json(wallet);
+		
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 //view a list of all available medicine
 const viewMed = asyncHandler(async (req, res) => {
 	try {
@@ -276,9 +297,11 @@ const viewOrderDetails = async (req, res) => {
 
 const cancelOrder = async (req, res) => {
 	const orderId = req.params.id;
-
 	try {
 		const order = await Order.findById(orderId);
+console.log (order);
+		const patient = await Wallet.findOne({ user :order.patientId  })
+		console.log (patient);
 
 		if (!order) {
 			return res.status(404).json({ error: "Order not found" });
@@ -289,6 +312,20 @@ const cancelOrder = async (req, res) => {
 		}
 
 		order.status = "cancelled";
+		
+		if (order.paymentMethod == "wallet"){
+         patient.balance+= order.totalPrice;
+		 patient.transactions.push({
+			type: "order canceled",
+			amount: + order.totalPrice,
+			date: new Date(),
+			
+		}
+);
+await patient.save();
+ 
+
+		}
 
 		await order.save();
 
@@ -426,7 +463,6 @@ const removeCartItems = async (req, res) => {
 };
 
 const checkout = async (req, res) => {
-	console.log (req.body);
 	const { deliveryAddress, paymentMethod } = req.body;
 	const patientId = req.user._id;
 	let totalPrice = 0;
@@ -720,11 +756,10 @@ const payFromWallet = async (patientid,paymentAmount) => {
 
 		// Deduct the payment amount from the wallet balance
 		wallet.balance -= paymentAmount;
-
 		// Record the transaction in the wallet
 		wallet.transactions.push({
-			type: "debit",
-			amount: paymentAmount,
+			type: "order payment",
+			amount: - paymentAmount,
 			date: new Date(),
 		});
        console.log (wallet);
@@ -857,5 +892,5 @@ module.exports = {
 	getPatient,
 	changePassword,
 	createPrescription,
-	getAlternativeMedicines
+	getAlternativeMedicines,viewWallet
 };

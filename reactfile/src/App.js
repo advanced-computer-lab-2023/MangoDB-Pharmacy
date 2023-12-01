@@ -37,6 +37,8 @@ import ViewSalesAdmin from "./pages/salesAdmin";
 import Requests from "./pages/requestedPharma";
 import PharamcistDetail from "./pages/Pharmacists";
 
+import WalletPage from "./pages/wallet";
+import WalletPharma from "./pages/walletPharma";
 
 function App() {
   return (
@@ -87,6 +89,10 @@ function App() {
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 
           <Route path="/checkout" element={<Checkout />} />
+
+          <Route path="/wallet" element={<WalletPage />} />
+
+          <Route path="/walletPharma" element={<WalletPharma />} />
 
           <Route
           path='/changePasswordPatient'
