@@ -5,6 +5,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
+const Chat = require('../models/chatModel');
+const Message = require('../models/messageModel');
+
 const asyncHandler = require("express-async-handler");
 
 // Old addMed function
@@ -34,6 +37,42 @@ const asyncHandler = require("express-async-handler");
 //       .then((result) => console.log("NEW MEDICINE ADDED:", result))
 //       .catch((err) => console.log("Please change me I am just an error", err));
 // };
+const sendMessage = async (req, res) => {
+	const { messageText, receiverId } = req.body;
+	const senderId = '6562799ed2140278b1b59070';//req.user._id;
+  
+	try {
+	  // Find the chat based on patientId and doctorId
+	  const chat = await Chat.findOne({
+		$or: [
+		  { userId1: senderId, userId2: receiverId },
+		  { userId1: receiverId, userId2: senderId },
+		],
+	  });
+  
+	  if (!chat) {
+		return res.status(404).json({ error: 'Chat not found' });
+	  }
+  
+	  // Create a new message
+	  const newMessage = new Message({
+		messageText,
+		senderRole : 'pharmacist',
+	  });
+  
+	  // Add the new message to the chat
+	  chat.messages.push(newMessage);
+  
+	  // Save the updated chat to the database
+	  await chat.save();
+  
+	  return res.status(201).json(newMessage);
+	} catch (error) {
+	  console.error(error);
+	  return res.status(500).json({ error: 'Internal Server Error' });
+	}
+  };
+
 
 const addMedicine = (req, res) => {
     try {
@@ -767,6 +806,7 @@ module.exports = {
 	changePassword,getPharmacistById,
 	viewArchivedMeds,
 	unarchiveMedicine,
-	archiveMedicine
+	archiveMedicine,
+	sendMessage
 
 };

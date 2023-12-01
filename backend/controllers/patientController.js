@@ -3,6 +3,10 @@ const Patient = require("../models/patientModel");
 const Medicine = require("../models/medicineModel");
 const Pharmacist = require("../models/pharmacistModel");
 const Prescription = require("../models/prescriptionModel");
+const Chat = require('../models/chatModel');
+const Message = require('../models/messageModel');
+
+
 
 const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
@@ -10,6 +14,92 @@ const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const Wallet = require("../models/walletModel");
 const JWT_SECRET = 'abc123';
+
+
+const sendMessage = async (req, res) => {
+	const { messageText, receiverId } = req.body;
+	const senderId = '6569e8f1d1c5afb72ae0c2ce';//req.user._id;
+  
+	try {
+	  // Find the chat based on patientId and doctorId
+	  const chat = await Chat.findOne({
+		$or: [
+		  { userId1: senderId, userId2: receiverId },
+		  { userId1: receiverId, userId2: senderId },
+		],
+	  });
+  
+	  if (!chat) {
+		return res.status(404).json({ error: 'Chat not found' });
+	  }
+  
+	  // Create a new message
+	  const newMessage = new Message({
+		messageText,
+		senderRole : 'patient',
+	  });
+  
+	  // Add the new message to the chat
+	  chat.messages.push(newMessage);
+  
+	  // Save the updated chat to the database
+	  await chat.save();
+  
+	  return res.status(201).json(newMessage);
+	} catch (error) {
+	  console.error(error);
+	  return res.status(500).json({ error: 'Internal Server Error' });
+	}
+  };
+// POST endpoint to create a chat
+const createChat = async (req, res) => {
+  const {  pharmacistFirstName, pharmacistLastName } = req.body;
+
+  try {
+	const patientId = '6569e8f1d1c5afb72ae0c2ce';// || req.user._id;
+    // Find the doctor by first and last names
+    const pharma = await Pharmacist.findOne({
+      firstName: pharmacistFirstName,
+      lastName: pharmacistLastName,
+    });
+//Check if chat already exists
+    if (!pharma) {
+      return res.status(404).json({ error: 'Pharmacist not found' });
+    }
+
+    // Create a new chat
+    const newChat = new Chat({
+      userId1: patientId,
+      userId2: pharma._id,
+      messages: [],
+    });
+
+    // Save the chat to the database
+    await newChat.save();
+
+    return res.status(201).json(newChat);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const createWallet = async (req, res) => {
 	try {
@@ -897,5 +987,8 @@ module.exports = {
 	getPatient,
 	changePassword,
 	createPrescription,
-	getAlternativeMedicines,viewWallet
+	getAlternativeMedicines,
+	viewWallet,
+	createChat,
+	sendMessage
 };

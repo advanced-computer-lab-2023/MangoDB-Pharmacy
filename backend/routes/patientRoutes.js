@@ -44,4 +44,10 @@ router.post('/createPrescription', patientController.createPrescription);
 router.post("/getAlternativeMedicines", patientController.getAlternativeMedicines);
 
 
+
+router.post("/createChat", patientController.createChat);
+router.post("/sendMessage", patientController.sendMessage);
+
+
+
 module.exports = router
