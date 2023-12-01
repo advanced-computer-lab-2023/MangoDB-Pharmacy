@@ -49,43 +49,43 @@ const viewWallet = asyncHandler(async (req, res) => {
 });
 //view a list of all available medicine
 const viewMed = asyncHandler(async (req, res) => {
-	try {
-		const medicines = await Medicine.find();
-		medicines.forEach((medicine) => {});
+    try {
+        const medicines = await Medicine.find({ archive: false });
+        medicines.forEach((medicine) => {});
 
-		res.status(200).json(medicines);
-	} catch (error) {
-		res.status(500).json({ message: "Server error" });
-	}
+        res.status(200).json(medicines);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 const getMed = asyncHandler(async (req, res) => {
-	try {
-	  const id = req.params.id;
-	  const medicine = await Medicine.findById(id);
+    try {
+      const id = req.params.id;
+      const medicine = await Medicine.findById(id);
   
-	  if (!medicine) {
-		return res.status(404).json({ message: "Medicine not found" });
-	  }
+      if (!medicine) {
+        return res.status(404).json({ message: "Medicine not found" });
+      }
   
-	  if (medicine.quantity === 0) {
-		// If quantity is zero, find other medicines with the same main active ingredient
-		const similarMedicines = await Medicine.find({
-		  mainActiveIngredient: medicine.mainActiveIngredient,
-		  quantity: { $gt: 0 }, // Only include medicines with quantity greater than 0
-		});
+      if (medicine.quantity === 0) {
+        // If quantity is zero, find other medicines with the same main active ingredient
+        const similarMedicines = await Medicine.find({
+          mainActiveIngredient: medicine.mainActiveIngredient,
+          quantity: { $gt: 0 }, // Only include medicines with quantity greater than 0
+        });
   
-		return res.status(200).json({
-		  message: "Medicine out of stock. Here are alternatives with the same main active ingredient:",
-		  alternatives: similarMedicines,
-		});
-	  }
+        return res.status(200).json({
+          message: "Medicine out of stock. Here are alternatives with the same main active ingredient:",
+          alternatives: similarMedicines,
+        });
+      }
   
-	  // If quantity is not zero, return the information of the requested medicine
-	  res.status(200).json(medicine);
-	} catch (error) {
-	  res.status(500).json({ message: "Server error" });
-	}
+      // If quantity is not zero, return the information of the requested medicine
+      res.status(200).json(medicine);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
   });
   
 const searchFilter = asyncHandler(async (req, res) => {
@@ -836,31 +836,33 @@ const createPrescription = async (req, res) => {
 }
 
 const getAlternativeMedicines = async (req, res) => {
-	try {
+    try {
 
-		const { medicineName } = req.body;
-		console.log(medicineName)
-		const requestedMedicine = await Medicine.findOne({ name: medicineName });
-		console.log(requestedMedicine)
-	  if (!requestedMedicine) {
-		return res.status(404).json({ message: "Medicine not found" });
-	  }
+        const { medicineName } = req.body;
+        console.log(medicineName)
+        const requestedMedicine = await Medicine.findOne({ name: medicineName });
+        console.log(requestedMedicine)
+      if (!requestedMedicine) {
+        return res.status(404).json({ message: "Medicine not found" });
+      }
   
-	  const alternativeMedicines = await Medicine.find({
-		mainActiveIngredient: requestedMedicine.mainActiveIngredient,
-		quantity: { $gt: 0 },
-		_id: { $ne: requestedMedicine._id },
-	  });
+      const alternativeMedicines = await Medicine.find({
+        mainActiveIngredient: requestedMedicine.mainActiveIngredient,
+        quantity: { $gt: 0 },
+        _id: { $ne: requestedMedicine._id },
+      });
   
-	  res.status(200).json({
-		message: "Here are alternative medicines with the same main active ingredient:",
-		alternatives: alternativeMedicines,
-	  });
-	} catch (error) {
-	  console.error("Error in getAlternativeMedicines:", error);
-	  res.status(500).json({ message: "Server error", error: error.message });
-	}
+      res.status(200).json({
+        message: "Here are alternative medicines with the same main active ingredient:",
+        alternatives: alternativeMedicines,
+      });
+    } catch (error) {
+      console.error("Error in getAlternativeMedicines:", error);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
   };
+
+  
 
   
 module.exports = {

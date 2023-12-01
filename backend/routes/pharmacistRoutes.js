@@ -52,5 +52,8 @@ router.post("/getPharmacist", pharmacistController.getPharmacist);
 router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);
 
 router.get("/getPharmacistById/:id", pharmacistController.getPharmacistById);
+router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);
+router.post("/unarchiveMedicine", pharmacistController.unarchiveMedicine);
+router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 
 module.exports = router;

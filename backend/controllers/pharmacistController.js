@@ -47,6 +47,7 @@ const addMedicine = (req, res) => {
             details,
             prescribed,
             mainActiveIngredient,
+            archive,
         } = req.body;
 
         // Check if req.file is defined before using it
@@ -60,6 +61,7 @@ const addMedicine = (req, res) => {
             details,
             prescribed,
             mainActiveIngredient,
+            archive,
 
         });
 
@@ -686,6 +688,63 @@ const getSalesByMedicine = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+const viewArchivedMeds = asyncHandler(async (req, res) => {
+    try {
+        const medicines = await Medicine.find({ archive: true });
+        medicines.forEach((medicine) => {});
+
+        res.status(200).json(medicines);
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+const unarchiveMedicine = asyncHandler(async (req, res) => {
+    try {
+        const { medicineName } = req.body; // Assuming the medicine name is sent in the request body
+
+        // Find the medicine by name and update the 'archive' attribute to false
+        const updatedMedicine = await Medicine.findOneAndUpdate(
+            { name: medicineName },
+            { $set: { archive: false } },
+            { new: true }
+        );
+
+        if (!updatedMedicine) {
+            return res.status(404).json({ message: "Medicine not found" });
+        }
+
+        res.status(200).json(updatedMedicine);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+const archiveMedicine = asyncHandler(async (req, res) => {
+    try {
+        const { medicineName } = req.body; // Assuming the medicine name is sent in the request body
+
+        console.log(medicineName)
+        // Find the medicine by name and update the 'archive' attribute to false
+        const updatedMedicine = await Medicine.findOneAndUpdate(
+            { name: medicineName },
+            { $set: { archive: true } },
+            { new: true }
+        );
+
+        if (!updatedMedicine) {
+            return res.status(404).json({ message: "Medicine not found" });
+        }
+
+        res.status(200).json(updatedMedicine);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 module.exports = {
 	addMedicine,
 	getMedicine,
@@ -705,6 +764,9 @@ module.exports = {
 	viewPharmacists,
 	getPharmacist,
 	getPharmacistByEmail,
-	changePassword,getPharmacistById
+	changePassword,getPharmacistById,
+	viewArchivedMeds,
+	unarchiveMedicine,
+	archiveMedicine
 
 };

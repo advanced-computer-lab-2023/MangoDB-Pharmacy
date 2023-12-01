@@ -21,6 +21,10 @@ const medicineSchema = mongoose.Schema(
       type: String,
       required: [true, "Enter main active ingredient"],
     },
+    archive: {
+      type: Boolean,
+      default: false,
+  },
     description: {
       type: String,
       required: [true, "Enter brief description"],
