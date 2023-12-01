@@ -672,37 +672,40 @@ const getMeds = asyncHandler(async (req, res) => {
 const getMedicinesByUse = async (req, res) => {
 	const { use } = req.query;
 	try {
-		if (!use) {
-			return res.status(400).json({ error: "Use parameter is required" });
-		}
-
-		const medicines = await Medicine.find({
-			use: { $regex: use, $options: "i" },
-		});
-
-		if (!medicines || medicines.length === 0) {
-			return res
-				.status(404)
-				.json({ error: "Medicines not found for the specified use" });
-		}
-
-		res.status(200).json({ medicines });
+	  if (!use) {
+		return res.status(400).json({ error: "Use parameter is required" });
+	  }
+  
+	  const medicines = await Medicine.find({
+		use: { $regex: use, $options: "i" },
+		archive: false, // Add this condition to filter by archive attribute
+	  });
+  
+	  if (!medicines || medicines.length === 0) {
+		return res
+		  .status(404)
+		  .json({ error: "Medicines not found for the specified use" });
+	  }
+  
+	  res.status(200).json({ medicines });
 	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal Server Error" });
+	  console.error(error);
+	  res.status(500).json({ error: "Internal Server Error" });
 	}
-};
+  };
+  
 
 const getAllMedicineUses = async (req, res) => {
 	try {
-		const uniqueUses = await Medicine.distinct("use");
-		console.log(uniqueUses);
-		res.status(200).json(uniqueUses);
+	  const uniqueUses = await Medicine.distinct("use", { archive: false });
+	  console.log(uniqueUses);
+	  res.status(200).json(uniqueUses);
 	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal server error" });
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
 	}
-};
+  };
+  
 
 const payFromWallet = async (patientid,paymentAmount) => {
 	try {

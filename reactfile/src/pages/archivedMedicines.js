@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, TextField } from "@mui/material";
 import { viewArchivedMeds, unarchiveMedicine } from "../services/api";
-import { pharmacistListItems } from "../components/ListItemsPharma";  // Import the sidebar component
+import { pharmacistListItems } from "../components/ListItemsPharma"; // Import the sidebar component
 
 const ArchivedMedicines = () => {
   const [archivedMeds, setArchivedMeds] = useState([]);
+  const [filteredArchivedMeds, setFilteredArchivedMeds] = useState([]);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     viewArchivedMeds()
       .then((response) => {
         setArchivedMeds(response.data);
+        setFilteredArchivedMeds(response.data); // Initialize with all medicines
       })
       .catch((err) => {
         setError(err.message);
@@ -24,9 +27,21 @@ const ArchivedMedicines = () => {
 
       const updatedArchivedMeds = await viewArchivedMeds();
       setArchivedMeds(updatedArchivedMeds.data);
+      setFilteredArchivedMeds(updatedArchivedMeds.data); // Update filtered medicines
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchTerm(searchTerm);
+
+    // Filter medicines based on search term
+    const filteredMeds = archivedMeds.filter((med) =>
+      med.name.toLowerCase().includes(searchTerm)
+    );
+    setFilteredArchivedMeds(filteredMeds);
   };
 
   return (
@@ -42,10 +57,21 @@ const ArchivedMedicines = () => {
           Archived Medicines
         </Typography>
 
+        {/* Search Bar */}
+        <TextField
+          label="Search for Medicine Name"
+          variant="outlined"
+          fullWidth
+          size="small"
+          margin="normal"
+          onChange={handleSearchChange}
+          value={searchTerm}
+        />
+
         {error && <div>{error}</div>}
-        {archivedMeds && (
+        {filteredArchivedMeds && (
           <div>
-            {archivedMeds.map((archivedMed) => (
+            {filteredArchivedMeds.map((archivedMed) => (
               <Paper
                 key={archivedMed._id}
                 style={{
