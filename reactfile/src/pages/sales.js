@@ -35,8 +35,11 @@ const ViewSales = () => {
   };
 
   const handleMonthChange = (event) => {
-    setSelectedMonth(event.target.value);
+    const yearMonth = event.target.value.split("-");
+    setSelectedYear(parseInt(yearMonth[0]));
+    setSelectedMonth(parseInt(yearMonth[1]));
   };
+  
 
   const handleMedicineChange = (event) => {
     setSelectedMedicine(event.target.value);
