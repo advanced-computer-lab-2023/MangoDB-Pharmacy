@@ -41,6 +41,9 @@ import WalletPage from "./pages/wallet";
 import WalletPharma from "./pages/walletPharma";
 import ArchivedMedicines from "./pages/archivedMedicines";
 
+import NewChat  from "./pages/newChat";
+import Chat  from "./pages/chat";
+
 function App() {
   return (
     <Router>
@@ -95,6 +98,8 @@ function App() {
 
           <Route path="/walletPharma" element={<WalletPharma />} />
           <Route path="/archivedMedicines" element={<ArchivedMedicines />} />
+          <Route path="/newChat" element={<NewChat />} />
+          <Route path="/chat/:id" element={<Chat />} />
 
           <Route
           path='/changePasswordPatient'

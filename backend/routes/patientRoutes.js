@@ -45,8 +45,8 @@ router.post("/getAlternativeMedicines", patientController.getAlternativeMedicine
 
 
 
-router.post("/createChat", patientController.createChat);
-router.post("/sendMessage", patientController.sendMessage);
+router.post("/createChat",protectPatient, patientController.createChat);
+router.post("/sendMessage", protectPatient,patientController.sendMessage);
 
 
 

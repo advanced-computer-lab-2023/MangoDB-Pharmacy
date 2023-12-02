@@ -18,7 +18,7 @@ const JWT_SECRET = 'abc123';
 
 const sendMessage = async (req, res) => {
 	const { messageText, receiverId } = req.body;
-	const senderId = '6569e8f1d1c5afb72ae0c2ce';//req.user._id;
+	const senderId = req.user._id;
   
 	try {
 	  // Find the chat based on patientId and doctorId
@@ -39,10 +39,8 @@ const sendMessage = async (req, res) => {
 		senderRole : 'patient',
 	  });
   
-	  // Add the new message to the chat
 	  chat.messages.push(newMessage);
   
-	  // Save the updated chat to the database
 	  await chat.save();
   
 	  return res.status(201).json(newMessage);
@@ -56,25 +54,21 @@ const createChat = async (req, res) => {
   const {  pharmacistFirstName, pharmacistLastName } = req.body;
 
   try {
-	const patientId = '6569e8f1d1c5afb72ae0c2ce';// || req.user._id;
-    // Find the doctor by first and last names
+	const patientId =  req.user._id;
     const pharma = await Pharmacist.findOne({
       firstName: pharmacistFirstName,
       lastName: pharmacistLastName,
     });
-//Check if chat already exists
     if (!pharma) {
       return res.status(404).json({ error: 'Pharmacist not found' });
     }
 
-    // Create a new chat
     const newChat = new Chat({
       userId1: patientId,
       userId2: pharma._id,
       messages: [],
     });
 
-    // Save the chat to the database
     await newChat.save();
 
     return res.status(201).json(newChat);

@@ -5,12 +5,13 @@ const dotenv = require("dotenv").config();
 const JWT_SECRET = 'abc123';
 const protectPatient = asyncHandler( async (req,res, next) => {
     let token
+    console.log ("middle ware" ,req.headers.authorization)     ;       
 
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try {
-            // Get token from header
-            token = req.headers.authorization.split(' ')[1]
-            // Verify token
+            console.log ("middleware 1")     ;       
+
+       token = req.headers.authorization.split(' ')[1]
             const decoded = jwt.verify(token, JWT_SECRET)
 
             const patient = await Patient.findById(decoded.id)

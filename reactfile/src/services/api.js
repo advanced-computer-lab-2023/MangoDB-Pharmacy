@@ -32,8 +32,6 @@ export const changeCartItemAmount = async ( medicineName, quantity) => {
   return response.data;
 };
 export const removeCartItems = async (medicinename) => {
-  console.log(medicinename);
-  console.log({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   await API.delete(`/Patient/removeCartItems`, {
     data: { medicinename },  // Correct way to send data in the request body
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -68,8 +66,12 @@ export const getAllSales = () => API.get("/Pharmacist/allSales")
   .then(response => response.data);  // Add this line
 
 
+  export const getAllPharmacists = () => API.get("/Pharmacist/getAllPharmacists");
 
+  export const createChat = (pharmacistFirstName,pharmacistLastName) => API.post("/Patient/createChat",{ pharmacistFirstName,pharmacistLastName },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+  export const getPharmacistbyId = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);
 
+  export const sendMessage = ( messageText, receiverId) => API.post("/Patient/sendMessage",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const getMedicinesByUse = (use) =>

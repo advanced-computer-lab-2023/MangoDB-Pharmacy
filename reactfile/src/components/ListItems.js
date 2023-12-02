@@ -72,6 +72,13 @@ export const mainListItems = (
       <ListItemText primary="Change Password" />
     </ListItemButton>
 
+    <ListItemButton component={Link} to="/newChat">
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      <ListItemText primary="new chat" />
+    </ListItemButton>
+
     <ListItemButton component={Link} to="/viewprofile">
       <ListItemIcon>
         <AccountCircleIcon />
