@@ -38,6 +38,18 @@ const pharmacistSchema = new Schema(
         },
       },
     ],
+    notifications: [
+      {
+        title: {
+            type: String,
+            required: true
+        },
+        body: {
+          type: String,
+          required: true
+        },
+      }
+    ],
   },
   { timestamps: true }
 );
