@@ -557,7 +557,6 @@ const checkout = async (req, res) => {
 	const patientId = req.user._id;
 	let totalPrice = 0;
 	try {
-
 		const patient = await Patient.findById(patientId);
 		if (!patient) {
 			return res.status(404).json({ error: "Patient not found" });
@@ -566,6 +565,7 @@ const checkout = async (req, res) => {
 		const orderdetails = [];
 		for (const cartItem of finalorder) {
 			const medicine = await Medicine.findOne({ name: cartItem.medicineName });
+			//if(medicine.quantity>0){
 			medicine.quantity = medicine.quantity - cartItem.quantity;
 			totalPrice += cartItem.price;
 			const item = {
@@ -575,6 +575,46 @@ const checkout = async (req, res) => {
 			};
 			orderdetails.push(item);
 			await medicine.save();
+			if(medicine.quantity==0)
+			{
+				//system
+				const pharmacist= Pharmacist.find()
+				if (!pharmacist.notifications) {
+					pharmacist.notifications = [];
+				}
+
+				pharmacist.notifications.push({
+					title: "Appointment Cancelled",
+					body: `Kindly note that ${medicine} is out of stock `
+				});
+				await pharmacist.save();
+				//email
+				const transporter = nodemailer.createTransport({
+					service: "Gmail",
+					auth: {
+						user: "omarelzaher93@gmail.com",
+						pass: "vtzilhuubkdtphww",
+					},
+				});
+			
+				const mailOptions = {
+					from: "omarelzaher93@gmail.com",
+					to: `dina.mamdouh.131@gmail.com, ${pharmacist.email}`,//send it lel dr wel patient 
+					subject: "[NO REPLY] Medicine out of stock ",
+					text: `Kindly note that ${medicine} is out of stock `
+				};
+			
+				transporter.sendMail(mailOptions, (error, info) => {
+					if (error) {
+						res.status(500);
+						throw new Error(error.message);
+					} else {
+						res.status(200).json({ message: "OTP Sent, Please Check Your Email" });
+					}
+				});
+
+			}
+			//}
 		}
 
 		if (paymentMethod == "wallet") {
