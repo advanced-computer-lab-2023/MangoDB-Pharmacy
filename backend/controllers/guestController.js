@@ -73,11 +73,11 @@ const login = asyncHandler(async (req, res) => {
 console.log(username);
   const user = await User.findOne({ username });
   console.log(user);
-  if (!user) res.status(404).json({ message: "User not found" });
+  if (!user) return res.status(404).json({ message: "User not found" });
 
   const correctPassword = await bcrypt.compare(password, user.password);
   if (!correctPassword)
-    res.status(400).json({ message: "Password is incorrect" });
+    return res.status(400).json({ message: "Password is incorrect" });
 
   const token = genToken(user._id);
 
