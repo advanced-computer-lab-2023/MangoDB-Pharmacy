@@ -28,47 +28,57 @@ import ForgotPasswordUserPage from "./pages/ForgotPasswordUserPage";
 // import AddAdminPage from "./pages/AddAdminPage";
 // import RequestedDoctorsPage from "./pages/RequestedDoctorsPage";
 import LoginUser from "./components/LoginUser";
-
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
+import StickyHeader from "./components/StickyHeader";
+import DataTable from "./pages/dataTable";
 function App() {
   return (
-    <Router>
-          <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+    <ThemeProvider theme={theme}>
+      <Router>
+        <StickyHeader />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path='/addMed' element={<AddMed />} />
-           
-          <Route path='/medicineAdmin/:id' element={<MedicineAdmin />} />
+          <Route path="/dataTable" element={<DataTable />} />
 
-          <Route path='/viewMedsAdmin' element={<ViewMedsAdmin />} />
+          <Route path="/addMed" element={<AddMed />} />
 
-          <Route path='/patientReg' element={<PatientReg />} />
+          <Route path="/medicineAdmin/:id" element={<MedicineAdmin />} />
 
-          <Route path='/pharmaReg' element={<PharmacistReg />} />
+          <Route path="/viewMedsAdmin" element={<ViewMedsAdmin />} />
 
-          <Route path='/viewMeds' element={<ViewMeds />} />
+          <Route path="/patientReg" element={<PatientReg />} />
 
-          <Route path='/viewMedsPharma' element={<ViewMedsPharma />} />
+          <Route path="/pharmaReg" element={<PharmacistReg />} />
 
-          <Route path='/DashboardPharma' element={<DashboardPharma />} />
+          <Route path="/viewMeds" element={<ViewMeds />} />
 
-          <Route path='/addMed' element={<AddMed />} />
+          <Route path="/viewMedsPharma" element={<ViewMedsPharma />} />
 
-          <Route path='/cart/:id' element={<ViewCartItems />} />
+          <Route path="/DashboardPharma" element={<DashboardPharma />} />
 
-          <Route path='/viewPharmacists' element={<ViewPharmacists />} />
+          <Route path="/addMed" element={<AddMed />} />
 
-          <Route path='/viewPatients' element={<ViewPatients />} />
+          <Route path="/cart/:id" element={<ViewCartItems />} />
 
-          <Route path='/pharmacistDetails/:id' element={<PharmacistDetails />} />
-          
+          <Route path="/viewPharmacists" element={<ViewPharmacists />} />
+
+          <Route path="/viewPatients" element={<ViewPatients />} />
+
+          <Route
+            path="/pharmacistDetails/:id"
+            element={<PharmacistDetails />}
+          />
+
           <Route path="/patientDetails/:id" element={<PatientDetails />} />
 
           <Route path="/medicinePharma/:id" element={<GetMedPharma />} />
 
           <Route path="/medicine/:id" element={<GetMeds />} />
 
-          <Route path='/order' element={<Orders />} />
+          <Route path="/order" element={<Orders />} />
 
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 
@@ -76,24 +86,24 @@ function App() {
 
           {/* ===================Admin Routes=================== */}
 
-          <Route path='/admin' element={<DashboardAdmin />} />
-					<Route path='/admin/login' element={<LoginPage />} />
-					<Route path='/login' element={<LoginUser />} />
+          <Route path="/admin" element={<DashboardAdmin />} />
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginUser />} />
 
-					<Route
-						path='/admin/forgot-password'
-						element={<ForgotPasswordAdminPage />}
-					/>
+          <Route
+            path="/admin/forgot-password"
+            element={<ForgotPasswordAdminPage />}
+          />
 
-					<Route path='/forgot-password' element={<ForgotPasswordUserPage />} />
-					{/* <Route path='/admin/add-admin' element={<AddAdminPage />} /> */}
-					{/* <Route
+          <Route path="/forgot-password" element={<ForgotPasswordUserPage />} />
+          {/* <Route path='/admin/add-admin' element={<AddAdminPage />} /> */}
+          {/* <Route
 						path='/admin/requested-doctors'
 						element={<RequestedDoctorsPage />}
 					/> */}
-
         </Routes>
-    </Router>
+      </Router>
+    </ThemeProvider>
   );
 }
 export default App;

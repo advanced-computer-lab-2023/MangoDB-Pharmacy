@@ -15,6 +15,11 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
+  Typography,
+  FormControlLabel,
+  RadioGroup,
+  FormLabel,
+  Radio,
 } from "@mui/material";
 import { patientReg as PatientRegService } from "../services/api";
 
@@ -103,7 +108,7 @@ const PatientReg = () => {
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
       <Grid item xs={12} md={8} lg={6}>
         <Paper elevation={3} style={{ padding: "2rem" }}>
-          <h2>Register As Patient</h2>
+          <Typography variant="h4">Register as a patient</Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -166,7 +171,6 @@ const PatientReg = () => {
                   margin="normal"
                 />
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Date of Birth"
@@ -177,6 +181,7 @@ const PatientReg = () => {
                   fullWidth
                   required
                   margin="normal"
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
 
@@ -194,15 +199,18 @@ const PatientReg = () => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required margin="normal">
-                  <InputLabel>Gender</InputLabel>
+                <FormControl required fullWidth margin="normal">
+                  <InputLabel id="gender-label">Gender</InputLabel>
                   <Select
+                    labelId="gender-label"
+                    id="gender-select"
                     name="gender"
                     value={patient.gender}
                     onChange={handleChange}
                   >
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="other">other</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -253,7 +261,6 @@ const PatientReg = () => {
                 </Grid>
               ))}
             </Grid>
-
             <Button
               variant="contained"
               type="submit"

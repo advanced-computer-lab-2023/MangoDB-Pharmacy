@@ -11,8 +11,12 @@ import {
   Input,
 } from "@mui/material";
 import { pharmacistReg as PharmacistRegService } from "../services/api";
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import { useTheme } from "@mui/material/styles";
 
 const PharmacistReg = () => {
+  const theme = useTheme();
   //Pharmacist
   const [rate, setRate] = useState("");
   const [affiliation, setAffiliation] = useState("");
@@ -64,8 +68,8 @@ const PharmacistReg = () => {
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
       <Grid item xs={6}>
-        <Paper elevation={3} style={{ padding: "2rem" }}>
-          <h2>Register As Pharmacist</h2>
+        <Paper elevation={1} style={{ padding: "2rem" }}>
+          <Typography variant="h4">Pharmacist registration</Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -160,7 +164,6 @@ const PharmacistReg = () => {
                   style={{ marginBottom: "1rem" }}
                 />
               </Grid>
-
               <Grid item xs={6}>
                 <TextField
                   label="Education"
@@ -185,18 +188,18 @@ const PharmacistReg = () => {
                   style={{ marginBottom: "1rem" }}
                 />
               </Grid>
+            </Grid>
 
-              <Grid item xs={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Upload Documents</InputLabel>
-                  <Input
-                    type="file"
-                    onChange={(e) => setDocuments(Array.from(e.target.files))}
-                    style={{ marginBottom: "5rem" }}
-                    inputProps={{ multiple: true }}
-                  />
-                </FormControl>
-              </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel>Upload Documents</InputLabel>
+                <Input
+                  type="file"
+                  onChange={(e) => setDocuments(Array.from(e.target.files))}
+                  style={{ marginBottom: "5rem" }}
+                  inputProps={{ multiple: true }}
+                />
+              </FormControl>
             </Grid>
 
             {!isPending ? (

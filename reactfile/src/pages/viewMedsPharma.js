@@ -12,10 +12,17 @@ import {
   Button,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
+import {
+  viewMeds,
+  getAllMedicineUses,
+  getMedicinesByUse,
+} from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
+import AddIcon from "@mui/icons-material/Add";
+import { useTheme } from "@mui/material/styles";
 
 const ViewMedsPharma = () => {
+  const theme = useTheme();
   const [meds, setMeds] = useState([]);
   const [medicineUses, setMedicineUses] = useState([]);
   const [selectedUse, setSelectedUse] = useState("");
@@ -82,19 +89,54 @@ const ViewMedsPharma = () => {
         md={2}
         lg={2}
         xl={2}
-        style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
+        style={{
+          background: "#f0f0f0",
+          minHeight: "100vh",
+          paddingTop: "2rem",
+        }}
       >
         {pharmacistListItems}
       </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
-        <Typography variant="h4" gutterBottom>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        md={10}
+        lg={10}
+        xl={10}
+        style={{ paddingLeft: "2rem" }}
+      >
+        <Typography
+          variant="h3"
+          gutterBottom
+          marginTop={"1rem"}
+          color={theme.palette.secondary.main}
+        >
           Medicines
         </Typography>
 
+        {/* Search Bar */}
+        <TextField
+          label="Search for Medicine by Name"
+          variant="outlined"
+          fullWidth
+          size="medium"
+          margin="normal"
+          onChange={handleSearchChange}
+          value={searchTerm}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"></InputAdornment>,
+          }}
+          sx={{ borderRadius: "10px", color: "secondary.main" }}
+        />
         {/* Display Medicine Uses */}
-        <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
+        <FormControl
+          fullWidth
+          margin="normal"
+          sx={{ minWidth: 200, maxHeight: 30, paddingBottom: "2rem" }}
+        >
           <InputLabel id="medicineUseLabel">Select Medicine Use</InputLabel>
           <Select
             labelId="medicineUseLabel"
@@ -111,28 +153,15 @@ const ViewMedsPharma = () => {
           </Select>
         </FormControl>
 
-        {/* Search Bar */}
-        <TextField
-          label="Search for Medicine Name"
-          variant="outlined"
-          fullWidth
-          size="small"
-          margin="normal"
-          onChange={handleSearchChange}
-          value={searchTerm}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-          }}
-          sx={{ borderRadius: "20px" }}
-        />
-
         {/* Display Medicines */}
         {isPending && <div>Loading...</div>}
         {error && <div>{error}</div>}
         {meds && (
           <div>
             {meds
-              .filter((med) => med.name.toLowerCase().includes(searchTerm.toLowerCase()))
+              .filter((med) =>
+                med.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
               .map((med) => (
                 <Link
                   to={`/medicinePharma/${med._id}`}
@@ -152,13 +181,20 @@ const ViewMedsPharma = () => {
                       <img
                         src={`http://localhost:4000/${med.picture}`}
                         alt={med.name}
-                        style={{ width: "50px", height: "50px", marginRight: "1rem" }}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          marginRight: "1rem",
+                          borderRadius: "3px",
+                        }}
                       />
                     )}
                     <div>
                       <Typography variant="h6">{med.name}</Typography>
                       <Typography>{med.description}</Typography>
-                      <Typography variant="subtitle1">Price: {med.price}</Typography>
+                      <Typography variant="subtitle1">
+                        Price: {med.price}
+                      </Typography>
                     </div>
                   </Paper>
                 </Link>
@@ -167,14 +203,22 @@ const ViewMedsPharma = () => {
         )}
 
         {/* Add Medicine Button */}
-        <Grid item xs={12} style={{ paddingLeft: "2rem", marginTop: "2rem" }}>
+        <Grid item xs={12} style={{ marginTop: "2rem" }}>
           {/* Add Medicine Button */}
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
+            align="center"
+            fullWidth
+            style={{
+              marginTop: "0.5rem",
+              marginBottom: "1rem",
+              padding: "1rem",
+            }}
             component={Link} // Use Link component for navigation
-            to="/addMed" // Path to the AddMed page
+            to="/addMed"
           >
+            <AddIcon></AddIcon>
             Add Medicine
           </Button>
         </Grid>

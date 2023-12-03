@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 // import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { mainListItems } from '../components/ListItems';
+import { useParams } from "react-router-dom";
+import { mainListItems } from "../components/ListItems";
 import { getMeds } from "../services/api";
 import { addMedicineToCart } from "../services/api";
 
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import {
-  Grid,
-  Typography,
-  Paper,
-  Button,
-} from '@mui/material';
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { Grid, Typography, Paper, Button } from "@mui/material";
 
 const Medicine = () => {
   const { id } = useParams(); // Get the medicine ID from the URL
@@ -47,24 +42,27 @@ const Medicine = () => {
       addMedicineToCart(medicine.name, quantity)
         .then((response) => {
           setIsAddedToCart(true);
-  
+
           // Handle the response if needed
-          console.log('Item added to cart:', response.data);
+          console.log("Item added to cart:", response.data);
         })
         .catch((error) => {
           // Handle errors
-          console.error('Error adding item to cart:', error);
-  
+          console.error("Error adding item to cart:", error);
+
           // Extract the error message from the error object
-          const errorMessage = error.response?.data?.error || 'An error occurred';
-  
+          const errorMessage =
+            error.response?.data?.error || "An error occurred";
+
           // Check if the error response contains a quantity not available message
           if (
-            errorMessage.includes('Quantity not available') &&
-            errorMessage.includes('This medicine requires a prescription')
+            errorMessage.includes("Quantity not available") &&
+            errorMessage.includes("This medicine requires a prescription")
           ) {
             // Display the error message to the user
-            alert('This medicine requires a prescription. Please consult your doctor.');
+            alert(
+              "This medicine requires a prescription. Please consult your doctor."
+            );
           } else {
             // Handle other errors if needed
             alert(errorMessage);
@@ -72,9 +70,6 @@ const Medicine = () => {
         });
     }
   };
-  
-  
-  
 
   return (
     <Grid container>
@@ -86,9 +81,9 @@ const Medicine = () => {
         lg={2}
         xl={2}
         style={{
-          background: '#f0f0f0',
-          minHeight: '100vh',
-          paddingTop: '2rem',
+          background: "#f0f0f0",
+          minHeight: "100vh",
+          paddingTop: "2rem",
         }}
       >
         {mainListItems}
@@ -101,10 +96,10 @@ const Medicine = () => {
         ) : (
           <Paper
             style={{
-              padding: '1rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+              padding: "0.5rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             {medicine ? (
@@ -116,9 +111,9 @@ const Medicine = () => {
                   src={`http://localhost:4000/${medicine.picture}`}
                   alt={medicine.name}
                   style={{
-                    maxWidth: '100%',
-                    maxHeight: '300px',
-                    marginBottom: '1rem',
+                    maxWidth: "100%",
+                    maxHeight: "300px",
+                    marginBottom: "0.5rem",
                   }}
                 />
                 <Typography variant="body1" gutterBottom>
@@ -130,14 +125,14 @@ const Medicine = () => {
                 <Typography variant="subtitle1" gutterBottom>
                   Price: {medicine.price}
                 </Typography>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="body" gutterBottom>
                   Uses: {medicine.use}
                 </Typography>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <IconButton onClick={handleDecreaseQuantity}>
                     <RemoveIcon />
                   </IconButton>
-                  <Typography variant="body2" style={{ margin: '0 1rem' }}>
+                  <Typography variant="body2" style={{ margin: "0 1rem" }}>
                     {quantity}
                   </Typography>
                   <IconButton onClick={handleIncreaseQuantity}>
@@ -153,7 +148,7 @@ const Medicine = () => {
                 </Button>
 
                 {isAddedToCart && (
-                  <Typography style={{ marginTop: '1rem', color: 'green' }}>
+                  <Typography style={{ marginTop: "1rem", color: "green" }}>
                     Product added to cart successfully!
                   </Typography>
                 )}
