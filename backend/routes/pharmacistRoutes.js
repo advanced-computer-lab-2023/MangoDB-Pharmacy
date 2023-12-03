@@ -58,7 +58,7 @@ router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);
 router.post("/unarchiveMedicine", pharmacistController.unarchiveMedicine);
 router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 
-router.post("/sendMessage", protectPharmacist,pharmacistController.sendMessage);
+router.post("/sendMessage", pharmacistController.sendMessage);
 
 
 module.exports = router;

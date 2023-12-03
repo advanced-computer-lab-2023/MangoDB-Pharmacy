@@ -78,7 +78,36 @@ const createChat = async (req, res) => {
   }
 };
 
-
+const getChat = async (req, res) => {
+	try {
+	  const patientId = req.user._id;
+	  
+  
+	  // Assuming the pharmacist's ID is passed as a query parameter or in the request body
+	  const pharmacistId =  req.body;
+  
+	  // Find the chat based on patientId and pharmacistId
+	  const chat = await Chat.findOne({
+		$or: [
+		  { userId1: patientId, userId2: pharmacistId },
+		  { userId1: pharmacistId, userId2: patientId },
+		],
+	  });
+  
+	  if (!chat) {
+		return res.status(404).json({ error: 'Chat not found' });
+	  }
+  
+	  // Populate the messages associated with the chat
+	  await chat.populate('messages').execPopulate();
+  
+	  return res.status(200).json(chat);
+	} catch (error) {
+	  console.error(error);
+	  return res.status(500).json({ error: 'Internal Server Error' });
+	}
+  };
+  
 
 
 
@@ -1024,5 +1053,6 @@ module.exports = {
 	getAlternativeMedicines,
 	viewWallet,
 	createChat,
-	sendMessage
+	sendMessage,
+	getChat
 };

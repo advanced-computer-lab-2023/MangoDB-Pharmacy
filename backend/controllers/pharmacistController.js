@@ -49,7 +49,7 @@ const getAllPharmacists = asyncHandler(async (req, res) => {
 // };
 const sendMessage = async (req, res) => {
 	const { messageText, receiverId } = req.body;
-	const senderId = '6562799ed2140278b1b59070';//req.user._id;
+	const senderId = '65548bf6f173cc7dd89dd382';//req.user._id;
   
 	try {
 	  // Find the chat based on patientId and doctorId

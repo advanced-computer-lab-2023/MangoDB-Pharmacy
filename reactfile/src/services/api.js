@@ -197,5 +197,15 @@ API.post("/Pharmacist/archiveMedicine", { medicineName })
 
   export const viewArchivedMeds = () => API.get("/Pharmacist/viewArchivedMeds");
 
+
+
+  export const getChat = ({ pharmacistId }) =>
+  API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("Error fetching chat:", error);
+      throw error;
+    });
+    
   
 export default API;
