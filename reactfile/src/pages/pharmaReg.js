@@ -131,6 +131,7 @@ const PharmacistReg = () => {
                   required
                   fullWidth
                   value={dob}
+                  InputLabelProps={{ shrink: true }}
                   onChange={(e) => setDOB(e.target.value)}
                   style={{ marginBottom: "1rem" }}
                 />

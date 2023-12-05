@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -11,14 +12,28 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   FormControl,
   InputLabel,
   Input,
+  Typography,
+  Snackbar,
+  FormControlLabel,
+  FormHelperText,
+  Box,
 } from "@mui/material";
 import { addMed } from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
 
+import MuiAlert from "@mui/material/Alert";
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
 const AddMed = () => {
+  const addIcon = `${process.env.PUBLIC_URL}/icons/add.svg`;
   const [medicine, setMedicine] = useState({
     name: "",
     price: "",
@@ -121,7 +136,7 @@ const AddMed = () => {
         <Grid container justifyContent="center" style={{ padding: "2rem" }}>
           <Grid item xs={12} md={8} lg={6}>
             <Paper elevation={3} style={{ padding: "2rem" }}>
-              <h2>Add a medicine</h2>
+              <Typography variant="h3">Add a medicine</Typography>
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
@@ -202,16 +217,34 @@ const AddMed = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      label="Prescribed"
-                      name="prescribed"
-                      value={medicine.prescribed}
-                      onChange={handleChange}
-                      fullWidth
-                      required
-                      margin="normal"
-                    />
+                    <Box display="flex" alignItems="center" height="100%">
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={medicine.prescribed === "required"}
+                            onChange={(event) =>
+                              handleChange({
+                                target: {
+                                  name: "prescribed",
+                                  value: event.target.checked
+                                    ? "required"
+                                    : "not required",
+                                },
+                              })
+                            }
+                          />
+                        }
+                        label="Prescribed"
+                        labelPlacement="center"
+                        sx={{
+                          p: "0px 0px 0px 40px",
+                          alignItems: "center",
+                          alignContent: "center",
+                        }}
+                      />
+                    </Box>
                   </Grid>
+
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
                       <InputLabel>Upload Picture (png or pdf)</InputLabel>
@@ -228,7 +261,20 @@ const AddMed = () => {
                   variant="contained"
                   type="submit"
                   fullWidth
-                  style={{ marginTop: "2rem" }}
+                  startIcon={
+                    <img
+                      src={addIcon}
+                      alt="Add Icon"
+                      style={{ filter: "invert(1)", marginRight: "0px" }}
+                      width="18"
+                      height="18"
+                    />
+                  }
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
                   {isPending ? (
                     <CircularProgress size={24} color="inherit" />

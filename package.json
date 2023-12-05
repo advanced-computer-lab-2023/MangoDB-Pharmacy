@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@mui/x-data-grid": "^6.18.2",
     "async-handler": "^0.0.3",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",

@@ -41,54 +41,58 @@ import WalletPage from "./pages/wallet";
 import WalletPharma from "./pages/walletPharma";
 import ArchivedMedicines from "./pages/archivedMedicines";
 
-import NewChat  from "./pages/newChat";
-import Chat  from "./pages/chat";
+import NewChat from "./pages/newChat";
+import Chat from "./pages/chat";
+
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
+import AdminHeader from "./components/AdminHeader";
 
 function App() {
   return (
-    <Router>
-          <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route path='/addMed' element={<AddMed />} />
-           
-          <Route path='/medicineAdmin/:id' element={<MedicineAdmin />} />
+          <Route path="/addMed" element={<AddMed />} />
 
-          <Route path='/viewMedsAdmin' element={<ViewMedsAdmin />} />
+          <Route path="/medicineAdmin/:id" element={<MedicineAdmin />} />
 
-          <Route path='/patientReg' element={<PatientReg />} />
+          <Route path="/viewMedsAdmin" element={<ViewMedsAdmin />} />
 
-          <Route path='/pharmaReg' element={<PharmacistReg />} />
+          <Route path="/patientReg" element={<PatientReg />} />
 
-          <Route path='/viewMeds' element={<ViewMeds />} />
+          <Route path="/pharmaReg" element={<PharmacistReg />} />
 
-          <Route path='/viewMedsPharma' element={<ViewMedsPharma />} />
+          <Route path="/viewMeds" element={<ViewMeds />} />
 
-          <Route path='/DashboardPharma' element={<DashboardPharma />} />
+          <Route path="/viewMedsPharma" element={<ViewMedsPharma />} />
 
-          <Route path='/addMed' element={<AddMed />} />
+          <Route path="/DashboardPharma" element={<DashboardPharma />} />
 
-          <Route path='/cart' element={<ViewCartItems />} />
+          <Route path="/addMed" element={<AddMed />} />
 
-          <Route path='/viewPharmacists' element={<ViewPharmacists />} />
+          <Route path="/cart" element={<ViewCartItems />} />
 
-          <Route path='/viewPatients' element={<ViewPatients />} />
+          <Route path="/viewPharmacists" element={<ViewPharmacists />} />
 
-          <Route path='/pharmacistDetails' element={<PharmacistDetails />} />
-          
+          <Route path="/viewPatients" element={<ViewPatients />} />
+
+          <Route path="/pharmacistDetails" element={<PharmacistDetails />} />
+
           <Route path="/patientDetails" element={<PatientDetails />} />
 
           <Route path="/medicinePharma/:id" element={<GetMedPharma />} />
 
           <Route path="/medicine/:id" element={<GetMeds />} />
 
-          <Route path='/order' element={<Orders />} />
+          <Route path="/order" element={<Orders />} />
 
-          <Route path='/sales' element={<ViewSales />} />
+          <Route path="/sales" element={<ViewSales />} />
 
-          <Route path='/salesAdmin' element={<ViewSalesAdmin />} />
-
+          <Route path="/salesAdmin" element={<ViewSalesAdmin />} />
 
           <Route path="/orderDetails/:id" element={<OrderDetails />} />
 
@@ -102,42 +106,41 @@ function App() {
           <Route path="/chat/:id" element={<Chat />} />
 
           <Route
-          path='/changePasswordPatient'
-          element={<ChangePasswordPatient />}
-        />
-
+            path="/changePasswordPatient"
+            element={<ChangePasswordPatient />}
+          />
 
           <Route
-          path='/changePasswordPharmacist'
-          element={<ChangePasswordPharmacist />}
-           />
+            path="/changePasswordPharmacist"
+            element={<ChangePasswordPharmacist />}
+          />
 
           {/* ===================Admin Routes=================== */}
           <Route
-          path='/changePasswordAdmin'
-          element={<ChangePasswordAdmin />}
-        />
+            path="/changePasswordAdmin"
+            element={<ChangePasswordAdmin />}
+          />
 
-          <Route path='/admin' element={<DashboardAdmin />} />
-					<Route path='/admin/login' element={<LoginPage />} />
-					<Route path='/login' element={<LoginUser />} />
-          <Route path='/requestedPharma' element={<Requests />} />
+          <Route path="/admin" element={<DashboardAdmin />} />
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginUser />} />
+          <Route path="/requestedPharma" element={<Requests />} />
 
-        <Route path='/Pharamcists/:id' element={<PharamcistDetail />} />
-					<Route
-						path='/admin/forgot-password'
-						element={<ForgotPasswordAdminPage />}
-					/>
+          <Route path="/Pharamcists/:id" element={<PharamcistDetail />} />
+          <Route
+            path="/admin/forgot-password"
+            element={<ForgotPasswordAdminPage />}
+          />
 
-					<Route path='/forgot-password' element={<ForgotPasswordUserPage />} />
-					{/* <Route path='/admin/add-admin' element={<AddAdminPage />} /> */}
-					{/* <Route
+          <Route path="/forgot-password" element={<ForgotPasswordUserPage />} />
+          {/* <Route path='/admin/add-admin' element={<AddAdminPage />} /> */}
+          {/* <Route
 						path='/admin/requested-doctors'
 						element={<RequestedDoctorsPage />}
 					/> */}
-
         </Routes>
-    </Router>
+      </Router>
+    </ThemeProvider>
   );
 }
 export default App;
