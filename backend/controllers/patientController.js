@@ -81,25 +81,18 @@ const createChat = async (req, res) => {
 const getChat = async (req, res) => {
 	try {
 	  const patientId = req.user._id;
-	  
+	  const pharmacistId = req.body.pharmacistId; // Extract pharmacistId from the request body
   
-	  // Assuming the pharmacist's ID is passed as a query parameter or in the request body
-	  const pharmacistId =  req.body;
-  
-	  // Find the chat based on patientId and pharmacistId
 	  const chat = await Chat.findOne({
 		$or: [
 		  { userId1: patientId, userId2: pharmacistId },
 		  { userId1: pharmacistId, userId2: patientId },
 		],
-	  });
+	  }).populate('messages'); // Populate the messages field
   
 	  if (!chat) {
 		return res.status(404).json({ error: 'Chat not found' });
 	  }
-  
-	  // Populate the messages associated with the chat
-	  await chat.populate('messages').execPopulate();
   
 	  return res.status(200).json(chat);
 	} catch (error) {
@@ -107,6 +100,7 @@ const getChat = async (req, res) => {
 	  return res.status(500).json({ error: 'Internal Server Error' });
 	}
   };
+  
   
 
 

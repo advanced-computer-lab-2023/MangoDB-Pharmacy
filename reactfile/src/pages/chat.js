@@ -21,14 +21,25 @@ const ChatPage = () => {
 
     // Fetch chat messages when component mounts
     fetchChatMessages(id);
+
+    // Set up interval to fetch messages every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchChatMessages(id);
+    }, 5000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+
   }, [id]);
 
   const fetchChatMessages = (pharmacistId) => {
     // Fetch chat messages for the given pharmacist
     getChat({ pharmacistId })
       .then((response) => {
-        // Update the state with the fetched messages
-        setMessages(response.messages || []);
+        // If there are messages in the response, update the state
+        if (response.messages) {
+          setMessages(response.messages);
+        }
       })
       .catch((error) => {
         console.error("Error fetching chat messages:", error.message);
@@ -39,7 +50,7 @@ const ChatPage = () => {
     // Call the sendMessage function to send a message
     sendMessage(message, id)
       .then((response) => {
-        // Update the state with the sent message and all previous messages
+        // Update the state with the sent message
         setMessages((prevMessages) => [...prevMessages, response.data]);
         // Clear the message input
         setMessage("");

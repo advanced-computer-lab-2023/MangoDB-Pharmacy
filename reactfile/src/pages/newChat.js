@@ -63,7 +63,7 @@ const NewChat = () => {
             <MenuItem value="">Select a Pharmacist</MenuItem>
             {pharmacists.map((pharmacist) => (
               <MenuItem key={pharmacist._id} value={pharmacist._id}>
-                <Button onClick={() => handleCreateChat(pharmacist)}>
+                <Button onClick={() => handleCreateChat(pharmacist)}style={{ color: "black" }}>
                   {`${pharmacist.firstName} ${pharmacist.lastName}`}
                 </Button>
               </MenuItem>
