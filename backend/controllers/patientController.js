@@ -592,19 +592,10 @@ const checkout = async (req, res) => {
 			};
 			orderdetails.push(item);
 			await medicine.save();
-			if(medicine.quantity==0)
+			if(medicine.quantity <= 0)
 			{
 				//system
-				const pharmacist= Pharmacist.find()
-				if (!pharmacist.notifications) {
-					pharmacist.notifications = [];
-				}
-
-				pharmacist.notifications.push({
-					title: "Appointment Cancelled",
-					body: `Kindly note that ${medicine} is out of stock `
-				});
-				await pharmacist.save();
+				const pharmacists = await Pharmacist.find();
 				//email
 				const transporter = nodemailer.createTransport({
 					service: "Gmail",
@@ -613,23 +604,34 @@ const checkout = async (req, res) => {
 						pass: "vtzilhuubkdtphww",
 					},
 				});
-			
-				const mailOptions = {
-					from: "omarelzaher93@gmail.com",
-					to: `dina.mamdouh.131@gmail.com, ${pharmacist.email}`,//send it lel dr wel patient 
-					subject: "[NO REPLY] Medicine out of stock ",
-					text: `Kindly note that ${medicine} is out of stock `
-				};
-			
-				transporter.sendMail(mailOptions, (error, info) => {
-					if (error) {
-						res.status(500);
-						throw new Error(error.message);
-					} else {
-						res.status(200).json({ message: "OTP Sent, Please Check Your Email" });
+				
+				pharmacists.map(async (p) => {
+					if (!p.notifications) {
+						p.notifications = [];
 					}
-				});
-
+					
+					p.notifications.push({
+						title: `Medicine out of stock`,
+						body: `Kindly note that ${ medicine.name } is out of stock!`
+					});
+					await p.save();
+				
+					const mailOptions = {
+						from: "omarelzaher93@gmail.com",
+						to: `dina.mamdouh.131@gmail.com, ${p.email}`,//send it lel dr wel patient 
+						subject: "[NO REPLY] Medicine out of stock",
+						text: `Kindly note that ${ medicine.name } is out of stock`
+					};
+				
+					transporter.sendMail(mailOptions, (error, info) => {
+						if (error) {
+							res.status(500);
+							throw new Error(error.message);
+						} else {
+							res.status(200).json({ message: "OTP Sent, Please Check Your Email" });
+						}
+					});
+				})
 			}
 			//}
 		}

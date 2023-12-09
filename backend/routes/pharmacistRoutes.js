@@ -48,7 +48,7 @@ router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
-router.post("/getPharmacist", pharmacistController.getPharmacist);
+router.post("/getPharmacist", protectPharmacist, pharmacistController.getPharmacist);
 router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);
 
 router.get("/getAllPharmacists", pharmacistController.getAllPharmacists);

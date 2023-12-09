@@ -92,7 +92,7 @@ export const editMedPrice = async (id, details, price) => {
 };
 
 export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
-export const getPharmacist = () => API.get(`/Pharmacist/getPharmacist`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const getPharmacist = () => API.post(`/Pharmacist/getPharmacist`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const viewPatients = () => API.get("/Patient/getPatients");
 export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });

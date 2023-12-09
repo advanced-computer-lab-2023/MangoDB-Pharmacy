@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Popover from '@mui/material/Popover';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -18,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { pharmacistListItems } from '../components/ListItemsPharma';
+import { getPharmacist } from '../services/api';
 
 function Copyright(props) {
   return (
@@ -82,10 +85,35 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function PharmacistDashboard() {
+  const [ notifications, setNotifications ] = useState([]);
+	const [ error, setError ] = useState(null);
+	const [anchorEl, setAnchorEl] = useState(null);
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	
+	const handleClose = () => {
+		setAnchorEl(null);
+		window.location.reload();
+  };
+	
+	const isOpen = Boolean(anchorEl);
+	const id = isOpen ? 'simple-popover' : undefined;
+
+  useEffect(() => {
+		getPharmacist()
+			.then((result) => {
+				console.log(result);
+				setNotifications(result.data.notifications);
+			})
+			.catch((err) => setError(err.message));
+	}, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -119,8 +147,31 @@ export default function PharmacistDashboard() {
               Pharmacist Dashboard
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
+              <Badge badgeContent={ notifications.length } color="secondary">
+                <NotificationsIcon onClick={ handleClick } />
+                <Popover
+                  id={id}
+                  open={isOpen}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+							  >
+                  <div>
+                    {notifications.map(notification => (
+                      <div key={notification._id}>
+                        <h4>{notification.title}</h4>
+                        <p>{notification.body}</p>
+                      </div>
+                    ))}
+                  </div>
+							  </Popover>
               </Badge>
             </IconButton>
           </Toolbar>
