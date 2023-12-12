@@ -794,6 +794,23 @@ const archiveMedicine = asyncHandler(async (req, res) => {
     }
 });
 
+const clearNotifs = async (req, res) => {
+	const pharmacistId = req.user._id;
+	const { id } = req.body;
+
+	try {
+		await Pharmacist.updateOne(
+			{ _id: pharmacistId },
+			{ $pull: { notifications: { _id: id } } }
+		);
+		
+		res.status(200).json({ message: "Success" })
+	} catch(error) {
+		res.status(404).json({ error: error.message });
+	}
+
+}
+
 module.exports = {
 	addMedicine,
 	getMedicine,
@@ -817,6 +834,7 @@ module.exports = {
 	viewArchivedMeds,
 	unarchiveMedicine,
 	archiveMedicine,
-	sendMessage,getAllPharmacists
+	sendMessage,getAllPharmacists,
+	clearNotifs
 
 };

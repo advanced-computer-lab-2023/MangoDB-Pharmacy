@@ -19,8 +19,9 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { pharmacistListItems } from '../components/ListItemsPharma';
-import { getPharmacist } from '../services/api';
+import { clearNotifs, getPharmacist } from '../services/api';
 
 function Copyright(props) {
   return (
@@ -86,8 +87,10 @@ const defaultTheme = createTheme();
 
 export default function PharmacistDashboard() {
   const [ notifications, setNotifications ] = useState([]);
+  const [ notificationsCount, setNotificationsCount ] = useState(0);
 	const [ error, setError ] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
+  const [ reload, setReload ] = useState(false);
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -100,8 +103,26 @@ export default function PharmacistDashboard() {
 	
 	const handleClose = () => {
 		setAnchorEl(null);
-		window.location.reload();
+		// window.location.reload();
   };
+
+  const countNewNotifications = (notifs) => {
+    let count = 0;
+
+    for (let i = 0; i < notifs.length; i++) {
+      if (!notifs[i].seen) {
+        count++;
+      }
+    }
+
+    setNotificationsCount(count);
+  }
+
+  const handleNotifDelete = async (id) => {
+		// console.log(id);
+		await clearNotifs(id);
+		setReload(!reload);
+	}
 	
 	const isOpen = Boolean(anchorEl);
 	const id = isOpen ? 'simple-popover' : undefined;
@@ -109,11 +130,12 @@ export default function PharmacistDashboard() {
   useEffect(() => {
 		getPharmacist()
 			.then((result) => {
-				console.log(result);
+				// console.log(result);
+        countNewNotifications(result.data.notifications);
 				setNotifications(result.data.notifications);
 			})
 			.catch((err) => setError(err.message));
-	}, []);
+	}, [reload]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -147,7 +169,7 @@ export default function PharmacistDashboard() {
               Pharmacist Dashboard
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={ notifications.length } color="secondary">
+              <Badge badgeContent={ notificationsCount } color="secondary">
                 <NotificationsIcon onClick={ handleClick } />
                 <Popover
                   id={id}
@@ -165,8 +187,12 @@ export default function PharmacistDashboard() {
 							  >
                   <div>
                     {notifications.map(notification => (
-                      <div key={notification._id}>
-                        <h4>{notification.title}</h4>
+                      <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } } onClick={ () => { notification.seen = true; countNewNotifications(notifications); } }>
+                        {/* <h4>{notification.title}</h4> */}
+                        <div style={{ "display": "flex", "align-items": "center", "justify-content": "space-between" }}>
+                          <h4>{notification.title}</h4>
+                          <DeleteForeverIcon id={ notification._id } onClick={ () => handleNotifDelete(notification._id) } />
+                        </div>
                         <p>{notification.body}</p>
                       </div>
                     ))}

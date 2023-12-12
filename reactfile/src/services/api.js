@@ -208,6 +208,8 @@ API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bear
     throw error;
   });
 
+
+export const clearNotifs = (id) => API.patch('/Pharmacist/clearNotifs', { id }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
     
   
 export default API;
