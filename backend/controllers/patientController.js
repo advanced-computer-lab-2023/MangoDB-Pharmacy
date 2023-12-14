@@ -1030,7 +1030,6 @@ const viewChats = async (req, res) => {
 		  // Find the pharmacist
 		  const pharma = await User.findOne({ _id: chat.userId2 });
   
-		  // Get the last message
 		  const lastMessage =
 			chat.messages.length > 0
 			  ? chat.messages[chat.messages.length - 1].messageText

@@ -51,6 +51,13 @@ export const pharmacistListItems = (
     </ListItemButton>
     
 
+    <ListItemButton component={Link} to="/viewPatientChats">
+      <ListItemIcon>
+        <AccountCircleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Patient Chats" />
+    </ListItemButton>
+
     <ListItemButton component={Link} to="/viewprofile">
       <ListItemIcon>
         <AccountCircleIcon />

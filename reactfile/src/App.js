@@ -43,6 +43,9 @@ import ArchivedMedicines from "./pages/archivedMedicines";
 
 import NewChat from "./pages/newChat";
 import Chat from "./pages/chat";
+import PatientChats from "./pages/viewPatientChats";
+import PatientPharma from "./pages/chatPharmacistPatient";
+
 
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
@@ -109,6 +112,8 @@ function App() {
             path="/changePasswordPatient"
             element={<ChangePasswordPatient />}
           />
+          <Route path="/viewPatientChats" element={<PatientChats />} />
+          <Route path="/chatPharmacistPatient/:id" element={<PatientPharma />} />
 
           <Route
             path="/changePasswordPharmacist"

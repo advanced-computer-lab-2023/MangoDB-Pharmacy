@@ -4,6 +4,7 @@ const Order = require("../models/orderModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const User = require("../models/userModel");
 
 const Chat = require('../models/chatModel');
 const Message = require('../models/messageModel');
@@ -65,16 +66,13 @@ const sendMessage = async (req, res) => {
         return res.status(404).json({ error: 'Chat not found' });
       }
   
-      // Create a new message
       const newMessage = new Message({
         messageText,
         senderRole : 'pharmacist',
       });
   
-      // Add the new message to the chat
       chat.messages.push(newMessage);
   
-      // Save the updated chat to the database
       await chat.save();
   
       return res.status(201).json(newMessage);
@@ -863,8 +861,8 @@ const createChat = async (req, res) => {
   const getChat = async (req, res) => {
     try {
       const pharmacistId = req.user._id;
-      const recieverId = req.body; // Extract pharmacistId from the request body
-  
+      const recieverId = req.body.patientId;
+  console.log ("the receiver ",recieverId,"the pharamcist ",pharmacistId);
       const chat = await Chat.findOne({
         $or: [
           { userId1: pharmacistId, userId2: recieverId },
@@ -889,12 +887,11 @@ const createChat = async (req, res) => {
       const chats = await Chat.find({
         $or: [{ userId1: pharmacistId }, { userId2: pharmacistId }],
       });
-  
+  console.log("the chats ",chats);
       const formattedChats = await Promise.all(
         chats.map(async (chat) => {
-          // Find the pharmacist
-          const doctor = await User.findOne({ _id: chat.userId2 });
-  
+          const patient = await User.findOne({ _id: chat.userId1 });
+  console.log ("the patinet ",patient);
           // Get the last message
           const lastMessage =
             chat.messages.length > 0
@@ -904,11 +901,11 @@ const createChat = async (req, res) => {
           // Include the chat in the result only if there are messages
           return lastMessage !== 'No messages'
             ? {
-                doctor: doctor
+                patient: patient
                   ? {
-                      firstName: doctor.firstName,
-                      lastName: doctor.lastName,
-                      id : doctor._id,
+                      firstName: patient.firstName,
+                      lastName: patient.lastName,
+                      id : patient._id,
                     }
                   : null,
                 lastMessage,

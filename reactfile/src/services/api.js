@@ -72,6 +72,7 @@ export const getAllSales = () => API.get("/Pharmacist/allSales")
   export const getPharmacistbyId = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);
 
   export const sendMessage = ( messageText, receiverId) => API.post("/Patient/sendMessage",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+  export const sendMessagePharma = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const getMedicinesByUse = (use) =>
@@ -222,6 +223,13 @@ export const seenNotifs = () => API.patch('/Pharmacist/seenNotifs', {}, { header
 
 export const viewChats = () =>
 API.get('/Patient/viewChats', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
+export const viewChatsPharma = () =>
+API.get('/Pharmacist/viewChats', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },

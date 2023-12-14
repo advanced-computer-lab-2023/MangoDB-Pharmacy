@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
-import { getPatientbyId, getChatPharmaPat, sendMessage } from "../services/api";
+import { getPatientbyId, getChatPharmaPat, sendMessagePharma } from "../services/api";
 import { useParams } from 'react-router-dom';
 
 const ChatPage = () => {
@@ -47,7 +47,7 @@ const ChatPage = () => {
   };
 
   const handleSend = () => {
-    sendMessage(message, id)
+    sendMessagePharma(message, id)
       .then((response) => {
         setMessages((prevMessages) => [...prevMessages, response.data]);
         setMessage("");
