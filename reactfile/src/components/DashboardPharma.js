@@ -21,7 +21,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { pharmacistListItems } from '../components/ListItemsPharma';
-import { clearNotifs, getPharmacist } from '../services/api';
+import { clearNotifs, getPharmacist, seenNotifs } from '../services/api';
 
 function Copyright(props) {
   return (
@@ -91,6 +91,7 @@ export default function PharmacistDashboard() {
 	const [ error, setError ] = useState(null);
 	const [anchorEl, setAnchorEl] = useState(null);
   const [ reload, setReload ] = useState(false);
+  const [ seen, setSeen ] = useState(false);
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -103,7 +104,12 @@ export default function PharmacistDashboard() {
 	
 	const handleClose = () => {
 		setAnchorEl(null);
+    setSeen(true);
 		// window.location.reload();
+    notifications.map((notification) => {
+      notification.seen = true;
+    });
+    countNewNotifications(notifications);
   };
 
   const countNewNotifications = (notifs) => {
@@ -136,6 +142,14 @@ export default function PharmacistDashboard() {
 			})
 			.catch((err) => setError(err.message));
 	}, [reload]);
+
+  useEffect(() => {
+		if (seen) {
+      seenNotifs()
+        .then((result) => console.log(result))
+        .catch((err) => console.log(err.message));
+    }
+	}, [seen]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -187,9 +201,10 @@ export default function PharmacistDashboard() {
 							  >
                   <div>
                     {notifications.map(notification => (
-                      <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } } onClick={ () => { notification.seen = true; countNewNotifications(notifications); } }>
+                      // <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } } onClick={ () => { notification.seen = true; countNewNotifications(notifications); } }>
+                      <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } }>
                         {/* <h4>{notification.title}</h4> */}
-                        <div style={{ "display": "flex", "align-items": "center", "justify-content": "space-between" }}>
+                        <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between" }}>
                           <h4>{notification.title}</h4>
                           <DeleteForeverIcon id={ notification._id } onClick={ () => handleNotifDelete(notification._id) } />
                         </div>
