@@ -87,11 +87,10 @@ const NewChat = () => {
         </Typography>
         {patientChats.map((chat) => (
   <div key={chat._id}>
-    <Typography>{`Chat with ${chat.userId1} and ${chat.userId2}`}</Typography>
+    <Typography>{`${chat.pharma.firstName} ${chat.pharma.lastName} `}</Typography>
     <ul>
-      {chat.messages.map((message) => (
-        <li key={message._id}>{`${message.senderName}: ${message.messageText}`}</li>
-      ))}
+      {chat.lastMessage
+      }
     </ul>
   </div>
 ))}

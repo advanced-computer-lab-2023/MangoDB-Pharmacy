@@ -6,7 +6,7 @@ const Prescription = require("../models/prescriptionModel");
 const Chat = require('../models/chatModel');
 const Message = require('../models/messageModel');
 
-
+const User  = require("../models/userModel");
 
 const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
@@ -986,36 +986,52 @@ const createPrescription = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
-
 const viewChats = async (req, res) => {
 	try {
 	  const patientId = req.user._id;
 	  const chats = await Chat.find({
 		$or: [{ userId1: patientId }, { userId2: patientId }],
-	  })
-	  
-	  const formattedChats = chats.map((chat) => {
-		const updatedMessages = chat.messages.map((message) => {
-		  const senderName = message.sender ? `${message.sender.firstName} ${message.sender.lastName}` : 'Unknown Sender';
-		  return {
-			...message.toObject(),
-			senderName,
-		  };
-		});
-  
-		return {
-		  ...chat.toObject(),
-		  messages: updatedMessages,
-		};
 	  });
   
-	  res.status(200).json(formattedChats);
+	  console.log("the chatsss", chats);
+  
+	  const formattedChats = await Promise.all(
+		chats.map(async (chat) => {
+		  // Find the pharmacist
+		  const pharma = await User.findOne({ _id: chat.userId2 });
+  
+		  // Get the last message
+		  const lastMessage =
+			chat.messages.length > 0
+			  ? chat.messages[chat.messages.length - 1].messageText
+			  : 'No messages';
+  
+		  // Include the chat in the result only if there are messages
+		  return lastMessage !== 'No messages'
+			? {
+				pharma: pharma
+				  ? {
+					  firstName: pharma.firstName,
+					  lastName: pharma.lastName,
+					}
+				  : null,
+				lastMessage,
+			  }
+			: null;
+		})
+	  );
+  
+	  // Remove entries with no messages
+	  const filteredChats = formattedChats.filter((chat) => chat !== null);
+  
+	  console.log("the formatted chats", filteredChats);
+	  res.status(200).json(filteredChats);
 	} catch (error) {
 	  console.error(error);
 	  res.status(500).json({ error: 'Internal server error' });
 	}
   };
-
+  
   
 
 //   const sales = await Order.find({
