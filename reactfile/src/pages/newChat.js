@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
-import { getAllPharmacists, createChat, viewChats } from "../services/api";
+import { Grid, Typography, Paper, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import { getAllPharmacists, createChat, viewChats,getChat } from "../services/api";
 import { mainListItems } from '../components/ListItems';
 import { useNavigate } from 'react-router-dom';
 
@@ -40,12 +40,15 @@ const NewChat = () => {
 
     createChat(pharmacist.firstName, pharmacist.lastName)
       .then(() => {
-        // Navigate to the ChatPage with the selected pharmacist's name
         navigate(`/chat/${pharmacist._id}`);
       })
       .catch((error) => {
         console.error("Error creating chat:", error.message);
       });
+  };
+
+  const handleChatClick = (pharmacistId) => {
+    navigate(`/chat/${pharmacistId}`);
   };
 
   return (
@@ -58,8 +61,8 @@ const NewChat = () => {
       {/* Main Content */}
       <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
         <Typography variant="h4" gutterBottom>
-          Select Pharmacist
-        </Typography>
+NEW CHAT        
+</Typography>
 
         {/* Display Pharmacist Dropdown */}
         <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
@@ -86,18 +89,19 @@ const NewChat = () => {
           Your Chats
         </Typography>
         {patientChats.map((chat) => (
-  <div key={chat._id}>
-    <Typography>{`${chat.pharma.firstName} ${chat.pharma.lastName} `}</Typography>
-    <ul>
-      {chat.lastMessage
-      }
-    </ul>
-  </div>
-))}
+          <Paper key={chat._id} style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
+           onClick={() => handleChatClick(chat.pharma.id)}>
+            <div>
+              <Typography variant="h6">{`${chat.pharma.firstName} ${chat.pharma.lastName}`}</Typography>
+              <ul>
+                {chat.lastMessage}
+              </ul>
+            </div>
+          </Paper>
+        ))}
       </Grid>
     </Grid>
   );
 };
 
 export default NewChat;
-

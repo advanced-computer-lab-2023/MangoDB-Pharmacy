@@ -51,7 +51,6 @@ router.get("/getPharmacists", pharmacistController.viewPharmacists);
 router.post("/getPharmacist", protectPharmacist, pharmacistController.getPharmacist);
 router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);
 
-router.get("/getAllPharmacists", pharmacistController.getAllPharmacists);
 
 router.get("/getPharmacistById/:id", pharmacistController.getPharmacistById);
 router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);

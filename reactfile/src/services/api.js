@@ -66,7 +66,7 @@ export const getAllSales = () => API.get("/Pharmacist/allSales")
   .then(response => response.data);  // Add this line
 
 
-  export const getAllPharmacists = () => API.get("/Pharmacist/getAllPharmacists");
+  export const getAllPharmacists = () => API.get(`/Patient/getAllPharmacists`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
   export const createChat = (pharmacistFirstName,pharmacistLastName) => API.post("/Patient/createChat",{ pharmacistFirstName,pharmacistLastName },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   export const getPharmacistbyId = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);

@@ -10,15 +10,7 @@ const Message = require('../models/messageModel');
 
 const asyncHandler = require("express-async-handler");
 
-const getAllPharmacists = asyncHandler(async (req, res) => {
-	try {
-		const pharmacists = await Pharmacist.find();
-		res.status(200).json(pharmacists);
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: "Internal server error" });
-	}
-});
+
 
 // Old addMed function
 // const addMedicine = (req, res) => {
@@ -854,7 +846,7 @@ module.exports = {
 	viewArchivedMeds,
 	unarchiveMedicine,
 	archiveMedicine,
-	sendMessage,getAllPharmacists,
+	sendMessage,
 	clearNotifs,
 	seenNotifs
 

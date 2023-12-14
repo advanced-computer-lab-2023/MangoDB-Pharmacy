@@ -25,7 +25,7 @@ const ChatPage = () => {
     // Set up interval to fetch messages every 5 seconds
     const intervalId = setInterval(() => {
       fetchChatMessages(id);
-    }, 5000);
+    }, 1000);
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);

@@ -24,6 +24,7 @@ router.post('/reset-password', patientController.resetPassword)
 router.get('/viewListOfOrders',protectPatient, patientController.viewListOfOrders);
 router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
+router.get("/getAllPharmacists", protectPatient,patientController.getAllPharmacists);
 
 router.get('/viewWallet',protectPatient, patientController.viewWallet);
 

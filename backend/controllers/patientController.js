@@ -856,6 +856,7 @@ const getAllMedicineUses = async (req, res) => {
   };
   
 
+
 const payFromWallet = async (patientid,paymentAmount) => {
 	try {
 		const patientId = patientid;
@@ -960,6 +961,22 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 
+const getAllPharmacists = asyncHandler(async (req, res) => {
+	try {
+	  const patientId = req.user._id;
+  
+	  const patientChats = await Chat.find({ userId1: patientId });
+  
+	  const pharmacistIdsWithChat = patientChats.map(chat => chat.userId2);
+  
+	  const pharmacists = await Pharmacist.find({ _id: { $nin: pharmacistIdsWithChat } });
+  
+	  res.status(200).json(pharmacists);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
 const createPrescription = async (req, res) => {
     try {
         const {
@@ -1013,6 +1030,7 @@ const viewChats = async (req, res) => {
 				  ? {
 					  firstName: pharma.firstName,
 					  lastName: pharma.lastName,
+					  id : pharma._id,
 					}
 				  : null,
 				lastMessage,
@@ -1114,5 +1132,5 @@ module.exports = {
 	createChat,
 	sendMessage,
 	getChat,
-	viewChats
+	viewChats,getAllPharmacists
 };
