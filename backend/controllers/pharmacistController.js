@@ -39,6 +39,32 @@ const asyncHandler = require("express-async-handler");
 //       .then((result) => console.log("NEW MEDICINE ADDED:", result))
 //       .catch((err) => console.log("Please change me I am just an error", err));
 // };
+
+const getChat = async (req, res) => {
+	try {
+	  const patientId = req.user._id;
+	  const pharmacistId = req.body.pharmacistId; // Extract pharmacistId from the request body
+  
+	  const chat = await Chat.findOne({
+		$or: [
+		  { userId1: patientId, userId2: pharmacistId },
+		  { userId1: pharmacistId, userId2: patientId },
+		],
+	  }).populate('messages'); // Populate the messages field
+  
+	  if (!chat) {
+		return res.status(404).json({ error: 'Chat not found' });
+	  }
+  
+	  return res.status(200).json(chat);
+	} catch (error) {
+	  console.error(error);
+	  return res.status(500).json({ error: 'Internal Server Error' });
+	}
+  };
+  
+
+
 const sendMessage = async (req, res) => {
 	const { messageText, receiverId } = req.body;
 	const senderId = '65548bf6f173cc7dd89dd382';//req.user._id;
@@ -847,6 +873,7 @@ module.exports = {
 	unarchiveMedicine,
 	archiveMedicine,
 	sendMessage,
+	getChat,
 	clearNotifs,
 	seenNotifs
 

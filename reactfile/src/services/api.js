@@ -207,7 +207,15 @@ API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bear
     console.error("Error fetching chat:", error);
     throw error;
   });
+  export const getChatPharmaPat = ({ patientId }) =>
+API.post("/Pharmacist/getChat", { patientId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error fetching chat:", error);
+    throw error;
+  });
 
+  export const getPatientbyId = (id) => API.get(`/Patient/getPatientById/${id}`);
 
 export const clearNotifs = (id) => API.patch('/Pharmacist/clearNotifs', { id }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const seenNotifs = () => API.patch('/Pharmacist/seenNotifs', {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });

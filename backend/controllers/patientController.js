@@ -101,6 +101,19 @@ const getChat = async (req, res) => {
 	}
   };
   
+  const getPatientById = asyncHandler(async (req, res) => {
+    try {
+        const patient = await Patient.findById(req.params.id)
+
+        if (patient) {
+            res.status(200).json(patient);
+        } else {
+            res.status(400).json({ message: "Patient not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
   
 
 
@@ -1132,5 +1145,7 @@ module.exports = {
 	createChat,
 	sendMessage,
 	getChat,
-	viewChats,getAllPharmacists
+	viewChats,
+	getAllPharmacists,
+	getPatientById
 };

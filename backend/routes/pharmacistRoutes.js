@@ -57,6 +57,7 @@ router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);
 router.post("/unarchiveMedicine", pharmacistController.unarchiveMedicine);
 router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 
+router.post("/getChat", protectPharmacist, pharmacistController.getChat);
 router.post("/sendMessage", pharmacistController.sendMessage);
 
 router.patch("/clearNotifs", protectPharmacist, pharmacistController.clearNotifs);
