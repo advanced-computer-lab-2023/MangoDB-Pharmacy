@@ -52,7 +52,7 @@ router.post("/getChat", protectPatient, patientController.getChat);
 // router.get('/viewChats',protectPatient , patientController.viewChats)
 router.get('/viewChats',protectPatient , patientController.viewChats)
 
-//router.get("/getPatientById/:id", patientController.getPharmacistById);
+router.get("/getPatientById/:id", patientController.getPatientById);
 
 
 
