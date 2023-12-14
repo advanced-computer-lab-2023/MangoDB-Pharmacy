@@ -48,6 +48,10 @@ router.post("/getAlternativeMedicines", patientController.getAlternativeMedicine
 router.post("/createChat",protectPatient, patientController.createChat);
 router.post("/sendMessage", protectPatient,patientController.sendMessage);
 router.post("/getChat", protectPatient, patientController.getChat);
+// router.get('/viewChats',protectPatient , patientController.viewChats)
+router.get('/viewChats',protectPatient , patientController.viewChats)
+
+
 
 
 module.exports = router
