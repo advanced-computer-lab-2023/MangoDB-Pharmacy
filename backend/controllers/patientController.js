@@ -988,40 +988,33 @@ const createPrescription = async (req, res) => {
 }
 
 const viewChats = async (req, res) => {
-  try {
-    const patientId = req.user._id;
-    const chats = await Chat.find({
-      $or: [{ userId1: patientId }, { userId2: patientId }],
-    }).populate({
-      path: 'messages',
-      populate: {
-        path: 'sender',
-        model: 'User',
-        select: 'firstName lastName',
-      },
-    });
-
-    const formattedChats = chats.map((chat) => {
-      const updatedMessages = chat.messages.map((message) => {
-        const senderName = message.sender ? `${message.sender.firstName} ${message.sender.lastName}` : 'Unknown Sender';
-        return {
-          ...message.toObject(),
-          senderName,
-        };
-      });
-
-      return {
-        ...chat.toObject(),
-        messages: updatedMessages,
-      };
-    });
-
-    res.status(200).json(formattedChats);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+	try {
+	  const patientId = req.user._id;
+	  const chats = await Chat.find({
+		$or: [{ userId1: patientId }, { userId2: patientId }],
+	  })
+	  
+	  const formattedChats = chats.map((chat) => {
+		const updatedMessages = chat.messages.map((message) => {
+		  const senderName = message.sender ? `${message.sender.firstName} ${message.sender.lastName}` : 'Unknown Sender';
+		  return {
+			...message.toObject(),
+			senderName,
+		  };
+		});
+  
+		return {
+		  ...chat.toObject(),
+		  messages: updatedMessages,
+		};
+	  });
+  
+	  res.status(200).json(formattedChats);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: 'Internal server error' });
+	}
+  };
 
   
 

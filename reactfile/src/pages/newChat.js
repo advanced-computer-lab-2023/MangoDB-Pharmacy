@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
-import { getAllPharmacists, createChat } from "../services/api";
+import { getAllPharmacists, createChat, viewChats } from "../services/api";
 import { mainListItems } from '../components/ListItems';
 import { useNavigate } from 'react-router-dom';
 
 const NewChat = () => {
   const [pharmacists, setPharmacists] = useState([]);
   const [selectedPharmacist, setSelectedPharmacist] = useState("");
-  const navigate = useNavigate();  // Replace useHistory with useNavigate
+  const [patientChats, setPatientChats] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllPharmacists()
       .then((response) => {
         setPharmacists(response.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+
+    // Fetch patient's chats when the component mounts
+    viewChats()
+      .then((response) => {
+        setPatientChats(response.data);
       })
       .catch((err) => {
         console.error(err.message);
@@ -31,7 +41,7 @@ const NewChat = () => {
     createChat(pharmacist.firstName, pharmacist.lastName)
       .then(() => {
         // Navigate to the ChatPage with the selected pharmacist's name
-        navigate(`/chat/${pharmacist._id}`);  // Use navigate instead of history.push
+        navigate(`/chat/${pharmacist._id}`);
       })
       .catch((error) => {
         console.error("Error creating chat:", error.message);
@@ -63,16 +73,32 @@ const NewChat = () => {
             <MenuItem value="">Select a Pharmacist</MenuItem>
             {pharmacists.map((pharmacist) => (
               <MenuItem key={pharmacist._id} value={pharmacist._id}>
-                <Button onClick={() => handleCreateChat(pharmacist)}style={{ color: "black" }}>
+                <Button onClick={() => handleCreateChat(pharmacist)} style={{ color: "black" }}>
                   {`${pharmacist.firstName} ${pharmacist.lastName}`}
                 </Button>
               </MenuItem>
             ))}
           </Select>
         </FormControl>
+
+        {/* Display Patient's Chats */}
+        <Typography variant="h4" gutterBottom style={{ marginTop: "2rem" }}>
+          Your Chats
+        </Typography>
+        {patientChats.map((chat) => (
+  <div key={chat._id}>
+    <Typography>{`Chat with ${chat.userId1} and ${chat.userId2}`}</Typography>
+    <ul>
+      {chat.messages.map((message) => (
+        <li key={message._id}>{`${message.senderName}: ${message.messageText}`}</li>
+      ))}
+    </ul>
+  </div>
+))}
       </Grid>
     </Grid>
   );
 };
 
 export default NewChat;
+
