@@ -811,6 +811,26 @@ const clearNotifs = async (req, res) => {
 
 }
 
+const seenNotifs = async (req, res) => {
+	try {
+		const pharmacistId = req.user._id;
+		const pharmacist = await Pharmacist.findById(pharmacistId);
+	
+		pharmacist.notifications.map((notification) => {
+			if (!notification.seen) {
+				notification.seen = true;
+			}
+		})
+	
+		await pharmacist.save();
+	
+		res.status(200).json({ message: "Success" });
+	} catch (error) {
+		console.log(error);
+		res.status(404).json({ error: error.message });
+	}
+}
+
 module.exports = {
 	addMedicine,
 	getMedicine,
@@ -835,6 +855,7 @@ module.exports = {
 	unarchiveMedicine,
 	archiveMedicine,
 	sendMessage,getAllPharmacists,
-	clearNotifs
+	clearNotifs,
+	seenNotifs
 
 };

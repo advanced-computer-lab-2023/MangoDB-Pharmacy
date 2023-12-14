@@ -210,6 +210,7 @@ API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bear
 
 
 export const clearNotifs = (id) => API.patch('/Pharmacist/clearNotifs', { id }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const seenNotifs = () => API.patch('/Pharmacist/seenNotifs', {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
     
   
 export default API;

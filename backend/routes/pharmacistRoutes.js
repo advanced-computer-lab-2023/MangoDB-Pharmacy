@@ -61,5 +61,6 @@ router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 router.post("/sendMessage", pharmacistController.sendMessage);
 
 router.patch("/clearNotifs", protectPharmacist, pharmacistController.clearNotifs);
+router.patch("/seenNotifs", protectPharmacist, pharmacistController.seenNotifs);
 
 module.exports = router;
