@@ -67,6 +67,10 @@ router.patch("/seenNotifs", protectPharmacist, pharmacistController.seenNotifs);
 router.get("/getAllDoctors", protectPharmacist,pharmacistController.getAllDoctors);
 router.get("/getDoctorById/:id", pharmacistController.getDoctorById);
 
+router.post("/sendMessage", protectPharmacist,pharmacistController.sendMessage);
+router.post("/getChat", protectPharmacist, pharmacistController.getChat);
+router.get('/viewChats',protectPharmacist , pharmacistController.viewChats);
+
 module.exports = router;
 
 

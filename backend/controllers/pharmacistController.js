@@ -8,7 +8,6 @@ const User = require("../models/userModel");
 
 const Chat = require('../models/chatModel');
 const Message = require('../models/messageModel');
-const User = require("../models/userModel");  // Add this line to import User model
 
 const asyncHandler = require("express-async-handler");
 const Doctor = require("../models/doctorModel");  
@@ -905,22 +904,21 @@ const createChat2 = async (req, res) => {
   
       const formattedChats = await Promise.all(
         chats.map(async (chat) => {
-          const patient = await User.findOne({ _id: chat.userId1 });
-  console.log ("the patinet ",patient);
+          const doctor = await User.findOne({ _id: chat.userId2 });
           // Get the last message
           const lastMessage =
             chat.messages.length > 0
-              ? chat.messages[chat.messages.length - 1].messageText
+              ? chat.messages[chat.messages.length - 1]
               : 'No messages';
   
           // Include the chat in the result only if there are messages
           return lastMessage !== 'No messages'
             ? {
-                patient: patient
+                doctor: doctor
                   ? {
-                      firstName: patient.firstName,
-                      lastName: patient.lastName,
-                      id : patient._id,
+                      firstName: doctor.firstName,
+                      lastName: doctor.lastName,
+                      id : doctor._id,
                     }
                   : null,
                 lastMessage,
@@ -932,7 +930,7 @@ const createChat2 = async (req, res) => {
       // Remove entries with no messages
       const filteredChats = formattedChats.filter((chat) => chat !== null);
   
-      console.log("the formatted chats", filteredChats);
+      console.log("the formatted doctor chats", filteredChats);
       res.status(200).json(filteredChats);
     } catch (error) {
       console.error(error);
@@ -956,7 +954,114 @@ const createChat2 = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   });
+  const viewChats = async (req, res) => {
+    try {
+      const pharmacistId = req.user._id;
+      const chats = await Chat.find({
+        $or: [{ userId1: pharmacistId }, { userId2: pharmacistId }],
+      });
+  
+      const formattedChats = await Promise.all(
+        chats.map(async (chat) => {
+  let   patient= null;
 
+            patient = await User.findOne({ _id: chat.userId1 });
+          
+          if (patient.userType !== 'patient') {
+              patient= null;
+          }
+          // Get the last message
+          const lastMessage =
+            chat.messages.length > 0
+              ? chat.messages[chat.messages.length - 1]
+              : 'No messages';
+  
+          // Include the chat in the result only if there are messages and patient is not null
+          return lastMessage !== 'No messages' && patient
+            ? {
+                patient: {
+                  firstName: patient.firstName,
+                  lastName: patient.lastName,
+                  id: patient._id,
+                },
+                lastMessage,
+              }
+            : null;
+        })
+      );
+  
+      const filteredChats = formattedChats.filter(
+        (chat) => chat !== null && chat.patient !== null
+      );
+       
+      console.log("the formatted chats", filteredChats);
+      res.status(200).json(filteredChats);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
+  const getChat = async (req, res) => {
+  
+    try {
+      const pharmacistId = req.user._id;
+      const recieverId = req.body.patientId;
+  console.log ("the receiver ",recieverId,"the pharamcist ",pharmacistId);
+
+      console.log(recieverId);
+
+      const chat = await Chat.findOne({
+        $or: [
+          { userId1: pharmacistId, userId2: recieverId },
+          { userId1: recieverId, userId2: pharmacistId },
+        ],
+      }).populate('messages'); // Populate the messages field
+  
+        console.log(chat);
+      if (!chat) {
+        return res.status(404).json({ error: 'Chat not found' });
+      }
+  
+      return res.status(200).json(chat);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  const sendMessage = async (req, res) => {
+
+    const { messageText, receiverId } = req.body;
+    const senderId = req.user._id;//req.user._id;
+  
+    try {
+      // Find the chat based on patientId and doctorId
+      const chat = await Chat.findOne({
+        $or: [
+          { userId1: senderId, userId2: receiverId },
+          { userId1: receiverId, userId2: senderId },
+        ],
+      });
+  
+      if (!chat) {
+        return res.status(404).json({ error: 'Chat not found' });
+      }
+  
+      const newMessage = new Message({
+        messageText,
+        senderRole : 'pharmacist',
+      });
+  
+      chat.messages.push(newMessage);
+  
+      await chat.save();
+  
+      return res.status(201).json(newMessage);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 module.exports = {
     addMedicine,
     getMedicine,
@@ -988,6 +1093,6 @@ module.exports = {
     getChat2,
     viewChats2,
     getAllDoctors,
-    getDoctorById,
+    getDoctorById,getChat,viewChats,sendMessage
 
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { getPatientbyId, getChatPharmaPat, sendMessagePharma } from "../services/api";
 import { useParams } from 'react-router-dom';
+import { pharmacistListItems } from '../components/ListItemsPharma';
 
 const ChatPage = () => {
   const { id } = useParams();
@@ -56,33 +57,63 @@ const ChatPage = () => {
         console.error("Error sending message:", error.message);
       });
   };
-
+  const styles = {
+    pharmacistMessage: {
+      backgroundColor: "#2196f3",
+      color: "#fff",
+      borderRadius: "8px",
+      padding: "8px",
+      marginBottom: "8px",
+      textAlign: "right",
+    },
+    patientMessage: {
+      backgroundColor: "#4caf50",
+      color: "#fff",
+      borderRadius: "8px",
+      padding: "8px",
+      marginBottom: "8px",
+      textAlign: "left",
+    },
+  };
+  
   return (
     <Grid container>
-      {/* App Bar with Name */}
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">{patient.firstName}</Typography>
-        </Toolbar>
-      </AppBar>
+      {/* Sidebar */}
+      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
+        {pharmacistListItems}
+      </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", minHeight: "60vh" }}>
-          {/* Display Messages */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10}>
+        {/* App Bar with Name */}
+        <AppBar position="static" style={{ maxWidth: "840px" }}>
+          <Toolbar>
+            <Typography variant="h6">{patient.firstName} {patient.lastName} </Typography>
+          </Toolbar>
+        </AppBar>
+
+        {/* Display Messages */}
+        <Paper id="messages-container" elevation={3} style={{ padding: "1rem", height: "60vh", overflowY: "auto", width: "100%", maxWidth: "800px" }}>
           {messages.map((message) => (
-            <div key={message._id}>
-              <p>{message.senderRole === 'pharmacist' ? 'You' : 'Patient'}:</p>
-              <p>{message.messageText}</p>
-              <p>{new Date(message.timeDate).toLocaleString()}</p>
+            <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-start' : 'flex-end' }}>
+              <div style={message.senderRole === 'patient' ? styles.patientMessage : styles.pharmacistMessage}>
+                <p>{message.messageText}</p>
+                <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
+      {new Date(message.timeDate).toLocaleTimeString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })}
+    </p>
+              </div>
             </div>
           ))}
         </Paper>
-      </Grid>
 
-      {/* Message Input and Send Button */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem" }}>
+        {/* Message Input and Send Button */}
+        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem", maxWidth: "800px" }}>
           <Grid container spacing={2}>
             <Grid item xs={9}>
               <TextField
@@ -109,5 +140,4 @@ const ChatPage = () => {
     </Grid>
   );
 };
-
 export default ChatPage;
