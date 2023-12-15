@@ -318,8 +318,13 @@ export default function AdminHeader() {
             }}
           />
 
-          <Avatar>{/* User's initials */}</Avatar>
-          <Typography>{/* User's name */}</Typography>
+          <Avatar sx={{ marginRight: 1 }}>{/* User's initials */}</Avatar>
+          <Typography
+            variant="body1"
+            sx={{ fontWeight: "bold", marginRight: -1, color: "#333" }}
+          >
+            {"First Name"}
+          </Typography>
           <IconButton onClick={() => setOpenProfileDrawer(!openProfileDrawer)}>
             {openProfileDrawer ? (
               <ArrowDropUpIcon fontSize="large" />
