@@ -52,6 +52,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <AdminHeader />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />

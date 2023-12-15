@@ -24,7 +24,6 @@ import {
   Snackbar,
   FormControlLabel,
   FormHelperText,
-  Box,
 } from "@mui/material";
 import { addMed } from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
@@ -34,6 +33,8 @@ import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 const AddMed = () => {
   const addIcon = `${process.env.PUBLIC_URL}/icons/add.svg`;
+  const uploadIcon = `${process.env.PUBLIC_URL}/icons/upload.svg`;
+  const theme = useTheme();
   const [medicine, setMedicine] = useState({
     name: "",
     price: "",
@@ -44,13 +45,30 @@ const AddMed = () => {
     details: "",
     prescribed: "", // New field
     picture: null, // New field
+    mainActiveIngredient: "",
   });
 
   const [isPending, setIsPending] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogPrice, setDialogPrice] = useState("");
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDialogChange = (event) => {
+    setDialogPrice(event.target.value);
+  };
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [missingField, setMissingField] = useState(false);
   const handleErrorClose = () => {
     setErrorOpen(false);
   };
@@ -70,9 +88,18 @@ const AddMed = () => {
       }));
     }
   };
-
+  const handleDialogSave = () => {
+    // Add your save logic here
+    setOpenDialog(false);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const values = Object.values(medicine);
+    if (values.includes("")) {
+      setMissingField(true);
+      return;
+    }
+
     setIsPending(true);
 
     try {
@@ -85,8 +112,8 @@ const AddMed = () => {
 
       await addMed(formData);
       setIsPending(false);
-      setSuccessOpen(true);
-
+      //setSuccessOpen(true);
+      setOpenSuccess(true);
       // Redirect to home after 7 seconds
       setTimeout(() => {
         navigate("/");
@@ -94,7 +121,8 @@ const AddMed = () => {
     } catch (error) {
       console.error("Error adding medicine:", error);
       setIsPending(false);
-      setErrorOpen(true);
+      //setErrorOpen(true);
+      setOpenError(true);
     }
   };
 
@@ -135,8 +163,14 @@ const AddMed = () => {
       >
         <Grid container justifyContent="center" style={{ padding: "2rem" }}>
           <Grid item xs={12} md={8} lg={6}>
-            <Paper elevation={3} style={{ padding: "2rem" }}>
-              <Typography variant="h3">Add a medicine</Typography>
+            <Paper elevation={2} style={{ padding: "2rem" }}>
+              <Typography
+                variant="h4"
+                sx={{ color: "secondary.main", paddingBottom: "1rem" }}
+              >
+                Add a medicine
+              </Typography>
+
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
@@ -217,44 +251,79 @@ const AddMed = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <Box display="flex" alignItems="center" height="100%">
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={medicine.prescribed === "required"}
-                            onChange={(event) =>
-                              handleChange({
-                                target: {
-                                  name: "prescribed",
-                                  value: event.target.checked
-                                    ? "required"
-                                    : "not required",
-                                },
-                              })
-                            }
-                          />
-                        }
-                        label="Prescribed"
-                        labelPlacement="center"
-                        sx={{
-                          p: "0px 0px 0px 40px",
-                          alignItems: "center",
-                          alignContent: "center",
-                        }}
-                      />
-                    </Box>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={medicine.prescribed === "required"}
+                          onChange={(event) =>
+                            handleChange({
+                              target: {
+                                name: "prescribed",
+                                value: event.target.checked
+                                  ? "required"
+                                  : "not required",
+                              },
+                            })
+                          }
+                          // style={{
+                          //   color:
+                          //     medicine.prescribed === "required"
+                          //       ? theme.palette.secondary.dark
+                          //       : "",
+                          // }}
+                        />
+                      }
+                      label="Prescribed"
+                      labelPlacement="end"
+                    />
                   </Grid>
-
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
-                      <InputLabel>Upload Picture (png or pdf)</InputLabel>
+                      <InputLabel
+                        style={{
+                          paddingTop: "0rem",
+                          paddingBottom: "0.7rem",
+                        }}
+                      ></InputLabel>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component="label"
+                        startIcon={
+                          <img
+                            src={uploadIcon}
+                            alt="Upload Icon"
+                            style={{ filter: "invert(1)" }}
+                            width="20"
+                            height="20"
+                          />
+                        }
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                      >
+                        Upload
+                      </Button>
                       <Input
+                        id="fileInput"
                         type="file"
                         name="picture"
                         onChange={handleChange}
-                        style={{ marginBottom: "1rem" }}
+                        style={{ display: "none" }}
                       />
+                      <FormHelperText>(png or pdf)</FormHelperText>
                     </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Main Active ingredient"
+                      name="mainActiveIngredient"
+                      value={medicine.mainActiveIngredient}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                      margin="normal"
+                    />
                   </Grid>
                 </Grid>
                 <Button
@@ -266,8 +335,8 @@ const AddMed = () => {
                       src={addIcon}
                       alt="Add Icon"
                       style={{ filter: "invert(1)", marginRight: "0px" }}
-                      width="18"
-                      height="18"
+                      width="20"
+                      height="20"
                     />
                   }
                   style={{
@@ -282,36 +351,56 @@ const AddMed = () => {
                     "Add"
                   )}
                 </Button>
+
+                <Snackbar
+                  open={openSuccess}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                  autoHideDuration={6000}
+                  onClose={() => setOpenSuccess(false)}
+                >
+                  <MuiAlert
+                    onClose={() => setOpenSuccess(false)}
+                    severity="success"
+                    elevation={6}
+                    variant="filled"
+                  >
+                    Medicine was successfully added. You will be redirected to
+                    the home page shortly.
+                  </MuiAlert>
+                </Snackbar>
+
+                <Snackbar
+                  open={openError}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                  autoHideDuration={6000}
+                  onClose={() => setOpenError(false)}
+                >
+                  <MuiAlert
+                    onClose={() => setOpenError(false)}
+                    severity="success"
+                    elevation={6}
+                    variant="filled"
+                  >
+                    Succesful operation check your database.
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar
+                  open={missingField}
+                  autoHideDuration={6000}
+                  onClose={() => setMissingField(false)}
+                >
+                  <MuiAlert
+                    onClose={() => setMissingField(false)}
+                    severity="warning"
+                    elevation={6}
+                    variant="filled"
+                  >
+                    Please fill in all fields.
+                  </MuiAlert>
+                </Snackbar>
               </form>
             </Paper>
           </Grid>
-
-          <Dialog open={successOpen} onClose={handleSuccessClose}>
-            <DialogTitle>{"Medicine Added Successfully"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Medicine was successfully added. You will be redirected to the
-                home page shortly.
-              </DialogContentText>
-            </DialogContent>{" "}
-            <DialogActions>
-              <Button onClick={handleSuccessClose} autoFocus>
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-          <Dialog open={errorOpen} onClose={handleErrorClose}>
-            <DialogTitle>{"Probably worked"}</DialogTitle>
-            <DialogContent>
-              <DialogContentText>Check db for a surprise 😉</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleErrorClose} autoFocus>
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
       </Grid>
     </Grid>
