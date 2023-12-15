@@ -50,6 +50,12 @@ export const pharmacistListItems = (
       <ListItemText primary="Change Password" />
     </ListItemButton>
     
+    <ListItemButton component={Link} to="/pharmacistChatDoctor">
+      <ListItemIcon>
+        <LocalPharmacyIcon />
+      </ListItemIcon>
+      <ListItemText primary="Chats With Doctors" />
+    </ListItemButton>
 
     <ListItemButton component={Link} to="/viewPatientChats">
       <ListItemIcon>

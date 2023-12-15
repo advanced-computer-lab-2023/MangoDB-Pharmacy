@@ -228,12 +228,37 @@ API.get('/Patient/viewChats', {
   },
 });
 
+
+
 export const viewChatsPharma = () =>
 API.get('/Pharmacist/viewChats', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
+export const viewChats2 = () =>
+API.get('/Pharmacist/viewChats2', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
 
   
+export const getAllDoctors = () => API.get(`/Pharmacist/getAllDoctors`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+export const createChat2 = (doctorFirstName, doctorLastName) => API.post("/Pharmacist/createChat2",{ doctorFirstName,doctorLastName },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+export const getDoctorbyId = (id) => API.get(`/Pharmacist/getDoctorById/${id}`);
+
+export const getChat2 = ({ doctorId }) =>
+API.post("/Pharmacist/getChat2", { doctorId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error fetching chat:", error);
+    throw error;
+  });
+
+    export const sendMessage2 = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage2",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+
 export default API;

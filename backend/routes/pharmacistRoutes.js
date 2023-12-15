@@ -57,14 +57,16 @@ router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);
 router.post("/unarchiveMedicine", pharmacistController.unarchiveMedicine);
 router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 
-router.post("/createChat",protectPharmacist, pharmacistController.createChat);
-router.post("/sendMessage", protectPharmacist,pharmacistController.sendMessage);
-router.post("/getChat", protectPharmacist, pharmacistController.getChat);
-router.get('/viewChats',protectPharmacist , pharmacistController.viewChats)
+router.post("/createChat2",protectPharmacist, pharmacistController.createChat2);
+router.post("/sendMessage2", protectPharmacist,pharmacistController.sendMessage2);
+router.post("/getChat2", protectPharmacist, pharmacistController.getChat2);
+router.get('/viewChats2',protectPharmacist , pharmacistController.viewChats2)
 
 router.patch("/clearNotifs", protectPharmacist, pharmacistController.clearNotifs);
 router.patch("/seenNotifs", protectPharmacist, pharmacistController.seenNotifs);
 router.get("/getAllDoctors", protectPharmacist,pharmacistController.getAllDoctors);
+router.get("/getDoctorById/:id", pharmacistController.getDoctorById);
+
 module.exports = router;
 
 

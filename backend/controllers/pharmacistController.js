@@ -8,9 +8,10 @@ const User = require("../models/userModel");
 
 const Chat = require('../models/chatModel');
 const Message = require('../models/messageModel');
+const User = require("../models/userModel");  // Add this line to import User model
 
 const asyncHandler = require("express-async-handler");
-const Doctor = require("../models/doctorModel");
+const Doctor = require("../models/doctorModel");  
 
 const getAllPharmacists = asyncHandler(async (req, res) => {
     try {
@@ -49,7 +50,7 @@ const getAllPharmacists = asyncHandler(async (req, res) => {
 //       .then((result) => console.log("NEW MEDICINE ADDED:", result))
 //       .catch((err) => console.log("Please change me I am just an error", err));
 // };
-const sendMessage = async (req, res) => {
+const sendMessage2 = async (req, res) => {
     const { messageText, receiverId } = req.body;
     const senderId = req.user._id;//req.user._id;
   
@@ -737,6 +738,20 @@ const getSalesByMedicine = asyncHandler(async (req, res) => {
     }
 });
 
+const getDoctorById = asyncHandler(async (req, res) => {
+  try {
+      const doctor = await Doctor.findById(req.params.id)
+
+      if (doctor) {
+          res.status(200).json(doctor);
+      } else {
+          res.status(400).json({ message: "doctor not found" });
+      }
+  } catch (error) {
+      res.status(500).json({ message: "Server error" });
+  }
+});
+
 const viewArchivedMeds = asyncHandler(async (req, res) => {
     try {
         const medicines = await Medicine.find({ archive: true });
@@ -830,7 +845,7 @@ const seenNotifs = async (req, res) => {
     }
 }
 
-const createChat = async (req, res) => {
+const createChat2 = async (req, res) => {
     const {  doctorFirstName, doctorLastName } = req.body;
   
     try {
@@ -858,18 +873,20 @@ const createChat = async (req, res) => {
     }
   };
 
-  const getChat = async (req, res) => {
+  const getChat2 = async (req, res) => {
     try {
       const pharmacistId = req.user._id;
-      const recieverId = req.body.patientId;
-  console.log ("the receiver ",recieverId,"the pharamcist ",pharmacistId);
+
+      const recieverId = req.body.doctorId; 
+      console.log(recieverId);
+
       const chat = await Chat.findOne({
         $or: [
           { userId1: pharmacistId, userId2: recieverId },
           { userId1: recieverId, userId2: pharmacistId },
         ],
       }).populate('messages'); // Populate the messages field
-  
+        console.log(chat);
       if (!chat) {
         return res.status(404).json({ error: 'Chat not found' });
       }
@@ -881,13 +898,11 @@ const createChat = async (req, res) => {
     }
   };
 
-  const viewChats = async (req, res) => {
+  const viewChats2 = async (req, res) => {
     try {
       const pharmacistId = req.user._id;
-      const chats = await Chat.find({
-        $or: [{ userId1: pharmacistId }, { userId2: pharmacistId }],
-      });
-  console.log("the chats ",chats);
+      const chats = await Chat.find({ userId1: pharmacistId });     
+  
       const formattedChats = await Promise.all(
         chats.map(async (chat) => {
           const patient = await User.findOne({ _id: chat.userId1 });
@@ -968,11 +983,11 @@ module.exports = {
     getAllPharmacists,
     clearNotifs,
     seenNotifs,
-    createChat,
-    sendMessage,
-    getChat,
-    viewChats,
+    createChat2,
+    sendMessage2,
+    getChat2,
+    viewChats2,
     getAllDoctors,
+    getDoctorById,
 
 };
-
