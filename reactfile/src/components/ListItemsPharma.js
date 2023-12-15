@@ -8,6 +8,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PeopleIcon from "@mui/icons-material/People";
+import ChatIcon from "@mui/icons-material/Chat"; 
 
 // import AddCircleIcon from '@mui/icons-material/AddCircle';
 // import EditIcon from '@mui/icons-material/Edit';
@@ -50,6 +51,19 @@ export const pharmacistListItems = (
       <ListItemText primary="Change Password" />
     </ListItemButton>
     
+    <ListItemButton component={Link} to="/pharmacistChatDoctor">
+      <ListItemIcon>
+        <ChatIcon />
+      </ListItemIcon>
+      <ListItemText primary="Chats With Doctors" />
+    </ListItemButton>
+
+    <ListItemButton component={Link} to="/viewPatientChats">
+      <ListItemIcon>
+        <ChatIcon />
+      </ListItemIcon>
+      <ListItemText primary="Patient Chats" />
+    </ListItemButton>
 
     <ListItemButton component={Link} to="/viewprofile">
       <ListItemIcon>

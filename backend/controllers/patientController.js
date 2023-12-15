@@ -6,7 +6,7 @@ const Prescription = require("../models/prescriptionModel");
 const Chat = require('../models/chatModel');
 const Message = require('../models/messageModel');
 
-
+const User  = require("../models/userModel");
 
 const Order = require("../models/orderModel");
 const jwt = require("jsonwebtoken");
@@ -81,25 +81,18 @@ const createChat = async (req, res) => {
 const getChat = async (req, res) => {
 	try {
 	  const patientId = req.user._id;
-	  
+	  const pharmacistId = req.body.pharmacistId; // Extract pharmacistId from the request body
   
-	  // Assuming the pharmacist's ID is passed as a query parameter or in the request body
-	  const pharmacistId =  req.body;
-  
-	  // Find the chat based on patientId and pharmacistId
 	  const chat = await Chat.findOne({
 		$or: [
 		  { userId1: patientId, userId2: pharmacistId },
 		  { userId1: pharmacistId, userId2: patientId },
 		],
-	  });
+	  }).populate('messages'); // Populate the messages field
   
 	  if (!chat) {
 		return res.status(404).json({ error: 'Chat not found' });
 	  }
-  
-	  // Populate the messages associated with the chat
-	  await chat.populate('messages').execPopulate();
   
 	  return res.status(200).json(chat);
 	} catch (error) {
@@ -107,6 +100,20 @@ const getChat = async (req, res) => {
 	  return res.status(500).json({ error: 'Internal Server Error' });
 	}
   };
+  
+  const getPatientById = asyncHandler(async (req, res) => {
+    try {
+        const patient = await Patient.findById(req.params.id)
+
+        if (patient) {
+            res.status(200).json(patient);
+        } else {
+            res.status(400).json({ message: "Patient not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
   
 
 
@@ -598,19 +605,10 @@ const checkout = async (req, res) => {
 			};
 			orderdetails.push(item);
 			await medicine.save();
-			if(medicine.quantity==0)
+			if(medicine.quantity <= 0)
 			{
 				//system
-				const pharmacist= Pharmacist.find()
-				if (!pharmacist.notifications) {
-					pharmacist.notifications = [];
-				}
-
-				pharmacist.notifications.push({
-					title: "Appointment Cancelled",
-					body: `Kindly note that ${medicine} is out of stock `
-				});
-				await pharmacist.save();
+				const pharmacists = await Pharmacist.find();
 				//email
 				const transporter = nodemailer.createTransport({
 					service: "Gmail",
@@ -619,23 +617,34 @@ const checkout = async (req, res) => {
 						pass: "vtzilhuubkdtphww",
 					},
 				});
-			
-				const mailOptions = {
-					from: "omarelzaher93@gmail.com",
-					to: `dina.mamdouh.131@gmail.com, ${pharmacist.email}`,//send it lel dr wel patient 
-					subject: "[NO REPLY] Medicine out of stock ",
-					text: `Kindly note that ${medicine} is out of stock `
-				};
-			
-				transporter.sendMail(mailOptions, (error, info) => {
-					if (error) {
-						res.status(500);
-						throw new Error(error.message);
-					} else {
-						res.status(200).json({ message: "OTP Sent, Please Check Your Email" });
+				
+				pharmacists.map(async (p) => {
+					if (!p.notifications) {
+						p.notifications = [];
 					}
-				});
-
+					
+					p.notifications.push({
+						title: `Medicine out of stock`,
+						body: `Kindly note that ${ medicine.name } is out of stock!`
+					});
+					await p.save();
+				
+					const mailOptions = {
+						from: "omarelzaher93@gmail.com",
+						to: `dina.mamdouh.131@gmail.com, ${p.email}`,//send it lel dr wel patient 
+						subject: "[NO REPLY] Medicine out of stock",
+						text: `Kindly note that ${ medicine.name } is out of stock`
+					};
+				
+					transporter.sendMail(mailOptions, (error, info) => {
+						if (error) {
+							res.status(500);
+							throw new Error(error.message);
+						} else {
+							res.status(200).json({ message: "OTP Sent, Please Check Your Email" });
+						}
+					});
+				})
 			}
 			//}
 		}
@@ -860,6 +869,7 @@ const getAllMedicineUses = async (req, res) => {
   };
   
 
+
 const payFromWallet = async (patientid,paymentAmount) => {
 	try {
 		const patientId = patientid;
@@ -964,6 +974,22 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 
+const getAllPharmacists = asyncHandler(async (req, res) => {
+	try {
+	  const patientId = req.user._id;
+  
+	  const patientChats = await Chat.find({ userId1: patientId });
+  
+	  const pharmacistIdsWithChat = patientChats.map(chat => chat.userId2);
+  
+	  const pharmacists = await Pharmacist.find({ _id: { $nin: pharmacistIdsWithChat } });
+  
+	  res.status(200).json(pharmacists);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: "Internal server error" });
+	}
+  });
 const createPrescription = async (req, res) => {
     try {
         const {
@@ -990,6 +1016,69 @@ const createPrescription = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+const viewChats = async (req, res) => {
+	try {
+	  const patientId = req.user._id;
+	  const chats = await Chat.find({
+		$or: [{ userId1: patientId }, { userId2: patientId }],
+	  });
+  
+	  console.log("the chatsss", chats);
+  
+	  const formattedChats = await Promise.all(
+		chats.map(async (chat) => {
+		  // Find the pharmacist
+		  const pharma = await User.findOne({ _id: chat.userId2 });
+  
+		  const lastMessage =
+			chat.messages.length > 0
+			  ? chat.messages[chat.messages.length - 1]
+			  : 'No messages';
+  
+console.log (lastMessage);
+		  return lastMessage !== 'No messages'
+			? {
+				pharma: pharma
+				  ? {
+					  firstName: pharma.firstName,
+					  lastName: pharma.lastName,
+					  id : pharma._id,
+					}
+				  : null,
+				lastMessage
+			  }
+			: null;
+		})
+	  );
+  
+	  // Remove entries with no messages
+	  const filteredChats = formattedChats.filter((chat) => chat !== null);
+  
+	  console.log("the formatted chats", filteredChats);
+	  res.status(200).json(filteredChats);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ error: 'Internal server error' });
+	}
+  };
+  
+  
+
+//   const sales = await Order.find({
+// 	status: "preparing", // Assuming sales are only considered if the status is "delivered"
+// 	"orderdetails.medicineName": medicineName,
+//   });
+
+//   // Extract relevant information for the table
+//   const formattedSales = sales.map((order) => ({
+// 	orderId: order._id,
+// 	dateOfDelivery: order.dateOfDelivery,
+// 	totalPrice: order.totalPrice,
+// 	orderDetails: order.orderdetails.map((item) => ({
+// 	  medicineName: item.medicineName,
+// 	  quantity: item.quantity,
+// 	})),
+//   }));
 
 const getAlternativeMedicines = async (req, res) => {
     try {
@@ -1054,5 +1143,8 @@ module.exports = {
 	viewWallet,
 	createChat,
 	sendMessage,
-	getChat
+	getChat,
+	viewChats,
+	getAllPharmacists,
+	getPatientById
 };

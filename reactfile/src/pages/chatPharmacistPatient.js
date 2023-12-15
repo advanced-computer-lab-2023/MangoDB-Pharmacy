@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
-import { getPharmacistbyId, getChat, sendMessage } from "../services/api";
+import { getPatientbyId, getChatPharmaPat, sendMessagePharma } from "../services/api";
 import { useParams } from 'react-router-dom';
-import { mainListItems } from '../components/ListItems';
+import { pharmacistListItems } from '../components/ListItemsPharma';
 
 const ChatPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState("");
-  const [pharmacist, setPharmacist] = useState([]);
+  const [patient, setPatient] = useState([]);
   const [messages, setMessages] = useState([]); // State to store messages
-  const [initialScroll, setInitialScroll] = useState(true);
 
   useEffect(() => {
     // Fetch pharmacist details
-    getPharmacistbyId(id)
+    getPatientbyId(id)
       .then((response) => {
-        setPharmacist(response.data);
+        setPatient(response.data);
       })
       .catch((err) => {
         console.error(err.message);
@@ -31,22 +30,12 @@ const ChatPage = () => {
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
+
   }, [id]);
 
-  useEffect(() => {
-    // Scroll to the last message when messages are updated only on initial load
-    if (initialScroll) {
-      const messagesContainer = document.getElementById('messages-container');
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        setInitialScroll(false); // Disable automatic scrolling after the initial scroll
-      }
-    }
-  }, [messages, initialScroll]);
-
-  const fetchChatMessages = (pharmacistId) => {
+  const fetchChatMessages = (patientId) => {
     // Fetch chat messages for the given pharmacist
-    getChat({ pharmacistId })
+    getChatPharmaPat({ patientId })
       .then((response) => {
         // If there are messages in the response, update the state
         if (response.messages) {
@@ -59,44 +48,39 @@ const ChatPage = () => {
   };
 
   const handleSend = () => {
-    // Call the sendMessage function to send a message
-    sendMessage(message, id)
+    sendMessagePharma(message, id)
       .then((response) => {
-        // Update the state with the sent message
         setMessages((prevMessages) => [...prevMessages, response.data]);
-        // Clear the message input
         setMessage("");
       })
       .catch((error) => {
         console.error("Error sending message:", error.message);
       });
   };
-
-  // Define inline styles
   const styles = {
-    youMessage: {
-      backgroundColor: "#2196f3", // Blue color for "You" messages
-      color: "#fff", // White text color
-      borderRadius: "8px", // Rounded corners
-      padding: "8px", // Padding for better appearance
-      marginBottom: "8px", 
+    pharmacistMessage: {
+      backgroundColor: "#2196f3",
+      color: "#fff",
+      borderRadius: "8px",
+      padding: "8px",
+      marginBottom: "8px",
       textAlign: "right",
     },
-    pharmacistMessage: {
+    patientMessage: {
       backgroundColor: "#4caf50",
-      color: "#fff", 
-      borderRadius: "8px", 
+      color: "#fff",
+      borderRadius: "8px",
       padding: "8px",
-      marginBottom: "8px", 
-      textAlign: "left", 
+      marginBottom: "8px",
+      textAlign: "left",
     },
   };
-
+  
   return (
     <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {pharmacistListItems}
       </Grid>
 
       {/* Main Content */}
@@ -104,18 +88,16 @@ const ChatPage = () => {
         {/* App Bar with Name */}
         <AppBar position="static" style={{ maxWidth: "840px" }}>
           <Toolbar>
-            <Typography variant="h6">{pharmacist.firstName} {pharmacist.lastName}</Typography>
+            <Typography variant="h6">{patient.firstName} {patient.lastName} </Typography>
           </Toolbar>
         </AppBar>
 
         {/* Display Messages */}
         <Paper id="messages-container" elevation={3} style={{ padding: "1rem", height: "60vh", overflowY: "auto", width: "100%", maxWidth: "800px" }}>
           {messages.map((message) => (
-            <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-end' : 'flex-start' }}>
-              <div style={message.senderRole === 'patient' ? styles.youMessage : styles.pharmacistMessage}>
+            <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-start' : 'flex-end' }}>
+              <div style={message.senderRole === 'patient' ? styles.patientMessage : styles.pharmacistMessage}>
                 <p>{message.messageText}</p>
-                <p>{message.senderRole === 'pharmacist' ? 'Pharmacist' : 'You'}:</p>
-
                 <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
       {new Date(message.timeDate).toLocaleTimeString("en-US", {
         year: "numeric",
@@ -158,5 +140,4 @@ const ChatPage = () => {
     </Grid>
   );
 };
-
 export default ChatPage;

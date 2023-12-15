@@ -6,12 +6,10 @@ import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import ChatIcon from "@mui/icons-material/Chat"; 
 
-import TodayIcon from '@mui/icons-material/Today';
-import PeopleIcon from '@mui/icons-material/People';
 // import LayersIcon from '@mui/icons-material/Layers';
 import MedicationIcon from '@mui/icons-material/Medication';
-import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import WalletIcon from '@mui/icons-material/Wallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -74,9 +72,9 @@ export const mainListItems = (
 
     <ListItemButton component={Link} to="/newChat">
       <ListItemIcon>
-        <AccountCircleIcon />
+        <ChatIcon />
       </ListItemIcon>
-      <ListItemText primary="new chat" />
+      <ListItemText primary="Chats" />
     </ListItemButton>
 
     <ListItemButton component={Link} to="/viewprofile">

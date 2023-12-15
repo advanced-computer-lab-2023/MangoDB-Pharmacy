@@ -24,6 +24,7 @@ router.post('/reset-password', patientController.resetPassword)
 router.get('/viewListOfOrders',protectPatient, patientController.viewListOfOrders);
 router.get('/viewOrderDetails/:id', patientController.viewOrderDetails);
 router.post('/cancelOrder/:id', patientController.cancelOrder);
+router.get("/getAllPharmacists", protectPatient,patientController.getAllPharmacists);
 
 router.get('/viewWallet',protectPatient, patientController.viewWallet);
 
@@ -47,7 +48,13 @@ router.post("/getAlternativeMedicines", patientController.getAlternativeMedicine
 
 router.post("/createChat",protectPatient, patientController.createChat);
 router.post("/sendMessage", protectPatient,patientController.sendMessage);
-router.get("/getChat", protectPatient, patientController.getChat);
+router.post("/getChat", protectPatient, patientController.getChat);
+// router.get('/viewChats',protectPatient , patientController.viewChats)
+router.get('/viewChats',protectPatient , patientController.viewChats)
+
+router.get("/getPatientById/:id", patientController.getPatientById);
+
+
 
 
 module.exports = router

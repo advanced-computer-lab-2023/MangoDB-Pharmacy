@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "http://localhost:4000", // backend API URL
-  timeout: 5000, // Timeout duration
+  timeout: 7000, // Timeout duration
   headers: {
     "Content-Type": "application/json",
   },
@@ -66,12 +66,13 @@ export const getAllSales = () => API.get("/Pharmacist/allSales")
   .then(response => response.data);  // Add this line
 
 
-  export const getAllPharmacists = () => API.get("/Pharmacist/getAllPharmacists");
+  export const getAllPharmacists = () => API.get(`/Patient/getAllPharmacists`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
   export const createChat = (pharmacistFirstName,pharmacistLastName) => API.post("/Patient/createChat",{ pharmacistFirstName,pharmacistLastName },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
   export const getPharmacistbyId = (id) => API.get(`/Pharmacist/getPharmacistById/${id}`);
 
   export const sendMessage = ( messageText, receiverId) => API.post("/Patient/sendMessage",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+  export const sendMessagePharma = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const getAllMedicineUses = () => API.get("/Patient/getAllMedicineUses");
 export const getMedicinesByUse = (use) =>
@@ -92,7 +93,7 @@ export const editMedPrice = async (id, details, price) => {
 };
 
 export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
-export const getPharmacist = () => API.get(`/Pharmacist/getPharmacist`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const getPharmacist = () => API.post(`/Pharmacist/getPharmacist`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const viewPatients = () => API.get("/Patient/getPatients");
 export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
@@ -199,13 +200,65 @@ API.post("/Pharmacist/archiveMedicine", { medicineName })
 
 
 
-  export const getChat = ({ pharmacistId }) =>
-  API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("Error fetching chat:", error);
-      throw error;
-    });
-    
   
+export const getChat = ({ pharmacistId }) =>
+API.post("/Patient/getChat", { pharmacistId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error fetching chat:", error);
+    throw error;
+  });
+  export const getChatPharmaPat = ({ patientId }) =>
+API.post("/Pharmacist/getChat", { patientId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error fetching chat:", error);
+    throw error;
+  });
+
+  export const getPatientbyId = (id) => API.get(`/Patient/getPatientById/${id}`);
+
+export const clearNotifs = (id) => API.patch('/Pharmacist/clearNotifs', { id }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const seenNotifs = () => API.patch('/Pharmacist/seenNotifs', {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+export const viewChats = () =>
+API.get('/Patient/viewChats', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
+
+
+export const viewChatsPharma = () =>
+API.get('/Pharmacist/viewChats', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+export const viewChats2 = () =>
+API.get('/Pharmacist/viewChats2', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  },
+});
+
+  
+export const getAllDoctors = () => API.get(`/Pharmacist/getAllDoctors`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+export const createChat2 = (doctorFirstName, doctorLastName) => API.post("/Pharmacist/createChat2",{ doctorFirstName,doctorLastName },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+export const getDoctorbyId = (id) => API.get(`/Pharmacist/getDoctorById/${id}`);
+
+export const getChat2 = ({ doctorId }) =>
+API.post("/Pharmacist/getChat2", { doctorId }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } })
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("Error fetching chat:", error);
+    throw error;
+  });
+
+    export const sendMessage2 = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage2",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+
 export default API;

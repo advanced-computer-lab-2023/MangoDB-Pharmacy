@@ -12,17 +12,17 @@ const { protectPharmacist } = require("../middleware/pharmacistMiddleware");
 //     res.status(200).json({message: 'Weselt'})
 // })
 router.get("/", (req, res) => {
-	res.render("../views/pharmaHome");
+    res.render("../views/pharmaHome");
 });
 //upload.single('picture'),
 router.post(
-	"/addMedicine",
-	upload.single("picture"),
-	pharmacistController.addMedicine
+    "/addMedicine",
+    upload.single("picture"),
+    pharmacistController.addMedicine
 );
 
 router.get("/addMedicine", (req, res) => {
-	res.render("Pharmacist/addMedicine");
+    res.render("Pharmacist/addMedicine");
 });
 
 // router.get('/', pharmacistController.home)
@@ -48,17 +48,29 @@ router.put("/updateMed/:id", pharmacistController.editMedPrice);
 // router.get('/:name' , pharmacistController.searchMedicineByName)
 
 router.get("/getPharmacists", pharmacistController.viewPharmacists);
-router.post("/getPharmacist", pharmacistController.getPharmacist);
+router.post("/getPharmacist", protectPharmacist, pharmacistController.getPharmacist);
 router.post("/getPharmacistByEmail", pharmacistController.getPharmacistByEmail);
 
-router.get("/getAllPharmacists", pharmacistController.getAllPharmacists);
 
 router.get("/getPharmacistById/:id", pharmacistController.getPharmacistById);
 router.get("/viewArchivedMeds", pharmacistController.viewArchivedMeds);
 router.post("/unarchiveMedicine", pharmacistController.unarchiveMedicine);
 router.post("/archiveMedicine", pharmacistController.archiveMedicine);
 
-router.post("/sendMessage", pharmacistController.sendMessage);
+router.post("/createChat2",protectPharmacist, pharmacistController.createChat2);
+router.post("/sendMessage2", protectPharmacist,pharmacistController.sendMessage2);
+router.post("/getChat2", protectPharmacist, pharmacistController.getChat2);
+router.get('/viewChats2',protectPharmacist , pharmacistController.viewChats2)
 
+router.patch("/clearNotifs", protectPharmacist, pharmacistController.clearNotifs);
+router.patch("/seenNotifs", protectPharmacist, pharmacistController.seenNotifs);
+router.get("/getAllDoctors", protectPharmacist,pharmacistController.getAllDoctors);
+router.get("/getDoctorById/:id", pharmacistController.getDoctorById);
+
+router.post("/sendMessage", protectPharmacist,pharmacistController.sendMessage);
+router.post("/getChat", protectPharmacist, pharmacistController.getChat);
+router.get('/viewChats',protectPharmacist , pharmacistController.viewChats);
 
 module.exports = router;
+
+
