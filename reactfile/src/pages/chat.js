@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { getPharmacistbyId, getChat, sendMessage } from "../services/api";
 import { useParams } from 'react-router-dom';
+import { mainListItems } from '../components/ListItems';
 
 const ChatPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState("");
   const [pharmacist, setPharmacist] = useState([]);
   const [messages, setMessages] = useState([]); // State to store messages
+  const [initialScroll, setInitialScroll] = useState(true);
 
   useEffect(() => {
     // Fetch pharmacist details
@@ -29,8 +31,18 @@ const ChatPage = () => {
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-
   }, [id]);
+
+  useEffect(() => {
+    // Scroll to the last message when messages are updated only on initial load
+    if (initialScroll) {
+      const messagesContainer = document.getElementById('messages-container');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        setInitialScroll(false); // Disable automatic scrolling after the initial scroll
+      }
+    }
+  }, [messages, initialScroll]);
 
   const fetchChatMessages = (pharmacistId) => {
     // Fetch chat messages for the given pharmacist
@@ -60,32 +72,56 @@ const ChatPage = () => {
       });
   };
 
+  // Define inline styles
+  const styles = {
+    youMessage: {
+      backgroundColor: "#2196f3", // Blue color for "You" messages
+      color: "#fff", // White text color
+      borderRadius: "8px", // Rounded corners
+      padding: "8px", // Padding for better appearance
+      marginBottom: "8px", 
+      textAlign: "right",
+    },
+    pharmacistMessage: {
+      backgroundColor: "#4caf50",
+      color: "#fff", 
+      borderRadius: "8px", 
+      padding: "8px",
+      marginBottom: "8px", 
+      textAlign: "left", 
+    },
+  };
+
   return (
     <Grid container>
-      {/* App Bar with Name */}
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">{pharmacist.firstName}</Typography>
-        </Toolbar>
-      </AppBar>
+      {/* Sidebar */}
+      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
+        {mainListItems}
+      </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", minHeight: "60vh" }}>
-          {/* Display Messages */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10}>
+        {/* App Bar with Name */}
+        <AppBar position="static" style={{ maxWidth: "840px" }}>
+          <Toolbar>
+            <Typography variant="h6">{pharmacist.firstName} {pharmacist.lastName}</Typography>
+          </Toolbar>
+        </AppBar>
+
+        {/* Display Messages */}
+        <Paper id="messages-container" elevation={3} style={{ padding: "1rem", height: "60vh", overflowY: "auto", width: "100%", maxWidth: "800px" }}>
           {messages.map((message) => (
-            <div key={message._id}>
-              <p>{message.senderRole === 'patient' ? 'You' : 'Pharmacist'}:</p>
-              <p>{message.messageText}</p>
-              <p>{new Date(message.timeDate).toLocaleString()}</p>
+            <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-end' : 'flex-start' }}>
+              <div style={message.senderRole === 'patient' ? styles.youMessage : styles.pharmacistMessage}>
+                <p>{message.messageText}</p>
+                <p>{new Date(message.timeDate).toLocaleString()}</p>
+              </div>
             </div>
           ))}
         </Paper>
-      </Grid>
 
-      {/* Message Input and Send Button */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem" }}>
+        {/* Message Input and Send Button */}
+        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem", maxWidth: "800px" }}>
           <Grid container spacing={2}>
             <Grid item xs={9}>
               <TextField

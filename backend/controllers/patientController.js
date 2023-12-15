@@ -1032,10 +1032,10 @@ const viewChats = async (req, res) => {
   
 		  const lastMessage =
 			chat.messages.length > 0
-			  ? chat.messages[chat.messages.length - 1].messageText
+			  ? chat.messages[chat.messages.length - 1]
 			  : 'No messages';
   
-		  // Include the chat in the result only if there are messages
+console.log (lastMessage);
 		  return lastMessage !== 'No messages'
 			? {
 				pharma: pharma
@@ -1045,7 +1045,7 @@ const viewChats = async (req, res) => {
 					  id : pharma._id,
 					}
 				  : null,
-				lastMessage,
+				lastMessage
 			  }
 			: null;
 		})
