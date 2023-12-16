@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { viewPatients } from "../services/api";
-import { Typography, Paper, Button, Grid } from "@mui/material"; 
+import { Typography, Paper, Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AdminListItems } from '../components/ListItemsAdmin'; 
+import { AdminListItems } from '../components/ListItemsAdmin';
+import AdminHeader from '../components/AdminHeader'; // Import the AdminHeader component
 
 const ViewPatients = () => {
   const [patient, setPatient] = useState([]);
@@ -33,13 +34,13 @@ const ViewPatients = () => {
 
   return (
     <Grid container>
-      {/* Sidebar */}
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {AdminListItems}
-      </Grid>
+      {/* Include the AdminHeader component */}
+      <AdminHeader />
+
+   
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10}>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} sx={{ paddingLeft: "20rem", paddingRight: "2rem" }}>
         <div>
           <Typography variant="h4" gutterBottom>
             Patients
@@ -66,7 +67,7 @@ const ViewPatients = () => {
                   <Typography variant="h6">{patient.name}</Typography>
                   <Typography>Email: {patient.email}</Typography>
                   <Typography>Username: {patient.username}</Typography>
-                 
+
                   <Button onClick={() => handlePatientClick(patient._id)}>
                     View Details
                   </Button>

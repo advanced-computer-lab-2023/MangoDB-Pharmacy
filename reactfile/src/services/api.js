@@ -96,7 +96,8 @@ export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
 export const getPharmacist = () => API.post(`/Pharmacist/getPharmacist`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const viewPatients = () => API.get("/Patient/getPatients");
-export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const getPatient = (id) => API.get(`/Patient/getPatientById/${id}`);
+
 export const placeOrder = ( deliveryAddress, paymentMethod) =>
   API.post(`Patient/checkout`, { deliveryAddress, paymentMethod },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const payment = (items, total) =>

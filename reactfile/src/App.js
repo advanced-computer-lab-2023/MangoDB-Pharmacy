@@ -53,13 +53,12 @@ import PharmacistChatDoctor from "./pages/pharmacistChatDoctor";
 
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
-import AdminHeader from "./components/AdminHeader";
+import AdminHeader from "./components/AdminHeader"; // Correct import statement
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <AdminHeader />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -91,9 +90,9 @@ function App() {
 
           <Route path="/viewPatients" element={<ViewPatients />} />
 
-          <Route path="/pharmacistDetails" element={<PharmacistDetails />} />
+          <Route path="/pharmacistDetails/:id" element={<PharmacistDetails />} />
 
-          <Route path="/patientDetails" element={<PatientDetails />} />
+          <Route path="/patientDetails/:id" element={<PatientDetails />} />
 
           <Route path="/medicinePharma/:id" element={<GetMedPharma />} />
 
@@ -136,7 +135,7 @@ function App() {
             element={<ChangePasswordAdmin />}
           />
 
-          <Route path="/admin" element={<DashboardAdmin />} />
+          <Route path="/admin" element={<AdminHeader />} />
           <Route path="/admin/login" element={<LoginPage />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/requestedPharma" element={<Requests />} />
