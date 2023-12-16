@@ -199,6 +199,7 @@ const Medicine = () => {
                   variant="contained"
                   color={isAddedToCart ? 'secondary' : 'primary'}
                   onClick={handleAddToCart}
+                  style={{marginRight : "40px"}}
                 >
                   {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
                 </Button>
@@ -208,6 +209,8 @@ const Medicine = () => {
                   color="primary"
                   onClick={handleViewAlternatives}
                   style={{ marginTop: '1rem' }}
+  
+                  
                 >
                   View Alternatives
                 </Button>
