@@ -19,10 +19,12 @@
   },
   "scripts": {
     "start": "node backend/server.js",
-    "server": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js",
+    "generate-swagger": "node backend/swagger.js"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "prettier": "^3.0.0-alpha.6"
+    "prettier": "^3.0.0-alpha.6",
+    "swagger-autogen": "^2.23.7"
   }
 }
