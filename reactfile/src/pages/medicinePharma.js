@@ -98,7 +98,7 @@ const MedicinePharma = () => {
                   {medicine.name}
                 </Typography>
                 <img
-                  src={`http://localhost:4000/${medicine.picture}`}
+                  src={`http://localhost:8000/${medicine.picture}`}
                   alt={medicine.name}
                   style={{
                     maxWidth: '100%',

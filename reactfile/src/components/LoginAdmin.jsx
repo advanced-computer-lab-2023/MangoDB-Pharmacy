@@ -49,12 +49,15 @@ export default function LoginAdmin() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/Admin/login`,
+				`http://localhost:8000/Admin/login`,
 				formData
 			);
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token);
+				localStorage.setItem('userData', JSON.stringify(response.data));
+
+
 				navigate("/admin");
 			}
 		} catch (error) {

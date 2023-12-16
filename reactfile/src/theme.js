@@ -3,7 +3,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { green, amber, red } from "@mui/material/colors";
+import { green, amber, red, blue } from "@mui/material/colors";
 export const theme = createTheme({
   palette: {
     mode: "light",
@@ -25,6 +25,7 @@ export const theme = createTheme({
       fontWeight: 500,
       color: "#108cc6",
       padding: "0.5rem",
+      paddingBottom: "1rem",
     },
     h4: { fontSize: "1.75rem", fontWeight: 500, color: "#108cc6" },
     h5: { fontSize: "1.5rem", fontWeight: 500, color: "#108cc6" },
@@ -196,6 +197,9 @@ export const theme = createTheme({
         },
         warning: {
           backgroundColor: amber[600],
+        },
+        info: {
+          backgroundColor: blue[600],
         },
       },
     },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { getDoctorbyId, getChat2, sendMessage2 } from "../services/api";
 import { useParams } from 'react-router-dom';
+import { pharmacistListItems } from '../components/ListItemsPharma';
 
 const Chat2 = () => {
   const { id } = useParams();
@@ -10,8 +11,6 @@ const Chat2 = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    console.log("heyyyyyy" ,id);
-    // Fetch doctor details
     getDoctorbyId(id)
       .then((response) => {
         setDoctor(response.data);
@@ -26,7 +25,7 @@ const Chat2 = () => {
     // Set up interval to fetch messages every 5 seconds
     const intervalId = setInterval(() => {
       fetchChatMessages(id);
-    }, 5000);
+    }, 1000);
 
     // Clear the interval when the component unmounts
     return () => clearInterval(intervalId);
@@ -34,7 +33,6 @@ const Chat2 = () => {
   }, [id]);
 
   const fetchChatMessages = (doctorId) => {
-    console.log("heyeyeyeyeyey" + doctorId)
     // Fetch chat messages for the given doctor
     getChat2({ doctorId })
       .then((response) => {
@@ -60,55 +58,100 @@ const Chat2 = () => {
         console.error("Error sending message:", error.message);
       });
   };
+  const styles = {
+    youMessage: {
+      backgroundColor: "#2196f3",
+      color: "#fff",
+      borderRadius: "8px",
+      padding: "8px",
+      marginBottom: "8px",
+      textAlign: "right",
+      maxWidth: "50%",
+      marginLeft: "auto", // Move the blue box to the right
+    },
+    doctorMessage: {
+      backgroundColor: "#4caf50",
+      color: "#fff",
+      borderRadius: "8px",
+      padding: "8px",
+      marginBottom: "8px",
+      textAlign: "left",
+      maxWidth: "50%",
+      marginRight: "auto", // Move the green box to the left
+    },
+  
+  };
 
   return (
     <Grid container>
-      {/* App Bar with Name */}
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">{doctor.firstName}</Typography>
-        </Toolbar>
-      </AppBar>
-
-      {/* Main Content */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", minHeight: "60vh" }}>
-          {/* Display Messages */}
-          {messages.map((message) => (
-            <div key={message._id}>
-              <p>{message.senderRole === 'pharmacist' ? 'Pharmacist' : 'Doctor'}:</p>
-              <p>{message.messageText}</p>
-              <p>{new Date(message.timeDate).toLocaleString()}</p>
-            </div>
-          ))}
-        </Paper>
+      {/* Sidebar */}
+      <Grid
+        item
+        xs={12}
+        sm={3}
+        md={2}
+        lg={2}
+        xl={2}
+        style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
+      >
+        {pharmacistListItems}
       </Grid>
 
-      {/* Message Input and Send Button */}
-      <Grid item xs={12}>
-        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={9}>
-              <TextField
-                fullWidth
-                variant="outlined"
-                label="Type your message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
+      {/* Main Content */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+        {/* App Bar with Name */}
+        <AppBar position="static" style={{ maxWidth: "840px" }}>
+          <Toolbar>
+            <Typography variant="h6">{doctor.firstName} {doctor.lastName} </Typography>
+          </Toolbar>
+        </AppBar>
+
+        <Grid item xs={12}>
+        <Paper id="messages-container" elevation={3} style={{ padding: "1rem", height: "60vh", overflowY: "auto", width: "100%", maxWidth: "800px" }}>
+        {messages.map((message) => (
+  <div key={message._id} style={message.senderRole === 'pharmacist' ? styles.youMessage : styles.doctorMessage}>
+    <p>{message.messageText}</p>
+    
+    <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
+      {new Date(message.timeDate).toLocaleTimeString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })}
+    </p>
+  </div>
+))}
+          </Paper>
+        </Grid>
+
+        {/* Message Input and Send Button */}
+        <Grid item xs={12}>
+        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem", maxWidth: "800px" }}>
+            <Grid container spacing={2}>
+              <Grid item xs={9}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  label="Type your message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSend}
+                  fullWidth
+                >
+                  Send
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSend}
-                fullWidth
-              >
-                Send
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </Grid>
       </Grid>
     </Grid>
   );

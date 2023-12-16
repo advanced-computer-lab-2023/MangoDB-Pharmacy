@@ -64,7 +64,7 @@ export default function ForgotPasswordAdmin() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/admin/request-otp`,
+				`http://localhost:8000/admin/request-otp`,
 				formDataRequest
 			);
 
@@ -84,7 +84,7 @@ export default function ForgotPasswordAdmin() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/admin/verify-otp`,
+				`http://localhost:8000/admin/verify-otp`,
 				{
 					email: formDataRequest.email,
 					otp: formDataVerify.otp,
@@ -107,7 +107,7 @@ export default function ForgotPasswordAdmin() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/admin/reset-password`,
+				`http://localhost:8000/admin/reset-password`,
 				{
 					email: formDataRequest.email,
 					password: formDataReset.password,

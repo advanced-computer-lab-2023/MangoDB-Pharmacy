@@ -9,10 +9,12 @@ import {
   Paper,
   Typography,
   Input,
+  FormHelperText,
 } from "@mui/material";
 import { pharmacistReg as PharmacistRegService } from "../services/api";
 
 const PharmacistReg = () => {
+  const uploadIcon = `${process.env.PUBLIC_URL}/icons/upload.svg`;
   //Pharmacist
   const [rate, setRate] = useState("");
   const [affiliation, setAffiliation] = useState("");
@@ -26,6 +28,7 @@ const PharmacistReg = () => {
   const [dob, setDOB] = useState("");
   const [addresses, setAddresses] = useState("");
   //Docs
+
   const [documents, setDocuments] = useState();
   //Other
   const [isPending, setIsPending] = useState(false);
@@ -61,11 +64,19 @@ const PharmacistReg = () => {
       });
   };
 
+  const handleFileChange = (event) => {
+    setDocuments(Array.from(event.target.files));
+  };
+
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
       <Grid item xs={6}>
-        <Paper elevation={3} style={{ padding: "2rem" }}>
-          <h2>Register As Pharmacist</h2>
+        <Paper
+          elevation={3}
+          sx={{ maxWidth: "80%", margin: "auto" }}
+          style={{ padding: "2rem" }}
+        >
+          <Typography variant="h3">Register as a Pharmacist</Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
@@ -188,18 +199,36 @@ const PharmacistReg = () => {
               </Grid>
 
               <Grid item xs={6}>
-                <FormControl fullWidth>
-                  <InputLabel>Upload Documents</InputLabel>
-                  <Input
-                    type="file"
-                    onChange={(e) => setDocuments(Array.from(e.target.files))}
-                    style={{ marginBottom: "5rem" }}
-                    inputProps={{ multiple: true }}
-                  />
-                </FormControl>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component="label"
+                  startIcon={
+                    <img
+                      src={uploadIcon}
+                      alt="Upload Icon"
+                      style={{ filter: "invert(1)" }}
+                      width="20"
+                      height="20"
+                    />
+                  }
+                  onClick={() => document.getElementById("fileInput").click()}
+                  fullWidth // This makes the button take up the full width of the Grid item
+                >
+                  Upload
+                </Button>
+                <Input
+                  id="fileInput"
+                  type="file"
+                  name="picture"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                <FormHelperText>
+                  Upload id , pharmacy degree or working license
+                </FormHelperText>
               </Grid>
             </Grid>
-
             {!isPending ? (
               <Button variant="contained" type="submit" fullWidth>
                 Register

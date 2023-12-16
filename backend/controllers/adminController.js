@@ -462,33 +462,38 @@ function generateOTP() {
 // @access Public
 const loginAdmin = asyncHandler(async (req, res) => {
 	const { username, password } = req.body;
-
+  
 	if (!username) {
-		res.status(400);
-		throw new Error("Please Enter Your Username");
+	  res.status(400);
+	  throw new Error("Please Enter Your Username");
 	} else if (!password) {
-		res.status(400);
-		throw new Error("Enter Your Password");
+	  res.status(400);
+	  throw new Error("Enter Your Password");
 	}
-
+  
 	// Check for username
 	const admin = await Admin.findOne({ username });
-
+  
 	if (admin && (await bcrypt.compare(password, admin.password))) {
-		res.status(200).json({
-			message: "Successful Login",
-			_id: admin.id,
-			username: admin.username,
-			name: admin.firstName + admin.lastName,
-			email: admin.email,
-			token: generateToken(admin._id),
-		});
+	  const initials = (admin.firstName ? admin.firstName[0] : '') +
+					   (admin.lastName ? admin.lastName[0] : '');
+  
+	  res.status(200).json({
+		message: "Successful Login",
+		_id: admin.id,
+		username: admin.username,
+		name: admin.firstName,
+		lastName: admin.lastName,
+		email: admin.email,
+		initials: initials, 
+		token: generateToken(admin._id),
+	  });
 	} else {
-		res.status(400);
-		throw new Error("Invalid Credentials");
+	  res.status(400);
+	  throw new Error("Invalid Credentials");
 	}
-});
-
+  });
+  
 // @desc Approve pharmacist registration
 // @route PUT /admin/pharmacist-approval/:id
 // @access Private
@@ -609,6 +614,7 @@ const changePassword = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 });
+
 
 module.exports = {
 	add_admin,

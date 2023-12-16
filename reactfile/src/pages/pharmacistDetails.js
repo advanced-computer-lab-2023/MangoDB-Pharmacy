@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getPharmacist } from "../services/api";
+import { getPharmacistbyId } from "../services/api";
 import { Typography, Paper, Grid } from "@mui/material";
 import { AdminListItems } from '../components/ListItemsAdmin';
 
 const PharmacistDetails = () => {
-  //const { id } = useParams();
+  const { id } = useParams();
   const [pharmacist, setPharmacist] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ const PharmacistDetails = () => {
   useEffect(() => {
     const fetchPharmacistDetails = async () => {
       try {
-        const response = await getPharmacist();
+        const response = await getPharmacistbyId(id);
         setPharmacist(response.data);
         setLoading(false);
         setError(null);

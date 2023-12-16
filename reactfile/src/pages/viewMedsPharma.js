@@ -22,7 +22,8 @@ import {
   viewMeds,
   getAllMedicineUses,
   getMedicinesByUse,
-  addMed as addMedicineApi, archiveMedicine
+  addMed as addMedicineApi,
+  archiveMedicine,
 } from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
 const prescribedOptions = ["required", "not required"];
@@ -43,7 +44,7 @@ const ViewMedsPharma = () => {
     quantity: "",
     sales: "",
     details: "",
-    prescribed :"",
+    prescribed: "",
   });
 
   const [isAddMedPending, setIsAddMedPending] = useState(false);
@@ -122,16 +123,16 @@ const ViewMedsPharma = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsAddMedPending(true);
-  
+
     try {
       const newMedicine = { ...addMedicine }; // Create a new object for the new medicine
       await addMedicineApi(newMedicine);
       setIsAddMedPending(false);
       setAddMedSuccessOpen(true);
-  
+
       // Directly add the new medicine to the state
       setMeds((prevMeds) => [...prevMeds, newMedicine]);
-  
+
       // Reset the form
       setAddMedicine({
         name: "",
@@ -190,19 +191,49 @@ const ViewMedsPharma = () => {
         md={2}
         lg={2}
         xl={2}
-        style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
+        style={{
+          background: "#f0f0f0",
+          minHeight: "100vh",
+          paddingTop: "2rem",
+        }}
       >
         {pharmacistListItems}
       </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
-        <Typography variant="h4" gutterBottom>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        md={10}
+        lg={10}
+        xl={10}
+        style={{ paddingLeft: "2rem" }}
+      >
+        <Typography variant="h2" sx={{ pt: 5 }} gutterBottom>
           Medicines
         </Typography>
 
+        {/* Search Bar */}
+        <TextField
+          label="Search for Medicine by Name"
+          variant="outlined"
+          fullWidth
+          size="medium"
+          margin="normal"
+          onChange={handleSearchChange}
+          value={searchTerm}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"></InputAdornment>,
+          }}
+          sx={{ borderRadius: "10px", color: "secondary.main" }}
+        />
         {/* Display Medicine Uses */}
-        <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
+        <FormControl
+          fullWidth
+          margin="normal"
+          sx={{ minWidth: 200, maxHeight: 30, paddingBottom: "2rem" }}
+        >
           <InputLabel id="medicineUseLabel">Select Medicine Use</InputLabel>
           <Select
             labelId="medicineUseLabel"
@@ -219,55 +250,51 @@ const ViewMedsPharma = () => {
           </Select>
         </FormControl>
 
-        {/* Search Bar */}
-        <TextField
-          label="Search for Medicine Name"
-          variant="outlined"
-          fullWidth
-          size="small"
-          margin="normal"
-          onChange={handleSearchChange}
-          value={searchTerm}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"></InputAdornment>,
-          }}
-          sx={{ borderRadius: "20px" }}
-        />
-
         {/* Display Medicines */}
         {isPending && <div>Loading...</div>}
         {error && <div>{error}</div>}
-        {meds &&
-  <div>
-    {meds
-      .filter((med) => med.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      .map((med) => (
-        <div key={med._id}>
-          <Link to={`/medicinePharma/${med._id}`} style={{ textDecoration: "none", color: "inherit" }}>
-            <Paper
-              style={{
-                padding: "1rem",
-                marginBottom: "1rem",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              {med.picture && (
-                <img
-                  src={`http://localhost:4000/${med.picture}`}
-                  alt={med.name}
-                  style={{ width: "50px", height: "50px", marginRight: "1rem" }}
-                />
-              )}
-              <div>
-                <Typography variant="h6">{med.name}</Typography>
-                <Typography>{med.description}</Typography>
-                <Typography variant="subtitle1">Price: {med.price}</Typography>
-              </div>
-            </Paper>
-          </Link>
-         {/* Archive Medicine Button */}
+        {meds && (
+          <div>
+            {meds
+              .filter((med) =>
+                med.name.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((med) => (
+                <div key={med._id}>
+                  <Link
+                    to={`/medicinePharma/${med._id}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <Paper
+                      style={{
+                        padding: "1rem",
+                        marginBottom: "1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {med.picture && (
+                        <img
+                          src={`http://localhost:4000/${med.picture}`}
+                          alt={med.name}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            marginRight: "1rem",
+                          }}
+                        />
+                      )}
+                      <div>
+                        <Typography variant="h6">{med.name}</Typography>
+                        <Typography>{med.description}</Typography>
+                        <Typography variant="subtitle1">
+                          Price: {med.price}
+                        </Typography>
+                      </div>
+                    </Paper>
+                  </Link>
+                  {/* Archive Medicine Button */}
                   <Button
                     variant="outlined"
                     color="secondary"
@@ -279,22 +306,30 @@ const ViewMedsPharma = () => {
                 </div>
               ))}
           </div>
-        }
+        )}
 
         {/* Add Medicine Button */}
-        <Button variant="contained" color="primary" onClick={handleAddMedicineOpen}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddMedicineOpen}
+        >
           Add Medicine
         </Button>
 
         {/* Archived Medicines Button */}
         <Link to="/archivedMedicines" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="secondary" style={{ marginLeft: "1rem" }}>
-           view Archived Medicines
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ marginLeft: "1rem" }}
+          >
+            view Archived Medicines
           </Button>
         </Link>
 
-       {/* Add Medicine Dialog */}
-       <Dialog open={addMedicineOpen} onClose={handleAddMedicineClose}>
+        {/* Add Medicine Dialog */}
+        <Dialog open={addMedicineOpen} onClose={handleAddMedicineClose}>
           <DialogTitle>{"Add Medicine"}</DialogTitle>
           <DialogContent>
             <form onSubmit={handleSubmit}>
@@ -344,25 +379,25 @@ const ViewMedsPharma = () => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                <FormControl fullWidth margin="normal">
-                  <InputLabel id="prescribed-label">Prescribed</InputLabel>
-                  <Select
-                    labelId="prescribed-label"
-                    id="prescribed"
-                    name="prescribed"
-                    value={addMedicine.prescribed}
-                    onChange={handleChange}
-                    fullWidth
-                    required
-                  >
-                    {prescribedOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
+                  <FormControl fullWidth margin="normal">
+                    <InputLabel id="prescribed-label">Prescribed</InputLabel>
+                    <Select
+                      labelId="prescribed-label"
+                      id="prescribed"
+                      name="prescribed"
+                      value={addMedicine.prescribed}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    >
+                      {prescribedOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label="Quantity"
@@ -413,14 +448,13 @@ const ViewMedsPharma = () => {
           </DialogContent>
         </Dialog>
 
-
         {/* Add Medicine Success Dialog */}
         <Dialog open={addMedSuccessOpen} onClose={handleSuccessClose}>
           <DialogTitle>{"Medicine Added Successfully"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Medicine was successfully added. You will be redirected to the home
-              page shortly.
+              Medicine was successfully added. You will be redirected to the
+              home page shortly.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -430,8 +464,8 @@ const ViewMedsPharma = () => {
           </DialogActions>
         </Dialog>
 
-         {/* Add Medicine Error Dialog */}
-         <Dialog open={addMedErrorOpen} onClose={handleErrorClose}>
+        {/* Add Medicine Error Dialog */}
+        <Dialog open={addMedErrorOpen} onClose={handleErrorClose}>
           <DialogTitle>{"Probably worked"}</DialogTitle>
           <DialogContent>
             <DialogContentText>Check db for a surprise 😉</DialogContentText>

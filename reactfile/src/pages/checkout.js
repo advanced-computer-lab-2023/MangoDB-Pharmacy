@@ -157,7 +157,7 @@ console.log(paymentMethod,selectedAddress);
                 <Typography variant="h6">{item.name}</Typography>
                 {item.picture && (
                   <img
-                    src={`http://localhost:4000/${item.picture}`}
+                    src={`http://localhost:8000/${item.picture}`}
                     alt={item.name}
                     style={{ width: '100px', height: '100px' }}
                   />

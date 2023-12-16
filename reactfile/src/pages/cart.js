@@ -79,7 +79,7 @@ const ViewCartItems = () => {
               <Paper key={item._id} style={{ padding: "1rem", marginBottom: "1rem" }}>
                 <Typography variant="h6">{item.name}</Typography>
                
-                {item.picture && <img src={`http://localhost:4000/${item.picture}`} alt={item.name} style={{ width: '100px', height: '100px' }} />}
+                {item.picture && <img src={`http://localhost:8000/${item.picture}`} alt={item.name} style={{ width: '100px', height: '100px' }} />}
                 <Typography>Quantity: {item.quantity}</Typography>
                 <Typography variant="subtitle1">Price: {item.price}</Typography>
                

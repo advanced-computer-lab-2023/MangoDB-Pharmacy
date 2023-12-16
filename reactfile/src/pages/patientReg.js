@@ -15,6 +15,14 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
+  Typography,
+  FormControlLabel,
+  RadioGroup,
+  FormLabel,
+  Radio,
+  Tooltip,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { patientReg as PatientRegService } from "../services/api";
 
@@ -43,6 +51,7 @@ const PatientReg = () => {
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const navigate = useNavigate();
+  const [warningOpen, setWarningOpen] = React.useState(false);
 
   const handleSuccessClose = () => {
     setSuccessOpen(false);
@@ -74,6 +83,13 @@ const PatientReg = () => {
     }
   };
 
+  const handleWarningClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setWarningOpen(false);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPatient((prevPatient) => ({
@@ -102,8 +118,14 @@ const PatientReg = () => {
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
       <Grid item xs={12} md={8} lg={6}>
-        <Paper elevation={3} style={{ padding: "2rem" }}>
-          <h2>Register As Patient</h2>
+        <Paper
+          elevation={3}
+          sx={{ maxWidth: "80%", margin: "auto" }}
+          style={{ padding: "2rem" }}
+        >
+          <Typography variant="h3" sx={{ pb: "1rem" }}>
+            Register as a patient
+          </Typography>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -155,18 +177,29 @@ const PatientReg = () => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  label="Password"
-                  type="password"
-                  name="password"
-                  value={patient.password}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  margin="normal"
-                />
+                <Tooltip
+                  title="Your password must be at least 8 characters long, contain at least one number and have a mix of uppercase and lowercase letters."
+                  placement="right"
+                  PopperProps={{
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -10], // Adjust these values as needed
+                        },
+                      },
+                    ],
+                  }}
+                >
+                  <TextField
+                    label="Password"
+                    variant="outlined"
+                    type="password"
+                    fullWidth
+                    sx={{ maxWidth: "100%", margin: "auto" }}
+                  />
+                </Tooltip>
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Date of Birth"
@@ -177,6 +210,7 @@ const PatientReg = () => {
                   fullWidth
                   required
                   margin="normal"
+                  InputLabelProps={{ shrink: true }}
                 />
               </Grid>
 
@@ -194,15 +228,18 @@ const PatientReg = () => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth required margin="normal">
-                  <InputLabel>Gender</InputLabel>
+                <FormControl required fullWidth margin="normal">
+                  <InputLabel id="gender-label">Gender</InputLabel>
                   <Select
+                    labelId="gender-label"
+                    id="gender-select"
                     name="gender"
                     value={patient.gender}
                     onChange={handleChange}
                   >
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
+                    <MenuItem value="other">other</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -253,7 +290,6 @@ const PatientReg = () => {
                 </Grid>
               ))}
             </Grid>
-
             <Button
               variant="contained"
               type="submit"
@@ -269,35 +305,51 @@ const PatientReg = () => {
           </form>
         </Paper>
       </Grid>
+      <Snackbar
+        open={successOpen}
+        autoHideDuration={6000}
+        onClose={handleSuccessClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSuccessClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Patient registration was successful. You will be redirected to the
+          home page shortly.
+        </Alert>
+      </Snackbar>
 
-      <Dialog open={successOpen} onClose={handleSuccessClose}>
-        <DialogTitle>{"Patient Registered Successfully"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Patient registration was successful. You will be redirected to the
-            home page shortly.
-          </DialogContentText>
-        </DialogContent>{" "}
-        <DialogActions>
-          <Button onClick={handleSuccessClose} autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* Error Dialog */}
-      <Dialog open={errorOpen} onClose={handleErrorClose}>
-        <DialogTitle>{"Failed to Register Patient"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Patient registration failed. Please try again.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleErrorClose} autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Snackbar
+        open={errorOpen}
+        autoHideDuration={6000}
+        onClose={handleErrorClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleErrorClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Patient registration failed. Please try again.
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={warningOpen} // You need to control this state variable
+        autoHideDuration={6000}
+        onClose={handleWarningClose} // And this function
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleWarningClose}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          A field is missing or a username is taken. Please check your input.
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

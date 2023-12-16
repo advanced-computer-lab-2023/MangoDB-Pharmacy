@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Grid, Typography, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
-import { getPendingPharma  } from "../services/api";
-// import List from '@mui/material/List';
-import { AdminListItems } from '../components/ListItemsAdmin';
+import { getPendingPharma } from "../services/api";
+import { AdminHeader } from '../components/AdminHeader';
 import { Link } from 'react-router-dom';
-
 
 const Requests = () => {
   const [pharma, setPharma] = useState([]);
@@ -15,7 +13,7 @@ const Requests = () => {
   useEffect(() => {
     getPendingPharma()
       .then((response) => {
-        setPharma(response.data);  
+        setPharma(response.data);
         setIsPending(false);
         setError(null);
       })
@@ -27,12 +25,11 @@ const Requests = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {AdminListItems}
-      </Grid>
+      {/* AdminHeader Component with Appbar and Sidebar */}
+      <AdminHeader />
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} sx={{ paddingLeft: "20rem", paddingRight: "2rem" }}>
         <Typography variant="h4" gutterBottom>
           Requested Pharmacists
         </Typography>

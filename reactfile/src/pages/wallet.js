@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { viewWallet } from '../services/api';
 import { useParams } from 'react-router-dom';
+import { alpha } from "@mui/system";
 
 const WalletPage = () => {
     const [wallet, setWallet] = useState(null);
@@ -43,26 +44,27 @@ const WalletPage = () => {
     return (
         
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Typography variant="h4">Wallet Details</Typography>
+        <Grid item xs={12} paddingTop = "30">
+          
+          <Typography variant="h3">Wallet Details</Typography>
         </Grid>
         {wallet && (
           <>
             <Grid item xs={12}>
-              <Paper elevation={3}>
-                <Typography variant="h5">Balance: {wallet.balance}</Typography>
+              <Paper elevation={3}  sx={{ width: '10%' }} >
+                <Typography variant="h5" style={{ padding: "10px" }} >Balance: {wallet.balance}</Typography>
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper elevation={3}>
-                <Typography variant="h5">Transactions:</Typography>
-                <TableContainer>
-                  <Table>
-                    <TableHead>
+              <Paper elevation={3} sx={{ width: '100%' }}>
+              <TableContainer component={Paper} sx={{ width: '100%' }}>
+            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableHead sx={{ backgroundColor: alpha("#A2E4F5", 0.3) }}>
+                    
                       <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Amount</TableCell>
-                        <TableCell>Type</TableCell>
+                      <TableCell><Typography variant='subtitle1' fontWeight='bold'>Date</Typography></TableCell>
+                      <TableCell><Typography variant='subtitle1' fontWeight='bold'>Amount</Typography></TableCell>
+                      <TableCell><Typography variant='subtitle1' fontWeight='bold'>Type</Typography></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

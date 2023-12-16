@@ -164,7 +164,7 @@ const Medicine = () => {
                   {medicine.name}
                 </Typography>
                 <img
-                  src={`http://localhost:4000/${medicine.picture}`}
+                  src={`http://localhost:8000/${medicine.picture}`}
                   alt={medicine.name}
                   style={{
                     maxWidth: '100%',
@@ -199,6 +199,7 @@ const Medicine = () => {
                   variant="contained"
                   color={isAddedToCart ? 'secondary' : 'primary'}
                   onClick={handleAddToCart}
+                  style={{marginRight : "40px"}}
                 >
                   {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
                 </Button>
@@ -208,6 +209,8 @@ const Medicine = () => {
                   color="primary"
                   onClick={handleViewAlternatives}
                   style={{ marginTop: '1rem' }}
+  
+                  
                 >
                   View Alternatives
                 </Button>

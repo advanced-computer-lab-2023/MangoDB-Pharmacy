@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:4000", // backend API URL
+  baseURL: "http://localhost:8000", // backend API URL
   timeout: 5000, // Timeout duration
   headers: {
     "Content-Type": "application/json",
@@ -96,7 +96,8 @@ export const viewPharmacists = () => API.get("/Pharmacist/getPharmacists");
 export const getPharmacist = () => API.post(`/Pharmacist/getPharmacist`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 export const viewPatients = () => API.get("/Patient/getPatients");
-export const getPatient = () => API.get(`/Patient/getPatient`,{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+export const getPatient = (id) => API.get(`/Patient/getPatientById/${id}`);
+
 export const placeOrder = ( deliveryAddress, paymentMethod) =>
   API.post(`Patient/checkout`, { deliveryAddress, paymentMethod },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 export const payment = (items, total) =>
@@ -106,7 +107,7 @@ export const payment = (items, total) =>
   },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 const API2 = axios.create({
-  baseURL: `http://localhost:4000`,
+  baseURL: `http://localhost:8000`,
   timeout: 5000,
   headers: {
     "Content-Type": "multipart/form-data",

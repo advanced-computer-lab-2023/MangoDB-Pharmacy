@@ -1,8 +1,12 @@
+// ViewMedsAdmin.js
+
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { Link } from 'react-router-dom';
 import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
-import { AdminListItems } from '../components/ListItemsAdmin';
+import AdminHeader from '../components/AdminHeader';
+import SearchIcon from "@mui/icons-material/Search"; // Import the SearchIcon from Material-UI icons
+import IconButton from "@mui/material/IconButton";
 
 const ViewMedsAdmin = () => {
   const [meds, setMeds] = useState([]);
@@ -46,7 +50,7 @@ const ViewMedsAdmin = () => {
     if (e.target.value) {
       getMedicinesByUse(e.target.value)
         .then((response) => {
-          setMeds(response.data.medicines); // Corrected line
+          setMeds(response.data.medicines);
         })
         .catch((err) => {
           setError(err.message);
@@ -64,20 +68,14 @@ const ViewMedsAdmin = () => {
   };
 
   return (
-    <Grid container>
-      {/* Sidebar */}
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {AdminListItems}
-      </Grid>
-
-      {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+    <AdminHeader>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} sx={{ paddingLeft: "15rem", paddingRight: "2rem" }}>
         <Typography variant="h4" gutterBottom>
           Medicines
         </Typography>
 
         {/* Display Medicine Uses */}
-        <FormControl fullWidth margin="normal" sx={{ minWidth: 200 }}>
+        <FormControl fullWidth margin="normal" sx={{ width: 550 }}>
           <InputLabel id="medicineUseLabel">Select Medicine Use</InputLabel>
           <Select
             labelId="medicineUseLabel"
@@ -104,11 +102,12 @@ const ViewMedsAdmin = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                {/* You can add a search icon here if needed */}
-              </InputAdornment>
+  <IconButton>
+          <SearchIcon />
+        </IconButton>              </InputAdornment>
             ),
           }}
-          sx={{ borderRadius: "20px" }}
+          sx={{ borderRadius: "12px", marginBottom: "1rem" }}
         />
 
         {/* Display Medicines */}
@@ -121,19 +120,19 @@ const ViewMedsAdmin = () => {
               .map((med) => (
                 <Link to={`/medicineAdmin/${med._id}`} key={med._id} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <Paper
-                    style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
+                    style={{ padding: "0.5rem", marginBottom: "0.5rem", display: "flex", alignItems: "center", cursor: "pointer" }}
                   >
                     {med.picture && (
                       <img
-                        src={`http://localhost:4000/${med.picture}`}
+                        src={`http://localhost:8000/${med.picture}`}
                         alt={med.name}
-                        style={{ width: "50px", height: "50px", marginRight: "1rem" }}
+                        style={{ width: "40px", height: "40px", marginRight: "0.5rem" }}
                       />
                     )}
                     <div>
-                      <Typography variant="h6">{med.name}</Typography>
-                      <Typography>{med.description}</Typography>
-                      <Typography variant="subtitle1">Price: {med.price}</Typography>
+                      <Typography variant="h6" sx={{ fontSize: "1rem" }}>{med.name}</Typography>
+                      <Typography sx={{ fontSize: "0.8rem" }}>{med.description}</Typography>
+                      <Typography variant="subtitle1" sx={{ fontSize: "0.9rem" }}>Price: {med.price}</Typography>
                     </div>
                   </Paper>
                 </Link>
@@ -141,7 +140,7 @@ const ViewMedsAdmin = () => {
           </div>
         )}
       </Grid>
-    </Grid>
+    </AdminHeader>
   );
 };
 

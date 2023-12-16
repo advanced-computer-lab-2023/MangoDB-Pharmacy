@@ -114,7 +114,17 @@ const ChatPage = () => {
             <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-end' : 'flex-start' }}>
               <div style={message.senderRole === 'patient' ? styles.youMessage : styles.pharmacistMessage}>
                 <p>{message.messageText}</p>
-                <p>{new Date(message.timeDate).toLocaleString()}</p>
+                <p>{message.senderRole === 'pharmacist' ? 'Pharmacist' : 'You'}:</p>
+
+                <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
+      {new Date(message.timeDate).toLocaleTimeString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })}
+    </p>
               </div>
             </div>
           ))}
