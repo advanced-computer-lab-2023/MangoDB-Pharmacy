@@ -8,7 +8,7 @@ const path = require('path');
 const { protectPatient } = require("./middleware/patientMiddleware");
 
 //const port =8000
-const port = process.env.port || 4000;
+const port = process.env.port || 8000;
 const cors = require("cors");
 
 connectDB();
@@ -17,8 +17,7 @@ const app = express();
 
 app.use(cors());
 
-app.use('/backend/uploads', express.static(path.join(__dirname, 'uploads')));
-
+app.use("/backend/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,12 +26,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(errorHandler);
 
 app.listen(port, () =>
-  console.log(`Server Started On Port ${port}...`.green.bold)
+	console.log(`Server Started On Port ${port}...`.green.bold)
 );
 // app.get('/' , require('./routes/adminRoutes'))
 
 app.get("/", (req, res) => {
-  res.render("home");
+	res.render("home");
 });
 
 app.use("/Admin", require("./routes/adminRoutes"));

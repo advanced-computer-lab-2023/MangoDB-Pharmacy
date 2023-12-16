@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:4000", // backend API URL
-  timeout: 7000, // Timeout duration
+  baseURL: "http://localhost:8000", // backend API URL
+  timeout: 5000, // Timeout duration
   headers: {
     "Content-Type": "application/json",
   },
@@ -107,7 +107,7 @@ export const payment = (items, total) =>
   },{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 const API2 = axios.create({
-  baseURL: `http://localhost:4000`,
+  baseURL: `http://localhost:8000`,
   timeout: 5000,
   headers: {
     "Content-Type": "multipart/form-data",
