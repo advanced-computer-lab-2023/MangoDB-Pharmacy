@@ -137,7 +137,7 @@ function App() {
           />
           <Route path="/addadmin" element={<AddAdminPage />} />
 
-          <Route path="/admin" element={<AdminHeader />} />
+          {/* <Route path="/admin" element={<AdminHeader />} /> */}
           <Route path="/admin/login" element={<LoginPage />} />
           <Route path="/login" element={<LoginUser />} />
           <Route path="/requestedPharma" element={<Requests />} />

@@ -1,5 +1,7 @@
 import React from "react";
 import { Paper, Typography, Grid, Button, Box } from "@mui/material";
+import PatienttHeader from "./PatientHeader";
+import { useNavigate } from "react-router-dom";
 
 // Import your icons
 const Icon1 = `${process.env.PUBLIC_URL}/icons/profile.svg`;
@@ -9,8 +11,11 @@ const Icon4 = `${process.env.PUBLIC_URL}/icons/chat.svg`;
 const Icon5 = `${process.env.PUBLIC_URL}/icons/orders.svg`;
 const Icon6 = `${process.env.PUBLIC_URL}/icons/wallet.svg`;
 
+
+
 const Dashboard = () => {
   // Define your data
+  const navigate = useNavigate();
   const papers = [
     {
       icon: Icon1,
@@ -51,6 +56,7 @@ const Dashboard = () => {
   ];
 
   return (
+     <PatienttHeader>
     <Box
       sx={{
         display: "flex",
@@ -97,15 +103,35 @@ const Dashboard = () => {
                 >
                   {paper.description}
                 </Typography>
-                <Button variant="contained" color="primary">
-                  {paper.cta}
-                </Button>
+                <Button 
+  variant="contained" 
+  color="primary"
+  onClick={() => {
+    if (index === 0) {
+      navigate("/profile");
+    } else if (index === 1) {
+      navigate("/viewMeds");
+    } else if (index === 2) {
+      navigate("/cart");
+    } else if (index === 3) {
+      navigate("/newChat");
+    } else if (index === 4) {
+      navigate("/sales");
+    } else if (index === 5) {
+      navigate("/wallet");
+    }
+  }}
+>
+  {paper.cta}
+</Button>
+
               </Paper>
             </Grid>
           ))}
         </Grid>
       </Paper>
     </Box>
+    </PatienttHeader>
   );
 };
 

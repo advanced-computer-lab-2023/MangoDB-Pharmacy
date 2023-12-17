@@ -58,6 +58,7 @@ export default function LoginUser() {
 
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token);
+				localStorage.setItem("userData",  JSON.stringify(response.data));
 				switch (response.data.type) {
 					case "patient":
 						navigate("/dashboard");
