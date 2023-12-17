@@ -223,7 +223,7 @@ const Medicine = () => {
                                 {alternative.name}
                               </Typography>
                               <img
-                                src={`http://localhost:4000/${alternative.picture}`}
+                                src={`http://localhost:8000/${alternative.picture}`}
                                 alt={alternative.name}
                                 style={{
                                   maxWidth: '100%',
