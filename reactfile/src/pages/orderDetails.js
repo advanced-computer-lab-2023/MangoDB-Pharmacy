@@ -62,7 +62,7 @@ const OrderDetails = () => {
               {orderDetails.orderdetails && orderDetails.orderdetails.map((item, index) => (
                 <div key={index} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem' }}>
                   {item.picture && (
-                    <img src={`http://localhost:8000/${item.picture}`} alt={item.medicineName} style={{ maxWidth: '100px' }} />
+                    <img src={`http://localhost:4000/${item.picture}`} alt={item.medicineName} style={{ maxWidth: '100px' }} />
                   )}
                   {item.medicineName && (
                     <p>Medicine Name: {item.medicineName}</p>

@@ -400,13 +400,18 @@ const loginPharmacist = asyncHandler(async (req, res) => {
     // Check for username
     const pharmacist = await Pharmacist.findOne({ username });
 
-    if (pharmacist && (await bcrypt.compare(password, pharmacist.password))) {
+    if (pharmacist && (await bcrypt.compare(password, pharmacist.password))) 
+    {
+      const initials = (pharmacist.firstName ? pharmacist.firstName[0] : '') +
+         (pharmacist.lastName ? pharmacist.lastName[0] : '');
         res.status(200).json({
             message: "Successful Login",
             _id: pharmacist.id,
             username: pharmacist.username,
-            name: pharmacist.firstName + pharmacist.lastName,
+            name: pharmacist.firstName ,
+            lastName: pharmacist.lastName,
             email: pharmacist.email,
+            initials: initials, 
             token: generateToken(pharmacist._id),
         });
     } else {
@@ -957,6 +962,7 @@ const createChat2 = async (req, res) => {
   const viewChats = async (req, res) => {
     try {
       const pharmacistId = req.user._id;
+      console.log(pharmacistId)
       const chats = await Chat.find({
         $or: [{ userId1: pharmacistId }, { userId2: pharmacistId }],
       });
@@ -964,10 +970,12 @@ const createChat2 = async (req, res) => {
       const formattedChats = await Promise.all(
         chats.map(async (chat) => {
   let   patient= null;
+  console.log(chat.userId1 , "chat user 1")
 
-            patient = await User.findOne({ _id: chat.userId1 });
-          
-          if (patient.userType !== 'patient') {
+            patient = await User.findOne({ _id:chat.userId1 });
+            console.log(patient)
+
+          if ( patient !== null && patient.userType !== 'patient' ) {
               patient= null;
           }
           // Get the last message

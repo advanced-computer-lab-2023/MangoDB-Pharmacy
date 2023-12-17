@@ -4,6 +4,7 @@ import { Grid, Typography, Paper, Button } from '@mui/material';
 import { mainListItems } from '../components/ListItems';
 import { viewCartItems, changeCartItemAmount, removeCartItems } from '../services/api';
 import { useParams } from 'react-router-dom';
+import PatienttHeader from '../components/PatientHeader';
 
 const ViewCartItems = () => {
 
@@ -59,10 +60,11 @@ const ViewCartItems = () => {
   }, [ quantityByMedicine]);
 
   return (
+    <PatienttHeader>
     <Grid container>
       
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {/* {mainListItems} */}
       </Grid>
 
     
@@ -122,6 +124,7 @@ const ViewCartItems = () => {
         </Button>
       </Grid>
     </Grid>
+    </PatienttHeader>
   );
 };
 

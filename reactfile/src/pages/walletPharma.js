@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import { pharmacistListItems } from "../components/ListItemsPharma";
+import PharmacistHeader from '../components/PharmacistHeader';
 
 const WalletPharma = () => {
   const [wallet, setWallet] = useState(null);
@@ -30,10 +31,11 @@ const WalletPharma = () => {
   }, []);
 
   return (
+    <PharmacistHeader>
     <Grid container spacing={3}>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-      {pharmacistListItems}
+      {/* {pharmacistListItems} */}
       </Grid>
 
       {/* Main Content */}
@@ -71,6 +73,7 @@ const WalletPharma = () => {
         )}
       </Grid>
     </Grid>
+    </PharmacistHeader>
   );
 };
 

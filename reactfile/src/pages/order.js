@@ -1,21 +1,28 @@
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Typography, Paper ,Snackbar} from "@mui/material";
 import { useEffect, useState } from "react";
 import { viewAllOrders } from "../services/api";
 // import List from '@mui/material/List';
 import { mainListItems } from '../components/ListItems';
 import { Link } from 'react-router-dom';
-
+import PatienttHeader from "../components/PatientHeader";
+import MuiAlert from "@mui/material/Alert";
 
 const Orders = () => {
 //   const id = '653853e1af653f0d70d44763';
   const [orders, setOrders] = useState([]);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
+  const [showNoOrdersSnackbar, setShowNoOrdersSnackbar] = useState(false);
 
   useEffect(() => {
     viewAllOrders()
       .then((response) => {
-        setOrders(response.data);  // Corrected variable name
+        if (response.data.length === 0) {
+          // No orders found, show Snackbar
+          setShowNoOrdersSnackbar(true);
+        } else {
+          setOrders(response.data);
+        }
         setIsPending(false);
         setError(null);
       })
@@ -25,10 +32,14 @@ const Orders = () => {
       });
   }, []);
 
+  const handleSnackbarClose = () => {
+    setShowNoOrdersSnackbar(false);
+  };
   return (
+    <PatienttHeader>
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {/* {mainListItems} */}
       </Grid>
 
       {/* Main Content */}
@@ -57,8 +68,18 @@ const Orders = () => {
             ))}
           </div>
         )}
+         <Snackbar
+            open={showNoOrdersSnackbar}
+            autoHideDuration={3000} // Adjust the duration as needed
+            onClose={handleSnackbarClose}
+          >
+            <MuiAlert onClose={handleSnackbarClose} severity="info" sx={{ width: '100%' }}>
+              No orders to show for the patient.
+            </MuiAlert>
+          </Snackbar>
       </Grid>
     </Grid>
+    </PatienttHeader>
   );
 };
 

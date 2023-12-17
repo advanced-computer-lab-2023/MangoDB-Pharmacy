@@ -10,7 +10,7 @@ const doc = {
     title: "Your API Documentation",
     description: "API Documentation for your project",
   },
-  host: "localhost:4000", // Update with your actual host and port
+  host: "localhost:8000", // Update with your actual host and port
   basePath: "/",
   schemes: ["http"],
   consumes: ["application/json"],

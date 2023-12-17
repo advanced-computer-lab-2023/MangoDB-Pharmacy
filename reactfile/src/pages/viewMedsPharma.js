@@ -26,6 +26,7 @@ import {
   archiveMedicine,
 } from "../services/api";
 import { pharmacistListItems } from "../components/ListItemsPharma";
+import PharmacistHeader from "../components/PharmacistHeader";
 const prescribedOptions = ["required", "not required"];
 
 const ViewMedsPharma = () => {
@@ -182,6 +183,7 @@ const ViewMedsPharma = () => {
   };
 
   return (
+    <PharmacistHeader>
     <Grid container>
       {/* Sidebar */}
       <Grid
@@ -197,7 +199,7 @@ const ViewMedsPharma = () => {
           paddingTop: "2rem",
         }}
       >
-        {pharmacistListItems}
+        {/* {pharmacistListItems} */}
       </Grid>
 
       {/* Main Content */}
@@ -276,7 +278,7 @@ const ViewMedsPharma = () => {
                     >
                       {med.picture && (
                         <img
-                          src={`http://localhost:4000/${med.picture}`}
+                          src={`http://localhost:8000/${med.picture}`}
                           alt={med.name}
                           style={{
                             width: "50px",
@@ -478,6 +480,7 @@ const ViewMedsPharma = () => {
         </Dialog>
       </Grid>
     </Grid>
+    </PharmacistHeader>
   );
 };
 

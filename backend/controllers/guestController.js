@@ -4,6 +4,7 @@ const Pharma = require("../models/pharmacistModel");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 require("dotenv").config();
+const Wallet = require("../models/walletModel");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -35,6 +36,12 @@ const registerUser = async (req, res, model, userType, fields) => {
       userType: userType,
       accountStatus: userType === "patient" ? "active" : "inactive",
     });
+    const wallet = new Wallet({
+		user: user._id,
+			balance:0 ,
+		});
+		 await wallet.save();
+
     return res.status(201).json({
       _id: user._id,
       username: user.username,
@@ -57,7 +64,7 @@ const registerAsPharmacist = asyncHandler(async (req, res) => {
   ]);
   if (req.files) {
     for (const file of req.files) {
-      const url = `http://localhost:4000/uploads/${file.originalname}`;
+      const url = `http://localhost:8000/uploads/${file.originalname}`;
       const document = {
         name: file.originalname,
         file: url,
@@ -80,10 +87,15 @@ console.log(username);
     return res.status(400).json({ message: "Password is incorrect" });
 
   const token = genToken(user._id);
-
+  const initials = (user.firstName ? user.firstName[0] : '') +
+  (user.lastName ? user.lastName[0] : '');
   res.status(200).json({
     _id: user.id,
     username: user.username,
+   name: user.firstName,
+		lastName: user.lastName,
+		email: user.email,
+		initials: initials, 
     type: user.userType,
     token: token,
   });

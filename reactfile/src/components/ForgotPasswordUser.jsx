@@ -64,7 +64,7 @@ export default function ForgotPasswordUser() {
 	const checkIfDoctor = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:8000/Pharmacist/getPharmacistByEmail",
+				"http://localhost:4000/Pharmacist/getPharmacistByEmail",
 				formDataRequest
 			);
 
@@ -83,7 +83,7 @@ export default function ForgotPasswordUser() {
 	const checkIfPatient = async () => {
 		try {
 			const res = await axios.post(
-				"http://localhost:8000/Patient/getPatient",
+				"http://localhost:4000/Patient/getPatient",
 				formDataRequest
 			);
 
@@ -113,8 +113,8 @@ export default function ForgotPasswordUser() {
 			setIsLoading(true);
 			const response = await axios.post(
 				entity === "pharmacist"
-					? `http://localhost:8000/Pharmacist/request-otp`
-					: `http://localhost:8000/Patient/request-otp`,
+					? `http://localhost:4000/Pharmacist/request-otp`
+					: `http://localhost:4000/Patient/request-otp`,
 				formDataRequest
 			);
 
@@ -137,8 +137,8 @@ export default function ForgotPasswordUser() {
 			console.log("Entity Verify: " + entity);
 			const response = await axios.post(
 				entity === "pharmacist"
-					? `http://localhost:8000/Pharmacist/verify-otp`
-					: `http://localhost:8000/Patient/verify-otp`,
+					? `http://localhost:4000/Pharmacist/verify-otp`
+					: `http://localhost:4000/Patient/verify-otp`,
 				{
 					email: formDataRequest.email,
 					otp: formDataVerify.otp,
@@ -162,8 +162,8 @@ export default function ForgotPasswordUser() {
 			setIsLoading(true);
 			const response = await axios.post(
 				entity === "pharmacist"
-					? `http://localhost:8000/Pharmacist/reset-password`
-					: `http://localhost:8000/Patient/reset-password`,
+					? `http://localhost:4000/Pharmacist/reset-password`
+					: `http://localhost:4000/Patient/reset-password`,
 				{
 					email: formDataRequest.email,
 					password: formDataReset.password,

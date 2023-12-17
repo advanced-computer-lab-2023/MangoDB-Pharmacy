@@ -11,7 +11,7 @@ import {
   Button,
 } from '@mui/material';
 import { addressesByPatientId, addAddress, viewCartItems,placeOrder,payment } from '../services/api';
-import { mainListItems } from '../components/ListItems';
+import PatientHeader from '../components/PatientHeader';
 import { useParams } from 'react-router-dom';
 
 const Checkout = () => {
@@ -117,22 +117,8 @@ console.log(paymentMethod,selectedAddress);
 
 
   return (
-    <Grid container spacing={3}>
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        md={2}
-        lg={2}
-        xl={2}
-        style={{
-          background: '#f0f0f0',
-          minHeight: '100vh',
-          padding: '2rem',
-        }}
-      >
-        {mainListItems}
-      </Grid>
+ <PatientHeader>
+  <Grid>
       <Grid
         item
         xs={12}
@@ -140,7 +126,7 @@ console.log(paymentMethod,selectedAddress);
         md={10}
         lg={10}
         xl={10}
-        style={{ paddingLeft: '2rem' }}
+        style={{ paddingLeft: '17rem' }}
       >
         <Typography variant="h4" gutterBottom>
           Checkout
@@ -274,6 +260,7 @@ console.log(paymentMethod,selectedAddress);
   </Typography>) }
       </Grid>
     </Grid>
+    </PatientHeader>
   );
 };
 
