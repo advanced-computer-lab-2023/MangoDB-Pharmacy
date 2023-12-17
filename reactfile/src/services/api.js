@@ -261,5 +261,7 @@ API.post("/Pharmacist/getChat2", { doctorId }, { headers: { Authorization: `Bear
 
     export const sendMessage2 = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage2",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
+    export const deletePatient = (id) => API.delete(`/Admin/deletePatient/${id}`);
+    export const deletePharma = (id) => API.delete(`/Admin/deletePharma/${id}`);
 
 export default API;
