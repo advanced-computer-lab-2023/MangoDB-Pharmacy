@@ -57,7 +57,7 @@ const registerAsPharmacist = asyncHandler(async (req, res) => {
   ]);
   if (req.files) {
     for (const file of req.files) {
-      const url = `http://localhost:4000/uploads/${file.originalname}`;
+      const url = `http://localhost:8000/uploads/${file.originalname}`;
       const document = {
         name: file.originalname,
         file: url,
