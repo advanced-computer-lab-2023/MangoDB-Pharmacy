@@ -21,12 +21,21 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { viewWallet } from "../services/api";
 export const PatienttHeader = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const {  name, lastName, initials } = userData;
 console.log(name,lastName)
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const [open, setOpen] = useState(true);
+
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    viewWallet()
+      .then((result) => setBalance(result.data.balance))
+      .catch((err) => console.log(err));
+  }, []);
 
 
   const navigate = useNavigate();
@@ -463,6 +472,7 @@ console.log(name,lastName)
               variant="body1"
               sx={{ fontWeight: "bold", marginRight: 2, color: "#333" }}
             >
+              {`${balance} EGP`}
             </Typography>
           </ListItem>
 
