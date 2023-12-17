@@ -29,7 +29,7 @@ const Orders = () => {
     <PatienttHeader>
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {/* {mainListItems} */}
       </Grid>
 
       {/* Main Content */}

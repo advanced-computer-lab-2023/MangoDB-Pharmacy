@@ -83,7 +83,7 @@ const PharmacistChatDoctor = () => {
         xl={2}
         style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
       >
-        {pharmacistListItems}
+        {/* {pharmacistListItems} */}
       </Grid>
 
       {/* Main Content */}
