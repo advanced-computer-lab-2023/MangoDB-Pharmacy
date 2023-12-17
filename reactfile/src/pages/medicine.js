@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { mainListItems } from '../components/ListItems';
+import PatientHeader   from '../components/PatientHeader';
 import { getMeds, addMedicineToCart, getAlternativeMedicines } from '../services/api';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
@@ -24,7 +26,11 @@ const Medicine = () => {
   const [alternativeMedicines, setAlternativeMedicines] = useState([]);
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [alternativeQuantities, setAlternativeQuantities] = useState({});
-
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  
   useEffect(() => {
     getMeds(id)
       .then((response) => {
@@ -52,11 +58,12 @@ const Medicine = () => {
         .then((response) => {
           setIsAddedToCart(true);
           console.log('Item added to cart:', response.data);
+          setIsSnackbarOpen(true);
         })
         .catch((error) => {
           console.error('Error adding item to cart:', error);
           const errorMessage = error.response?.data?.error || 'An error occurred';
-
+  
           if (
             errorMessage.includes('Quantity not available') &&
             errorMessage.includes('This medicine requires a prescription')
@@ -128,22 +135,9 @@ const Medicine = () => {
   };
 
   return (
+    <PatientHeader>
     <Grid container>
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        md={2}
-        lg={2}
-        xl={2}
-        style={{
-          background: '#f0f0f0',
-          minHeight: '100vh',
-          paddingTop: '2rem',
-        }}
-      >
-        {mainListItems}
-      </Grid>
+   
 
       {/* Main Content */}
       <Grid item xs={12} sm={9}>
@@ -283,9 +277,15 @@ const Medicine = () => {
                 )}
 
                 {isAddedToCart && (
-                  <Typography style={{ marginTop: '1rem', color: 'green' }}>
-                    Product added to cart successfully!
-                  </Typography>
+                 <Snackbar
+                 open={isSnackbarOpen}
+                 autoHideDuration={3000} // Adjust the duration as needed
+                 onClose={() => setIsSnackbarOpen(false)}
+               >
+                 <Alert onClose={() => setIsSnackbarOpen(false)} severity="success">
+                   Product added to cart successfully!
+                 </Alert>
+               </Snackbar>
                 )}
               </div>
             ) : (
@@ -295,6 +295,7 @@ const Medicine = () => {
         )}
       </Grid>
     </Grid>
+    </PatientHeader>
   );
 };
 

@@ -4,6 +4,7 @@ const Pharma = require("../models/pharmacistModel");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 require("dotenv").config();
+const Wallet = require("../models/walletModel");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -35,6 +36,12 @@ const registerUser = async (req, res, model, userType, fields) => {
       userType: userType,
       accountStatus: userType === "patient" ? "active" : "inactive",
     });
+    const wallet = new Wallet({
+		user: user._id,
+			balance:0 ,
+		});
+		 await wallet.save();
+
     return res.status(201).json({
       _id: user._id,
       username: user.username,

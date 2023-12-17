@@ -8,7 +8,7 @@ const walletSchema = mongoose.Schema({
     },
     balance: {
         type: Number,
-        default: 30
+        default: 0,
     },
     transactions: [
         {
