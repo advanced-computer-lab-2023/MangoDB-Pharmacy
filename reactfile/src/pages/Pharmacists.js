@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Button } from "@mui/material";
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 import { viewPharmacist, pharamacistApproval, pharamacistRejection } from '../services/api';
-import { AdminListItems } from '../components/ListItemsAdmin';
-
+import AdminHeader from "../components/AdminHeader"; // Import the AdminHeader component
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const PharmacistDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [pharmacist, setPharma] = useState(null);
   const [error, setError] = useState(null);
   const [acceptClicked, setAcceptClicked] = useState(false);
   const [rejectClicked, setRejectClicked] = useState(false);
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
   useEffect(() => {
     viewPharmacist(id)
       .then((response) => {
@@ -26,26 +33,49 @@ const PharmacistDetail = () => {
     try {
       await pharamacistApproval(id);
       setAcceptClicked(true);
+      handleSnackbarOpen('Pharmacist Accepted!');
+      setTimeout(() => {
+        setSnackbarOpen(false);
+
+        // Navigate to the desired page
+        navigate("/viewPharmacists");
+      }, 3000);
     } catch (error) {
       console.error('Error accepting pharmacist:', error.message);
     }
   };
-
+  
   const handleReject = async () => {
     try {
       await pharamacistRejection(id);
       setRejectClicked(true);
+      handleSnackbarOpen('Pharmacist Rejected!');
+      setTimeout(() => {
+        setSnackbarOpen(false);
+
+        // Navigate to the desired page
+        navigate("/viewPharmacists");
+      }, 3000);
     } catch (error) {
       console.error('Error rejecting pharmacist:', error.message);
     }
   };
-
+  const handleSnackbarOpen = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  }  
+  
   return (
     <Grid container>
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {AdminListItems}
-      </Grid>
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ padding: '1rem' }}>
+                 <AdminHeader />
+
+                 <Grid item xs={12} sm={9} md={10} lg={10} xl={10} sx={{ paddingLeft: "20rem", paddingRight: "2rem" }}>
         <mainListItems pharmaDetails={pharmacist} />
         <div>
           <h1>Pharmacists Details</h1>
@@ -75,20 +105,34 @@ const PharmacistDetail = () => {
               {/* Accept and Reject Buttons */}
               {!acceptClicked && !rejectClicked && (
                 <div>
-                  <Button variant="contained" color="primary" onClick={handleAccept}>
+                  <Button variant="contained" color="primary" onClick={handleAccept} sx={{ marginRight: "20px" }}>
                     Accept
                   </Button>
-                  <Button variant="contained" color="secondary" onClick={handleReject}>
+                  <Button variant="outlined" color="secondary" onClick={handleReject}>
                     Reject
                   </Button>
+
                 </div>
               )}
 
-              {acceptClicked && <p>Pharmacist Accepted!</p>}
-              {rejectClicked && <p>Pharmacist Rejected!</p>}
             </div>
           )}
         </div>
+        <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={3000}
+  onClose={handleSnackbarClose}
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+>
+  <MuiAlert
+    elevation={6}
+    variant="filled"
+    onClose={handleSnackbarClose}
+    severity="success"
+  >
+    {snackbarMessage}
+  </MuiAlert>
+</Snackbar>
       </Grid>
     </Grid>
   );

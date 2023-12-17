@@ -224,7 +224,7 @@ const pharmacistApproval = asyncHandler(async (req, res) => {
 const deletePatient = asyncHandler(async (req, res) => {
 	const id = req.params.id;
 	Patient.findByIdAndDelete(id)
-		.then((result) => res.json({ redirect: "/Admin/viewAllPatients" }))
+		.then((result) => res.status(200).json({ message: "Patient removed succesfully", }))
 		.catch((err) => console.log(err));
 
 	// try {

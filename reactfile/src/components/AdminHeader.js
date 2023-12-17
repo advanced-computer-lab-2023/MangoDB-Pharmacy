@@ -21,9 +21,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 export const AdminHeader = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const { username, name, lastName, initials } = userData;
+  const {  name, lastName, initials } = userData;
 
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const [open, setOpen] = useState(true);
@@ -65,60 +67,139 @@ export const AdminHeader = ({ children }) => {
   };
   const list = () => (
     <Box
-    sx={{
-      width: "250px",
-      p: 2,
-      mt: 3,
-      display: "flex",
-      flexDirection: "column",
-      position: "relative", // This will make your box a relative container
-      height: "100%", // This will make your box take up the full height of the drawer
-    }}
-  >
-    <Box
       sx={{
-        mt: 6, // Adjust this value to position the button below the AppBar
-        mb: 3,
+        width: "250px",
+        p: 2,
+        mt: 3,
         display: "flex",
-        alignItems: "center", // This will align the items vertically
-        cursor: "pointer", // This will change the cursor to a pointer when hovering over the text and icon
-        justifyContent: "flex-end", // This will move the button to the right
+        flexDirection: "column",
+        position: "relative",
+        height: "100%",
       }}
-      onClick={handleDrawerClose} // This will make the text do the same function as the icon
     >
-      <IconButton sx={{ mr: 1, ml: 0, mt: 2 }}>
-        <img
-          src={Close}
-          alt="Close"
-          sx={{ mr: 3, ml: 0 }}
-          style={{ width: 15, height: 15, color: "grey" }}
-        />
-        <Typography
-          variant="body2"
+      <Box
+        sx={{
+          mt: 6,
+          mb: 3,
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          justifyContent: "flex-end",
+        }}
+        onClick={handleDrawerClose}
+      >
+        <IconButton sx={{ mr: 1, ml: 0, mt: 2 }}>
+          <img
+            src={Close}
+            alt="Close"
+            sx={{ mr: 3, ml: 0 }}
+            style={{ width: 15, height: 15, color: "grey" }}
+          />
+          <Typography
+            variant="body2"
+            sx={{
+              ml: 0.5,
+              mr: 1,
+              color: "grey",
+              fontWeight: "bold",
+            }}
+          >
+            Hide menu
+          </Typography>
+        </IconButton>
+      </Box>
+  
+      <List sx={{ p: 0 }}>
+        <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/admin">
+          <ListItemIcon>
+            <img
+              src={DashboardIcon}
+              style={{ width: 30, height: 30 }}
+              alt="Dashboard"
+            />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+  
+        <Accordion
           sx={{
-            ml: 0.5,
-            mr: 1,
-            color: "grey",
-            fontWeight: "bold",
+            boxShadow: "none",
+            "&.Mui-expanded": { margin: 0 },
+            "& .MuiAccordionDetails-root": {
+              padding: "0 16px 0px",
+            },
+            border: "none",
+            "&:before": {
+              display: "none",
+            },
           }}
         >
-          Hide menu
-        </Typography>
-      </IconButton>
-    </Box>
-
-    <List sx={{ p: 0 }}>
-      <ListItem button sx={{ pt: 0, pb: 1 }}>
-        <ListItemIcon>
-          <img
-            src={DashboardIcon}
-            style={{ width: 30, height: 30 }}
-            alt="Dashboard"
-          />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItem>
-
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            sx={{ padding: "0 16px", border: 0 }}
+          >
+            <ListItemIcon>
+              <img
+                src={PersonIcon}
+                style={{ width: 28, height: 28 }}
+                alt="Manage Users"
+              />
+            </ListItemIcon>
+            <Typography>Manage Users</Typography>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{ padding: "0 16px", alignItems: "center", border: 0 }}
+          >
+            <List sx={{ padding: "0px" }}>
+              <ListItem button sx={{ padding: "0px 16px" }}  component={Link} to="/addadmin">
+                <ListItemIcon>
+                  <img
+                    src={AddAdminIcon}
+                    style={{ width: 25, height: 25 }}
+                    alt="Add Admin"
+                  />
+                </ListItemIcon>
+                <ListItemText primary="Add Admin" />
+              </ListItem>
+              <ListItem button sx={{ pb: 1 }}>
+                <ListItemIcon>
+                  <img
+                    src={RemoveUserIcon}
+                    style={{ width: 25, height: 25 }}
+                    alt="Remove User"
+                  />
+                </ListItemIcon>
+                <ListItemText primary="Remove User" />
+              </ListItem>
+  
+              <ListItem button sx={{ pb: 0 }} component={Link} to="/viewPatients">
+                <ListItemIcon>
+                  <img
+                    src={PatientRegistrationIcon}
+                    alt="Patients"
+                    style={{ width: 30, height: 30 }}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="View Patients" />
+              </ListItem>
+              <ListItem button sx={{ pb: 0 }} component={Link} to="/viewPharmacists">
+                <ListItemIcon>
+                  <img
+                    src={PharmacistRegistrationIcon}
+                    alt="Pharmacists"
+                    style={{ width: 30, height: 30 }}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="View Pharmacists" />
+              </ListItem>
+            </List>
+          </AccordionDetails>
+        </Accordion>
+  
+        {/* Added Sales list item */}
+        
       <Accordion
         sx={{
           boxShadow: "none",
@@ -128,8 +209,7 @@ export const AdminHeader = ({ children }) => {
           },
           border: "none",
           "&:before": {
-            // This targets the pseudo-element that creates the line
-            display: "none", // This removes the line
+            display: "none",
           },
         }}
       >
@@ -141,154 +221,92 @@ export const AdminHeader = ({ children }) => {
         >
           <ListItemIcon>
             <img
-              src={PersonIcon}
-              style={{ width: 28, height: 28 }}
-              alt="Manage Users"
+              src={RequestsIcon}
+              alt="Requests"
+              style={{ width: 30, height: 30 }}
             />
           </ListItemIcon>
-          <Typography>Manage Users</Typography>
+          <Typography>Requests</Typography>
         </AccordionSummary>
-        <AccordionDetails
-          sx={{ padding: "0 16px", alignItems: "center", border: 0 }}
-        >
+        <AccordionDetails sx={{ padding: "0 16px 0px" }}>
           <List sx={{ padding: "0px" }}>
-            <ListItem button sx={{ padding: "0px 16px" }}>
+            <ListItem button sx={{ pb: 1 }}component={Link} to="/requestedPharma">
               <ListItemIcon>
                 <img
-                  src={AddAdminIcon}
-                  style={{ width: 25, height: 25 }}
-                  alt="Add Admin"
+                  src={PharmacistRegistrationIcon}
+                  alt="Pharmacist Registration"
+                  style={{ width: 30, height: 30 }}
                 />
               </ListItemIcon>
-              <ListItemText primary="Add Admin" />
+              <ListItemText primary="Pharmacist Registration" />
             </ListItem>
-            <ListItem button sx={{ pb: 1 }}>
-              <ListItemIcon>
-                <img
-                  src={RemoveUserIcon}
-                  style={{ width: 25, height: 25 }}
-                  alt="Remove User"
-                />
-              </ListItemIcon>
-              <ListItemText primary="Remove User" />
-            </ListItem>
-            
-            <ListItem button sx={{ pb: 0 }} component={Link} to="/viewPatients">
-            <ListItemIcon>
-              <img
-                src={PatientRegistrationIcon}
-                alt="Patients"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="View Patients" />
-          </ListItem>
-          <ListItem button sx={{ pb: 0 }} component={Link} to="/viewPharmacists">
-            <ListItemIcon>
-              <img
-                src={PharmacistRegistrationIcon}
-                alt="Pharmacists"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="View Pharamcists" />
-          </ListItem>
           </List>
         </AccordionDetails>
       </Accordion>
-    </List>
-    <Accordion
-      sx={{
-        boxShadow: "none",
-        "&.Mui-expanded": { margin: 0 },
-        "& .MuiAccordionDetails-root": {
-          padding: "0 16px 0px",
-        },
-        border: "none",
-        "&:before": {
-          // This targets the pseudo-element that creates the line
-          display: "none", // This removes the line
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-        sx={{ padding: "0 16px", border: 0 }}
-      >
-        <ListItemIcon>
-          <img
-            src={RequestsIcon}
-            alt="Requests"
-            style={{ width: 30, height: 30 }}
-          />
-        </ListItemIcon>
-        <Typography>Requests</Typography>
-      </AccordionSummary>
-      <AccordionDetails sx={{ padding: "0 16px 0px" }}>
-        <List sx={{ padding: "0px" }}>
-          <ListItem button sx={{ pb: 1 }}component={Link} to="/requestedPharma">
+  
+      <List sx={{ padding: "0px" }}>
+        <ListItem button sx={{ pb: 0 }} component={Link} to="/viewMedsAdmin">
+          <ListItemIcon>
+            <img
+              src={PharmacyIcon}
+              alt="Pharmacy"
+              style={{ width: 30, height: 30 }}
+            />
+          </ListItemIcon>
+          <ListItemText primary="Pharmacy" />
+        </ListItem>
+        <ListItem button sx={{ pb: 0 }}>
+          <ListItemIcon>
+            <img
+              src={SettingsIcon}
+              alt="Settings"
+              style={{ width: 30, height: 30 }}
+            />
+          </ListItemIcon>
+          <ListItemText primary="Settings" />
+        </ListItem>
+      </List>
+      <List sx={{ padding: "0px" }}>
+          <ListItem button sx={{ pb: 0 }} component={Link} to="/salesAdmin">
             <ListItemIcon>
-              <img
-                src={PharmacistRegistrationIcon}
-                alt="Pharmacist Registration"
-                style={{ width: 30, height: 30 }}
-              />
+            <BarChartIcon style={{ width: 30, height: 30 }} />
+    <ReceiptIcon style={{ width: 30, height: 30 }} />
             </ListItemIcon>
-            <ListItemText primary="Pharmacist Registration" />
+            <ListItemText primary="Sales" />
           </ListItem>
-         
         </List>
-      </AccordionDetails>
-    </Accordion>
-
-    <List sx={{ padding: "0px" }}>
-      <ListItem button sx={{ pb: 0 }} component={Link} to="/viewMedsAdmin">
-        <ListItemIcon>
-          <img
-            src={PharmacyIcon}
-            alt="Pharmacy"
-            style={{ width: 30, height: 30 }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Pharmacy" />
-      </ListItem>
-      <ListItem button sx={{ pb: 0 }}>
-        <ListItemIcon>
-          <img
-            src={SettingsIcon}
-            alt="Settings"
-            style={{ width: 30, height: 30 }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Settings" />
-      </ListItem>
-    </List>
-    <Box
-      sx={{
-        position: "absolute", // This will take your logout button out of the normal flow
-        bottom: 0, // This will position your logout button at the bottom of the box
-        width: "100%", // This will make your logout button take up the full width of the box
-      }}
-    >
-      
-      <ListItem button sx={{ mb: 5, padding: "5px 16px" }}>
-        <ListItemIcon>
-          <img
-            src={LogoutIcon}
-            alt="Logout"
-            style={{ width: 25, height: 25 }}
-            sx={{ pr: -2, mr: -2 }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </ListItem>
+      </List>
+  
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+        }}
+      >
+        {logoutBottomListItem}
+      </Box>
     </Box>
-  </Box>  );
+  );
 
 
- 
+const logoutListItem = (
+  <ListItem button onClick={handleLogout} sx={{ mb: 0 }}>
+    <ListItemIcon>
+      <img src={LogoutIcon} alt="Logout" style={{ width: 30, height: 30 }} />
+    </ListItemIcon>
+    <ListItemText primary="Logout" />
+  </ListItem>
+);
+
+const logoutBottomListItem = (
+  <ListItem button onClick={handleLogout} sx={{ mb: 5, padding: "5px 16px" }}>
+    <ListItemIcon>
+      <img src={LogoutIcon} alt="Logout" style={{ width: 25, height: 25 }} sx={{ pr: -2, mr: -2 }} />
+    </ListItemIcon>
+    <ListItemText primary="Logout" />
+  </ListItem>
+);
 
   return (
   <Box sx={{ flexGrow: 1 }}>
@@ -383,18 +401,8 @@ export const AdminHeader = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="My Profile" />
           </ListItem>
-          <ListItem button sx={{ mb: 0 }}>
-            {" "}
-            {/* Remove the bottom margin from the last ListItem */}
-            <ListItemIcon>
-              <img
-                src={LogoutIcon}
-                alt="Logout"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
+          {logoutListItem}
+
         </List>
       </SwipeableDrawer>
 

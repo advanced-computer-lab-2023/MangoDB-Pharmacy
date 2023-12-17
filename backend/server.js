@@ -8,7 +8,7 @@ const path = require('path');
 const { protectPatient } = require("./middleware/patientMiddleware");
 
 //const port =8000
-const port = process.env.port || 8000;
+const port = process.env.port || 4000;
 const cors = require("cors");
 
 connectDB();

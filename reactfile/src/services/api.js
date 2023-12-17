@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8000", // backend API URL
+  baseURL: "http://localhost:4000", // backend API URL
   timeout: 5000, // Timeout duration
   headers: {
     "Content-Type": "application/json",
@@ -261,5 +261,7 @@ API.post("/Pharmacist/getChat2", { doctorId }, { headers: { Authorization: `Bear
 
     export const sendMessage2 = ( messageText, receiverId) => API.post("/Pharmacist/sendMessage2",{ messageText, receiverId},{ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
+    export const deletePatient = (id) => API.delete(`/Admin/deletePatient/${id}`);
+    export const deletePharma = (id) => API.delete(`/Admin/deletePharma/${id}`);
 
 export default API;
