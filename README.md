@@ -210,6 +210,20 @@ MangoDB Virtual Pharmacy is a fully optimized and digitalized platform that prov
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+### Built Status
+* The Unit tests need implementation
+* The project is currently in development
+* Some input fields are case sensitive
+* UI could be improved
+* Cookies could be implemented for smoother operations
+* File size is too large due to redundant code and could be more organised
+* The use of comments could be improved to aid in future maintenance
+* There may be bugs that haven't been found yet
+
+
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -342,31 +356,32 @@ The testing is done using [Postman](https://www.postman.com)
 **Note:**For testing any GET, PUT, POST, PATCH
 
 <details>
-<summary><strong>Login test:</strong></summary>
+<summary><strong>Patient Login test:</strong></summary>
 
 You should register first a doctor or a patient to test the Login
-![loginPostman](readme_images/loginPostman.png)
+![loginPostman](readme_images/patientLogin.JPG)
 
 </details>
 
 <details>
 <summary><strong>View Medicines test:</strong></summary>
-Enter the token you got from the login in bearer auth in postman
 
-![getPrescPostman](readme_images/getPrescPostman.png)
+![getPrescPostman](readme_images/viewMeds.JPG)
 
-**Note**: You may get an empty array in case there are no prescriptions.
+**Note**: You may get an empty array in case there are no Medications.
 </details>
 
 <details>
 <summary><strong>Add Medicine to Cart:</strong></summary>
+Enter the token you got from the login in bearer auth in postman
 
-![addPrescPostman](readme_images/addPrescPostman.png)
+![addPrescPostman](readme_images/addMedToCart.JPG)
 
 </details>
 
 <details>
 <summary><strong>Order:</strong></summary>
+Enter the token you got from the login in bearer auth in postman
 
 ![checkPackagePostman](readme_images/checkPackagePostman.png)
 
@@ -375,24 +390,25 @@ Enter the token you got from the login in bearer auth in postman
 <details>
 <summary><strong>Edit Medicine Price:</strong></summary>
 
-![checkPackagePostman](readme_images/checkPackagePostman.png)
+![checkPackagePostman](readme_images/updateMed.JPG)
 
 </details>
 
 <details>
 <summary><strong>Add New Medicine:</strong></summary>
 
-![checkPackagePostman](readme_images/checkPackagePostman.png)
+![checkPackagePostman](readme_images/addMed.JPG)
 
 </details>
 
 <details>
-<summary><strong>Login test:</strong></summary>
+<summary><strong>Accept Pharmacist:</strong></summary>
 
-You should register first a doctor or a patient to test the Login
-![loginPostman](readme_images/loginPostman.png)
+You should register first a Pharmacist
+![loginPostman](readme_images/pharmaLogin.JPG)
 
 </details>
+
 
 <!-- ROADMAP -->
 ## Code Specifcations ⚙️
@@ -656,9 +672,214 @@ You should register first a doctor or a patient to test the Login
     </ul>
 </details>
 
-<details>
-<summary><strong>Code Examples 🧑‍💻: </strong></summary>
 
+
+## Code Examples:
+
+
+
+<details>
+<summary><strong>Add a Medicine To Cart</strong></summary>
+
+
+```javascript
+const addMedicineToCart = async (req, res) => {
+    const { medicineName, quantity } = req.body;
+    const patientId = req.user._id;
+    try {
+        const patient = await Patient.findById(patientId);
+
+        if (!patient) {
+            return res.status(404).json({ error: "Patient not found" });
+        }
+
+        const cartItem = patient.cart.find(
+            (item) => item.medicineName === medicineName
+        );
+        const medicine = await Medicine.findOne({ name: medicineName });
+
+        if (!medicine) {
+            return res.status(404).json({ error: "Medicine not found" });
+        }
+
+        if (medicine.prescribed === "required") {
+            // Check if the patient has a prescription for the medicine
+            const prescription = await Prescription.findOne({
+                patientId,
+                'medications.medicationName': medicineName,
+              });
+              
+              if (!prescription) {
+                return res.status(400).json({
+                  error: `This medicine requires a prescription.`,
+                });
+              }
+          }
+        if (cartItem) {
+            const totalQuantity = cartItem.quantity + quantity;
+            if (totalQuantity > medicine.quantity) {
+                return res.status(400).json({
+                    error: `Quantity not available. Available quantity for ${medicineName}: ${
+                        medicine.quantity - cartItem.quantity
+                    }`,
+                });
+            }
+            const totalPrice = totalQuantity * medicine.price;
+            cartItem.quantity = totalQuantity;
+            cartItem.price = totalPrice;
+        } else {
+            if (quantity > medicine.quantity) {
+                return res.status(400).json({
+                    error: `Quantity not available. Available quantity for ${medicineName}: ${medicine.quantity}`,
+                });
+            }
+            const totalPrice = quantity * medicine.price;
+            patient.cart.push({
+                medicineName: medicine.name,
+                quantity: quantity,
+                price: totalPrice,
+            });
+        }
+        await patient.save();
+        return res.status(201).json({ message: "Medicine added to the cart" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+```
+</details>
+
+<details>
+<summary><strong>Add Address</strong></summary>
+
+
+```javascript
+const addAddress = async (req, res) => {
+	const { address } = req.body;
+	const patientId = req.user._id;
+
+	try {
+		const patient = await Patient.findById(patientId);
+
+		if (!patient) {
+			return res.status(404).json({ error: "Patient not found" });
+		}
+
+		patient.addresses.push(address);
+
+		await patient.save();
+
+		return res.status(201).json({ message: "Address added successfully" });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+
+```
+</details>
+
+<details>
+<summary><strong>Add Address</strong></summary>
+
+
+```javascript
+const addAddress = async (req, res) => {
+	const { address } = req.body;
+	const patientId = req.user._id;
+
+	try {
+		const patient = await Patient.findById(patientId);
+
+		if (!patient) {
+			return res.status(404).json({ error: "Patient not found" });
+		}
+
+		patient.addresses.push(address);
+
+		await patient.save();
+
+		return res.status(201).json({ message: "Address added successfully" });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+
+```
+</details>
+
+<details>
+<summary><strong>Add Address</strong></summary>
+
+
+```javascript
+const addAddress = async (req, res) => {
+	const { address } = req.body;
+	const patientId = req.user._id;
+
+	try {
+		const patient = await Patient.findById(patientId);
+
+		if (!patient) {
+			return res.status(404).json({ error: "Patient not found" });
+		}
+
+		patient.addresses.push(address);
+
+		await patient.save();
+
+		return res.status(201).json({ message: "Address added successfully" });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+
+```
+</details>
+
+<details>
+<summary><strong>Add Address</strong></summary>
+
+
+```javascript
+const addAddress = async (req, res) => {
+	const { address } = req.body;
+	const patientId = req.user._id;
+
+	try {
+		const patient = await Patient.findById(patientId);
+
+		if (!patient) {
+			return res.status(404).json({ error: "Patient not found" });
+		}
+
+		patient.addresses.push(address);
+
+		await patient.save();
+
+		return res.status(201).json({ message: "Address added successfully" });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+
+```
+</details>
+
+**Patient**
+**Pharmacist**
+**Chat**
+**
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
