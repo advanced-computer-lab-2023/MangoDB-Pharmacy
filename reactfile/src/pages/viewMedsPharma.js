@@ -199,7 +199,7 @@ const ViewMedsPharma = () => {
           paddingTop: "2rem",
         }}
       >
-        {pharmacistListItems}
+        {/* {pharmacistListItems} */}
       </Grid>
 
       {/* Main Content */}

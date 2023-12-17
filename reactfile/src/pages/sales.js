@@ -90,7 +90,7 @@ const ViewSales = () => {
     <PharmacistHeader>
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {pharmacistListItems}
+        {/* {pharmacistListItems} */}
       </Grid>
 
       <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
