@@ -53,7 +53,7 @@ navigate("/admin")  };
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://localhost:4000/Admin/addAdmin`,
+        `http://localhost:8000/Admin/addAdmin`,
         formData,
         {
           headers: {

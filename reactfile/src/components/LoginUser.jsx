@@ -49,7 +49,7 @@ export default function LoginUser() {
 		try {
 			setIsLoading(true);
 			const response = await axios.post(
-				`http://localhost:4000/Guest/login`,
+				`http://localhost:8000/Guest/login`,
 				formData
 			);
 
@@ -59,7 +59,9 @@ export default function LoginUser() {
 			if (response.status === 200) {
 				localStorage.setItem("token", response.data.token);
 				localStorage.setItem("userData",  JSON.stringify(response.data));
+
 				//console.log(localStorage.getItem("userData"));
+
 
 				switch (response.data.type) {
 					case "patient":
