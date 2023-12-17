@@ -9,7 +9,7 @@ const Icon4 = `${process.env.PUBLIC_URL}/icons/chat.svg`;
 const Icon5 = `${process.env.PUBLIC_URL}/icons/orders.svg`;
 const Icon6 = `${process.env.PUBLIC_URL}/icons/wallet.svg`;
 
-const Dashboard = () => {
+const DashboardPharma = () => {
   // Define your data
   const papers = [
     {
@@ -51,141 +51,62 @@ const Dashboard = () => {
   ];
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Pharmacist Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={notificationsCount} color="secondary">
-                <NotificationsIcon onClick={handleClick} />
-                <Popover
-                  id={id}
-                  open={isOpen}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <Paper sx={{ p: 2, width: 1200, height: 600, pl: 5 }}>
+        <Typography variant="h2" align="left" sx={{ pb: 10, pl: 4, pt: 5 }}>
+          Dashboard
+        </Typography>
+        <Grid container spacing={5}>
+          {papers.map((paper, index) => (
+            <Grid item xs={6} sm={4} key={index}>
+              <Paper
+                sx={{
+                  p: 2,
+
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: 250,
+                  m: 3,
+                }}
+              >
+                <img
+                  src={paper.icon}
+                  alt={paper.title}
+                  width="40"
+                  height="40"
+                />
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ fontWeight: "bold" }}
                 >
-                  <div>
-                    {notifications.map((notification) => (
-                      // <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } } onClick={ () => { notification.seen = true; countNewNotifications(notifications); } }>
-                      <div
-                        key={notification._id}
-                        style={
-                          notification.seen
-                            ? {}
-                            : { backgroundColor: "#F0F0F0" }
-                        }
-                      >
-                        {/* <h4>{notification.title}</h4> */}
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <h4>{notification.title}</h4>
-                          <DeleteForeverIcon
-                            id={notification._id}
-                            onClick={() => handleNotifDelete(notification._id)}
-                          />
-                        </div>
-                        <p>{notification.body}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Popover>
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {pharmacistListItems}
-            <Divider sx={{ my: 1 }} />
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
+                  {paper.title}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="textSecondary"
+                  sx={{ pb: -1 }}
                 >
-                  {/* Your content goes here */}
-                </Paper>
-              </Grid>
-              {/* Additional content goes here */}
+                  {paper.description}
+                </Typography>
+                <Button variant="contained" color="primary">
+                  {paper.cta}
+                </Button>
+              </Paper>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
-        </Box>
-      </Box>
-    </ThemeProvider>
+          ))}
+        </Grid>
+      </Paper>
+    </Box>
   );
 };
 
-export default Dashboard;
+export default DashboardPharma;

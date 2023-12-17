@@ -9,7 +9,7 @@ const addMember = `${process.env.PUBLIC_URL}/icons/addMember.svg`;
 const remove = `${process.env.PUBLIC_URL}/icons/remove.svg`;
 const Requests = `${process.env.PUBLIC_URL}/icons/ticket.svg`;
 
-const Dashboard = () => {
+const DashboardAdmin = () => {
   // Define your data
   const papers = [
     {
@@ -109,4 +109,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardAdmin;
