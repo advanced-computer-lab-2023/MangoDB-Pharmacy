@@ -164,23 +164,37 @@ MangoDB Virtual Pharmacy is a fully optimized and digitalized platform that prov
 
 
 <details>
-<summary>Landing Page</summary>
+<summary>Register Pharmacist</summary>
   
-![Landing Page](readme_images/homepagePharma.png)
+![Landing Page](readme_images/regPharma.png)
     
 </details>
 
 <details>
-<summary>Patient's HomePage</summary>
+<summary>Login User</summary>
   
-![Patient's HomePage](readme_images/patientDashboardPharma.png)
+![Patient's HomePage](readme_images/loginUser.png)
     
 </details>
 
 <details>
-<summary>Doctor's HomePage</summary>
+<summary>Pharmacist's Wallet</summary>
   
-![Doctor's HomePage](readme_images/doctorDashboardPharma.png)
+![Doctor's HomePage](readme_images/wallet.png)
+    
+</details>
+
+<details>
+<summary>Patient Dashboard</summary>
+  
+![Doctor's HomePage](readme_images/patientDashboard.jpg)
+    
+</details>
+
+<details>
+<summary>Patient Wallet</summary>
+  
+![Doctor's HomePage](readme_images/patientWallet.jpg)
     
 </details>
 
@@ -379,13 +393,7 @@ Enter the token you got from the login in bearer auth in postman
 
 </details>
 
-<details>
-<summary><strong>Order:</strong></summary>
-Enter the token you got from the login in bearer auth in postman
 
-![checkPackagePostman](readme_images/checkPackagePostman.png)
-
-</details>
 
 <details>
 <summary><strong>Edit Medicine Price:</strong></summary>
@@ -784,30 +792,66 @@ const addAddress = async (req, res) => {
 </details>
 
 <details>
-<summary><strong>Add Address</strong></summary>
+<summary><strong>Add Medicine</strong></summary>
 
 
 ```javascript
-const addAddress = async (req, res) => {
-	const { address } = req.body;
-	const patientId = req.user._id;
+const addMedicine = (req, res) => {
+    try {
+        const {
+            name,
+            price,
+            use,
+            description,
+            quantity,
+            sales,
+            details,
+            prescribed,
+            mainActiveIngredient,
+            archive,
+        } = req.body;
 
-	try {
-		const patient = await Patient.findById(patientId);
+        // Check if req.file is defined before using it
+        const medicine = new Medicine({
+            name,
+            price,
+            use,
+            description,
+            quantity,
+            sales,
+            details,
+            prescribed,
+            mainActiveIngredient,
+            archive,
 
-		if (!patient) {
-			return res.status(404).json({ error: "Patient not found" });
-		}
+        });
 
-		patient.addresses.push(address);
+        if (req.file) {
+            // If a file is uploaded, set the picture path
+            medicine.picture = req.file.path;
+        }
 
-		await patient.save();
-
-		return res.status(201).json({ message: "Address added successfully" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ error: "Internal server error" });
-	}
+        medicine
+            .save()
+            .then((result) => {
+                console.log("NEW MEDICINE ADDED:", result);
+                res.status(201).json({
+                    message: "Medicine added successfully",
+                    medicine: result,
+                });
+            })
+            .catch((err) => {
+                console.log("Error saving medicine:", err);
+                res.status(500).json({
+                    error: "Internal server error",
+                });
+            });
+    } catch (error) {
+        console.error("Error adding medicine:", error);
+        res.status(500).json({
+            error: "Internal server error",
+        });
+    }
 };
 
 
@@ -815,71 +859,365 @@ const addAddress = async (req, res) => {
 </details>
 
 <details>
-<summary><strong>Add Address</strong></summary>
+<summary><strong>Get Sales by Month</strong></summary>
 
 
 ```javascript
-const addAddress = async (req, res) => {
-	const { address } = req.body;
-	const patientId = req.user._id;
-
-	try {
-		const patient = await Patient.findById(patientId);
-
-		if (!patient) {
-			return res.status(404).json({ error: "Patient not found" });
-		}
-
-		patient.addresses.push(address);
-
-		await patient.save();
-
-		return res.status(201).json({ message: "Address added successfully" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ error: "Internal server error" });
-	}
-};
+const getSalesByMonth = asyncHandler(async (req, res) => {
+    try {
+      const { month } = req.body; // Assuming the month is passed in the request body
+  
+      if (!month) {
+        res.status(400).json({ error: "Month parameter is required" });
+        return;
+      }
+  
+      // Convert the month to a format that MongoDB can query
+      const startDate = new Date(`${month}-01T00:00:00.000Z`);
+      const endDate = new Date(
+        new Date(startDate).setMonth(startDate.getMonth() + 1)
+      );
+  
+      const sales = await Order.find({
+        status: "preparing", // Assuming sales are only considered if the status is "preparing"
+        dateOfDelivery: {
+          $gte: startDate,
+          $lt: endDate,
+        },
+      });
+  
+      // Extract relevant information for the table
+      const formattedSales = sales.map((order) => ({
+        orderId: order._id,
+        dateOfDelivery: order.dateOfDelivery,
+        totalPrice: order.totalPrice,
+        orderDetails: order.orderdetails.map((item) => ({
+          medicineName: item.medicineName,
+          quantity: item.quantity,
+        })),
+      }));
+  
+      res.status(200).json({
+        message: `Sales for ${month}`,
+        sales: formattedSales,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
 
 
 ```
 </details>
 
 <details>
-<summary><strong>Add Address</strong></summary>
+<summary><strong>Get the Pending Pharmacists</strong></summary>
 
 
 ```javascript
-const addAddress = async (req, res) => {
-	const { address } = req.body;
-	const patientId = req.user._id;
-
+const getPendingPharma = asyncHandler(async (req, res) => {
 	try {
-		const patient = await Patient.findById(patientId);
+		const pendingPharmacists = await Pharmacist.find({ status: "pending" });
 
-		if (!patient) {
-			return res.status(404).json({ error: "Patient not found" });
+		if (pendingPharmacists.length === 0) {
+			return res
+				.status(404)
+				.json({ error: "No pharmacists with pending status found" });
 		}
+		console.log(pendingPharmacists);
 
-		patient.addresses.push(address);
-
-		await patient.save();
-
-		return res.status(201).json({ message: "Address added successfully" });
+		return res.json(pendingPharmacists);
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({ error: "Internal server error" });
+		return res
+			.status(500)
+			.json({ error: "An error occurred while retrieving pharmacists" });
 	}
-};
+});
 
 
 ```
 </details>
 
-**Patient**
-**Pharmacist**
-**Chat**
-**
+
+
+
+
+
+<details>
+<summary><strong>Chat Frontend Design</strong></summary>
+
+
+```javascript
+return (
+    <PatientHeader>
+
+    <Grid container>
+    
+      {/* Main Content */}
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10 }style={{ paddingLeft: "20rem" }}>
+        {/* App Bar with Name */}
+        <AppBar position="static" style={{ maxWidth: "840px" }}>
+          <Toolbar>
+            <Typography variant="h6">{pharmacist.firstName} {pharmacist.lastName}</Typography>
+          </Toolbar>
+        </AppBar>
+
+        {/* Display Messages */}
+        <Paper id="messages-container" elevation={3} style={{ padding: "1rem", height: "60vh", overflowY: "auto", width: "100%", maxWidth: "800px" }}>
+          {messages.map((message) => (
+            <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-end' : 'flex-start' }}>
+              <div style={message.senderRole === 'patient' ? styles.youMessage : styles.pharmacistMessage}>
+                <p>{message.messageText}</p>
+
+                <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
+      {new Date(message.timeDate).toLocaleTimeString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      })}
+    </p>
+              </div>
+            </div>
+          ))}
+        </Paper>
+
+        {/* Message Input and Send Button */}
+        <Paper elevation={3} style={{ padding: "1rem", marginTop: "1rem", maxWidth: "800px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={9}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Type your message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSend}
+                fullWidth
+              >
+                Send
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    </Grid>
+    </PatientHeader>
+
+  );
+
+  
+
+
+```
+</details>
+
+
+
+<details>
+<summary><strong>Checkout Frontend Design</strong></summary>
+
+
+```javascript
+
+ return (
+ <PatientHeader>
+  <Grid>
+      <Grid
+        item
+        xs={12}
+        sm={9}
+        md={10}
+        lg={10}
+        xl={10}
+        style={{ paddingLeft: '17rem' }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Checkout
+        </Typography>
+
+        {cartItems.length > 0 && (
+          <div>
+            <Typography variant="h6">Cart Items:</Typography>
+            {cartItems.map((item) => (
+              <Paper
+                key={item._id}
+                style={{ padding: '1rem', marginBottom: '1rem' }}
+              >
+                <Typography variant="h6">{item.name}</Typography>
+                {item.picture && (
+                  <img
+                    src={`http://localhost:8000/${item.picture}`}
+                    alt={item.name}
+                    style={{ width: '100px', height: '100px' }}
+                  />
+                )}
+                <Typography>Quantity: {item.quantity}</Typography>
+                <Typography variant="subtitle1">
+                  Price (Per Item): ${(item.price / item.quantity).toFixed(2)}
+                </Typography>
+                <Typography variant="subtitle1">
+                  Total Price: ${(item.price).toFixed(2)}
+                </Typography>
+              </Paper>
+            ))}
+          </div>
+        )}
+
+        {cartItems.length > 0 && (
+          <Typography variant="h6" style={{ marginTop: '1rem' }}>
+            Total Price: ${calculateTotalPrice().toFixed(2)}
+          </Typography>
+        )}
+
+        <FormControl fullWidth style={{ marginBottom: '1rem' }}>
+          <InputLabel id="address-select-label">Choose an Address</InputLabel>
+          <Select
+            labelId="address-select-label"
+            id="address-select"
+            value={selectedAddress}
+            onChange={handleAddressSelect}
+          >
+            <MenuItem value="" disabled>
+              Choose an Address
+            </MenuItem>
+            {addresses.map((address, index) => (
+              <MenuItem key={index} value={address}>
+                {address}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {!showAddAddress && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setShowAddAddress(true)}
+            style={{ marginBottom: '1rem' }}
+          >
+            Add Address
+          </Button>
+        )}
+
+        {showAddAddress && (
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
+            <TextField
+              label="New Address"
+              variant="outlined"
+              value={newAddress}
+              onChange={(e) => setNewAddress(e.target.value)}
+              style={{ marginRight: '1rem', flex: '1' }}
+            />
+            <Button variant="contained" color="primary" onClick={handleAddAddress}>
+              Add Address
+            </Button>
+          </div>
+        )}
+
+        {selectedAddress && (
+          <Typography variant="body1" style={{ marginTop: '1rem' }}>
+            You chose: {selectedAddress}
+          </Typography>
+        )}
+
+        {error && (
+          <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>
+        )}
+        <FormControl fullWidth style={{ marginBottom: '1rem' }}>
+          <InputLabel id="payment-method-label">Choose Payment Method</InputLabel>
+          <Select
+            labelId="payment-method-label"
+            id="payment-method"
+            value={paymentMethod}
+            onChange={handlePaymentMethodSelect}
+          >
+            <MenuItem value="" disabled>
+              Choose Payment Method
+            </MenuItem>
+            <MenuItem value="cash-on-delivery">Cash on Delivery</MenuItem>
+            <MenuItem value="wallet">Wallet</MenuItem>
+            <MenuItem value="visa-mastercard">Visa/Mastercard</MenuItem>
+          </Select>
+        </FormControl>
+        {error && (
+          <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>
+        )}
+        {/* {errorMessage && (
+          <div style={{ color: 'red', marginTop: '1rem' }}>{errorMessage}</div>
+        )} */}
+
+
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={handlePlaceOrder}
+        style={{ marginTop: '1rem' }}
+      >
+        Place an Order
+      </Button>
+      {(showSuccessMessage && (
+        <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
+          Order placed successfully!
+        </Typography>
+      ) ) || (errorMessage &&  <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
+ Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.   
+  </Typography>) }
+      </Grid>
+    </Grid>
+    </PatientHeader>
+  );
+
+
+```
+</details>
+
+<details>
+<summary><strong>Cancel Order</strong></summary>
+
+
+```javascript
+const cancelOrder = async (req, res) => {
+	const orderId = req.params.id;
+	try {
+		const order = await Order.findById(orderId);
+console.log (order);
+		const patient = await Wallet.findOne({ user :order.patientId  })
+		console.log (patient);
+
+		if (!order) {
+			return res.status(404).json({ error: "Order not found" });
+		}
+
+		if (order.status !== "preparing") {
+			return res.status(200).json({ error: "Order cannot be canceled" });
+		}
+
+		order.status = "cancelled";
+		
+		if (order.paymentMethod == "wallet"){
+         patient.balance+= order.totalPrice;
+		 patient.transactions.push({
+			type: "order canceled",
+			amount: + order.totalPrice,
+			date: new Date(),
+			
+		}
+);
+
+
+```
+</details>
+
+
 </details>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
