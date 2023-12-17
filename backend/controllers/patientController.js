@@ -192,7 +192,8 @@ const getMed = asyncHandler(async (req, res) => {
         // If quantity is zero, find other medicines with the same main active ingredient
         const similarMedicines = await Medicine.find({
           mainActiveIngredient: medicine.mainActiveIngredient,
-          quantity: { $gt: 0 }, // Only include medicines with quantity greater than 0
+          quantity: { $gt: 0 },
+		  archive :false, // Only include medicines with quantity greater than 0
         });
   
         return res.status(200).json({
@@ -1094,6 +1095,7 @@ const getAlternativeMedicines = async (req, res) => {
       const alternativeMedicines = await Medicine.find({
         mainActiveIngredient: requestedMedicine.mainActiveIngredient,
         quantity: { $gt: 0 },
+		archive:false,
         _id: { $ne: requestedMedicine._id },
       });
   

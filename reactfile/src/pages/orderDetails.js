@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 // import {Typography, Paper } from "@mui/material";
-import { Grid }  from "@mui/material";
+import { Grid ,Button, Typography}  from "@mui/material";
 import { useParams } from 'react-router-dom';
 import { viewOrderDetails,cancelOrder } from '../services/api';
-import { mainListItems } from '../components/ListItems';
+import  Patientheader  from '../components/PatientHeader';
 
 const OrderDetails = () => {
   const { id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
   const [error, setError] = useState(null);
-
+  const [isCancelClicked, setIsCancelClicked] = useState(false);
   useEffect(() => {
       viewOrderDetails(id)
         .then((response) => {
@@ -27,9 +27,10 @@ const OrderDetails = () => {
   const handleCancelOrder = () => {
 
     const token = localStorage.getItem("token");
-    console.log("Authorization Header:", `Bearer ${token}`);
     cancelOrder(id)
       .then((response) => {
+        setIsCancelClicked(true); // Set the flag to indicate that the cancel button has been clicked
+
         alert(response.data.message); // Display the response message to the user
         // You can also update the order status in the state or fetch the updated order details
       })
@@ -40,15 +41,14 @@ const OrderDetails = () => {
 
 
   return (
-    
+   <Patientheader>
     <Grid container>
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
-      </Grid>
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ padding: '1rem' }}>
+ 
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: '20rem' }}>
         <mainListItems orderDetails={orderDetails} />
         <div>
-          <h1>Order Details</h1>
+          <Typography variant = "h4" > Order Details</Typography>
+
           {error && <div>Error fetching order details: {error}</div>}
           {!orderDetails && <div>Loading...</div>}
           {orderDetails && (
@@ -72,12 +72,24 @@ const OrderDetails = () => {
                   )}
                 </div>
               ))}
-              <button onClick={handleCancelOrder}>Cancel</button>
             </div>
+            
           )}
+           <Button
+        onClick={handleCancelOrder}
+        disabled={isCancelClicked}
+        variant={isCancelClicked ? 'contained' : 'outlined'}
+      >
+        {isCancelClicked ? 'Canceled' : 'Cancel'}
+      </Button>
+
         </div>
+       
+
       </Grid>
+
     </Grid>
+    </Patientheader> 
   );
 };
 export default OrderDetails;

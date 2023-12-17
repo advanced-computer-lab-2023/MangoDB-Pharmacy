@@ -33,7 +33,7 @@ const Dashboard = () => {
       icon: Icon3,
       title: "Cart",
       description: "Add, Edit , Checkout cart",
-      cta: "Add",
+      cta: "View",
     },
     {
       icon: Icon4,
@@ -65,7 +65,7 @@ const Dashboard = () => {
         height: "100vh",
       }}
     >
-      <Paper sx={{ p: 2, width: 1200, height: 600, pl: 5 }}>
+      <Paper sx={{marginLeft: "15rem", p: 2, width: 1200, height: 600, pl: 5 }} >
         <Typography variant="h2" align="left" sx={{ pb: 10, pl: 4, pt: 5 }}>
           Dashboard
         </Typography>

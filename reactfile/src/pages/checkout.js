@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { addressesByPatientId, addAddress, viewCartItems,placeOrder,payment } from '../services/api';
 import PatientHeader from '../components/PatientHeader';
-import { useParams } from 'react-router-dom';
+import { useParams ,useNavigate} from 'react-router-dom';
 
 const Checkout = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -26,7 +26,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState(''); 
 
   const [showAddAddress, setShowAddAddress] = useState(false);
-
+const navigate = useNavigate();
   const fetchData = async () => {
     try {
 
@@ -97,9 +97,13 @@ console.log(paymentMethod,selectedAddress);
           }
         } else {
           const orderId = await placeOrder(selectedAddress, paymentMethod);
+          const id = orderId.data._id;
+          console.log (id)
           console.log('Order placed successfully! Order ID:', orderId);
           if (paymentMethod === 'cash-on-delivery' || paymentMethod === 'wallet') {
+
             setShowSuccessMessage(true);
+            navigate(`/orderDetails/${id}`);
           }
         }
       } catch (err) {

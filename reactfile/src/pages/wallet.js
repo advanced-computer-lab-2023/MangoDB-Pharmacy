@@ -44,15 +44,15 @@ const WalletPage = () => {
   
     return (
         <PatienttHeader>
-      <Grid container spacing={3}>
-        <Grid item xs={12} paddingTop = "30">
+      <Grid container spacing={3} style={{ paddingLeft: '15rem' }}>
+        <Grid item xs={12} paddingTop = "30" >
           
           <Typography variant="h3">Wallet Details</Typography>
         </Grid>
         {wallet && (
           <>
-            <Grid item xs={12}>
-              <Paper elevation={3}  sx={{ width: '10%' }} >
+            <Grid item xs={12} >
+              <Paper elevation={3}  sx={{ width: '70%'  }} >
                 <Typography variant="h5" style={{ padding: "10px" }} >Balance: {wallet.balance}</Typography>
               </Paper>
             </Grid>

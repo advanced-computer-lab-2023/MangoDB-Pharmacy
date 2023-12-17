@@ -74,7 +74,7 @@ const PatientReg = () => {
 
       // Redirect to home after 7 seconds
       setTimeout(() => {
-        navigate("/Home");
+        navigate("/");
       }, 7000);
     } catch (error) {
       console.error("Error adding patient:", error);
@@ -239,7 +239,6 @@ const PatientReg = () => {
                   >
                     <MenuItem value="male">Male</MenuItem>
                     <MenuItem value="female">Female</MenuItem>
-                    <MenuItem value="other">other</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

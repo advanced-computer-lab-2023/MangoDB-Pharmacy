@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mu
 import { getPatientbyId, getChatPharmaPat, sendMessagePharma } from "../services/api";
 import { useParams } from 'react-router-dom';
 import { pharmacistListItems } from '../components/ListItemsPharma';
-import PatientHeader from "../components/PatientHeader";
+import PatientHeader from "../components/PharmacistHeader";
 const ChatPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState("");

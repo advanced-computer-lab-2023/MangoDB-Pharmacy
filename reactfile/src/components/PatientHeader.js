@@ -463,7 +463,6 @@ console.log(name,lastName)
               variant="body1"
               sx={{ fontWeight: "bold", marginRight: 2, color: "#333" }}
             >
-              {"$100"} {/* Replace with actual wallet balance */}
             </Typography>
           </ListItem>
 

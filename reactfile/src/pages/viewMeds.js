@@ -26,6 +26,8 @@ const ViewMeds = () => {
     // Fetch medicine data
     viewMeds()
       .then((response) => {
+        console.log (response);
+
         setMeds(response.data);
         setIsPending(false);
         setError(null);
