@@ -124,7 +124,7 @@ const ViewMedsAdmin = () => {
                   >
                     {med.picture && (
                       <img
-                        src={`http://localhost:8000/${med.picture}`}
+                        src={`http://localhost:4000/${med.picture}`}
                         alt={med.name}
                         style={{ width: "40px", height: "40px", marginRight: "0.5rem" }}
                       />
