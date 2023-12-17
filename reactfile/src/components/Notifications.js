@@ -21,14 +21,14 @@ const Notifications = () => {
                 setNotifications(result.data.notifications);
                 console.log(result.data.notifications);
             })
-            .catch((err) => onError(err.message));
+            .catch((err) => console.log(err.message));
 	}, [reload]);
 
     useEffect(() => {
         if (seen) {
             seenNotifs()
                 .then((result) => console.log(result))
-                .catch((err) => onError(err.message));
+                .catch((err) => console.log(err.message));
         }
 	}, [seen]);
 

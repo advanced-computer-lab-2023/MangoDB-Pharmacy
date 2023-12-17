@@ -35,6 +35,18 @@ const Orders = () => {
   const handleSnackbarClose = () => {
     setShowNoOrdersSnackbar(false);
   };
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      return 'Invalid Date';
+    }
+
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('en-GB', options);
+  };
   return (
     <PatienttHeader>
     <Grid container>
@@ -61,7 +73,7 @@ const Orders = () => {
                     <Typography variant="subtitle1">Order ID: {order._id}</Typography>
                     <Typography variant="subtitle1">Order Status: {order.status}</Typography>
                     <Typography variant="subtitle1">Total Price: {order.totalPrice}</Typography>
-                    <Typography variant="subtitle1">Date Of Order: {order.dateOfOrder}</Typography>
+                    <Typography variant="subtitle1">Date Of Order: {formatDate(order.dateOfOrder)}</Typography>
                   </div>
                 </Paper>
               </Link>

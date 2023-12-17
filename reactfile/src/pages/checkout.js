@@ -9,10 +9,13 @@ import {
   InputLabel,
   FormControl,
   Button,
+  Alert
 } from '@mui/material';
 import { addressesByPatientId, addAddress, viewCartItems,placeOrder,payment } from '../services/api';
 import PatientHeader from '../components/PatientHeader';
 import { useParams ,useNavigate} from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+
 
 const Checkout = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -24,6 +27,7 @@ const Checkout = () => {
   const [error, setError] = useState(null);
   const [newAddress, setNewAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState(''); 
+  const [isInsufficientFunds, setInsufficientFunds] = useState(false);
 
   const [showAddAddress, setShowAddAddress] = useState(false);
 const navigate = useNavigate();
@@ -108,11 +112,13 @@ console.log(paymentMethod,selectedAddress);
         }
       } catch (err) {
         if (err.message.includes('Insufficient funds in the wallet')) {
-          setErrorMessage('Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.');
+          setInsufficientFunds(true);
+          // setErrorMessage('Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.');
           return; 
 
         } else {
-          setErrorMessage(err.message);
+          setInsufficientFunds(true);          
+          //setErrorMessage(err.message);
         }
       }
     }, 1000);
@@ -246,6 +252,17 @@ console.log(paymentMethod,selectedAddress);
           <div style={{ color: 'red', marginTop: '1rem' }}>{errorMessage}</div>
         )} */}
 
+           {isInsufficientFunds && (
+            <Snackbar
+              open={isInsufficientFunds}
+              autoHideDuration={3000} // Adjust the duration as needed
+              onClose={() => setInsufficientFunds(false)}
+            >
+              <Alert onClose={() => setInsufficientFunds(false)} severity="warning">
+              Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.
+              </Alert>
+            </Snackbar>
+          )}
 
         <Button
         variant="contained"
@@ -262,6 +279,7 @@ console.log(paymentMethod,selectedAddress);
       ) ) || (errorMessage &&  <Typography variant="body1" style={{ color: 'green', marginTop: '1rem' }}>
  Insufficient funds in the wallet. Please choose a different payment method or add funds to your wallet.   
   </Typography>) }
+  
       </Grid>
     </Grid>
     </PatientHeader>

@@ -26,7 +26,16 @@ const Medicine = () => {
   const [alternativeMedicines, setAlternativeMedicines] = useState([]);
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [alternativeQuantities, setAlternativeQuantities] = useState({});
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const [failureSnackbarOpen, setFailureSnackbarOpen] = useState(false);
+  const [requiresPrescription, setRequiresPrescription] = useState(false);
+  const [isPrescriptionRequiredSnackOpen, setIsPrescriptionRequiredSnackOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [isSoldOut, setSoldOut] = useState(false);
+
+
+
+
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
@@ -63,18 +72,22 @@ const Medicine = () => {
         .catch((error) => {
           console.error('Error adding item to cart:', error);
           const errorMessage = error.response?.data?.error || 'An error occurred';
-  
+
           if (
-            errorMessage.includes('Quantity not available') &&
             errorMessage.includes('This medicine requires a prescription')
+          
           ) {
-            alert('This medicine requires a prescription. Please consult your doctor.');
-          } else {
-            alert(errorMessage);
+            setIsPrescriptionRequiredSnackOpen(true); // Open the prescription required snacker
+          } 
+          else if ( errorMessage.includes('Quantity not available') )
+          {
+            setSoldOut(true); // Open the prescription required snacker
+              //alert(errorMessage);
           }
         });
     }
   };
+
 
   const handleViewAlternatives = () => {
     if (medicine) {
@@ -108,12 +121,12 @@ const Medicine = () => {
         const errorMessage = error.response?.data?.error || 'An error occurred';
 
         if (
-          errorMessage.includes('Quantity not available') &&
+          errorMessage.includes('Quantity not available') ||
           errorMessage.includes('This medicine requires a prescription')
         ) {
-          alert('This medicine requires a prescription. Please consult your doctor.');
+          setIsPrescriptionRequiredSnackOpen(true); // Open the prescription required snacker
         } else {
-          alert(errorMessage);
+          //alert(errorMessage);
         }
       });
   };
@@ -140,7 +153,7 @@ const Medicine = () => {
    
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9}>
+      <Grid item xs={12} sm={9} style={{  paddingLeft: '25rem'}}>
         {error ? (
           <div>Error fetching medicine details: {error}</div>
         ) : (
@@ -150,11 +163,12 @@ const Medicine = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              marginRight: '2rem'
             }}
           >
             {medicine ? (
               <div>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom style={{paddingLeft : '6rem'}}>
                   {medicine.name}
                 </Typography>
                 <img
@@ -164,25 +178,27 @@ const Medicine = () => {
                     maxWidth: '100%',
                     maxHeight: '300px',
                     marginBottom: '1rem',
+                    paddingLeft : '6rem'
+
                   }}
                 />
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom style={{paddingLeft : '6.5rem'}}>
                   Description: {medicine.description}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '8rem'}}>
                   Details: {medicine.details}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '8rem'}}>
                   Price: {medicine.price}
                 </Typography>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="body2" gutterBottom style={{paddingLeft : '8rem'}}>
                   Uses: {medicine.use}
                 </Typography>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center' ,paddingLeft : '6rem'}}>
                   <IconButton onClick={handleDecreaseQuantity}>
                     <RemoveIcon />
                   </IconButton>
-                  <Typography variant="body2" style={{ margin: '0 1rem' }}>
+                  <Typography variant="body2" style={{ margin: '0 1rem'  }}>
                     {quantity}
                   </Typography>
                   <IconButton onClick={handleIncreaseQuantity}>
@@ -195,7 +211,7 @@ const Medicine = () => {
                   onClick={handleAddToCart}
                   style={{marginRight : "40px"}}
                 >
-                  {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
+                  {isAddedToCart ? 'Add to Cart' : 'Add to Cart'}
                 </Button>
 
                 <Button
@@ -219,7 +235,7 @@ const Medicine = () => {
                         {alternativeMedicines.map((alternative) => (
                           <li key={alternative._id}>
                             <div>
-                              <Typography variant="h6" gutterBottom>
+                              <Typography variant="h6" gutterBottom style={{paddingLeft : '4rem'}}>
                                 {alternative.name}
                               </Typography>
                               <img
@@ -229,21 +245,22 @@ const Medicine = () => {
                                   maxWidth: '100%',
                                   maxHeight: '150px',
                                   marginBottom: '0.5rem',
+                                  paddingLeft : '3rem'
                                 }}
                               />
-                              <Typography variant="body1" gutterBottom>
+                              <Typography variant="body1" gutterBottom style={{paddingLeft : '3rem'}}>
                                 Description: {alternative.description}
                               </Typography>
-                              <Typography variant="subtitle1" gutterBottom>
+                              <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '4rem'}}>
                                 Details: {alternative.details}
                               </Typography>
-                              <Typography variant="subtitle1" gutterBottom>
+                              <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '4rem'}}>
                                 Price: {alternative.price}
                               </Typography>
-                              <Typography variant="body2" gutterBottom>
+                              <Typography variant="body2" gutterBottom style={{paddingLeft : '4rem'}}>
                                 Uses: {alternative.use}
                               </Typography>
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                              <div style={{ display: 'flex', alignItems: 'center',paddingLeft : '3rem'}}>
                                 <IconButton
                                   onClick={() => handleDecreaseAlternativeQuantity(alternative._id)}
                                 >
@@ -262,7 +279,7 @@ const Medicine = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => handleAddAlternativeToCart(alternative)}
-                                style={{ marginTop: '0.5rem' }}
+                                style={{ marginTop: '0.5rem',marginLeft: "3rem" }}
                               >
                                 Add to Cart
                               </Button>
@@ -277,16 +294,42 @@ const Medicine = () => {
                 )}
 
                 {isAddedToCart && (
-                 <Snackbar
-                 open={isSnackbarOpen}
-                 autoHideDuration={3000} // Adjust the duration as needed
-                 onClose={() => setIsSnackbarOpen(false)}
-               >
-                 <Alert onClose={() => setIsSnackbarOpen(false)} severity="success">
-                   Product added to cart successfully!
-                 </Alert>
-               </Snackbar>
-                )}
+                <Snackbar
+                  open={isAddedToCart}
+                  autoHideDuration={3000} // Adjust the duration as needed
+                  onClose={() => setIsAddedToCart(false)}
+                >
+                  <Alert onClose={() => setIsAddedToCart(false)} severity="success">
+                    Product added to cart successfully!
+                  </Alert>
+                </Snackbar>
+              )}
+
+{isPrescriptionRequiredSnackOpen && (
+            <Snackbar
+              open={isPrescriptionRequiredSnackOpen}
+              autoHideDuration={3000} // Adjust the duration as needed
+              onClose={() => setIsPrescriptionRequiredSnackOpen(false)}
+            >
+              <Alert onClose={() => setIsPrescriptionRequiredSnackOpen(false)} severity="warning">
+                This medicine requires a prescription. Please consult your doctor.
+              </Alert>
+            </Snackbar>
+          )}
+          {isSoldOut && (
+            <Snackbar
+              open={isSoldOut}
+              autoHideDuration={3000} // Adjust the duration as needed
+              onClose={() => setSoldOut(false)}
+            >
+              <Alert onClose={() => setSoldOut(false)} severity="warning">
+                Sold Out! View alternatives.
+              </Alert>
+            </Snackbar>
+          )}
+
+
+
               </div>
             ) : (
               <div>Loading...</div>
