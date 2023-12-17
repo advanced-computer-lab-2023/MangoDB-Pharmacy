@@ -25,7 +25,7 @@ import MedicineAdmin from "./pages/medicineAdmin";
 import LoginPage from "./pages/LoginAdminPage";
 import ForgotPasswordAdminPage from "./pages/ForgotPasswordAdminPage";
 import ForgotPasswordUserPage from "./pages/ForgotPasswordUserPage";
-// import AddAdminPage from "./pages/AddAdminPage";
+import AddAdminPage from "./pages/addAdmin";
 // import RequestedDoctorsPage from "./pages/RequestedDoctorsPage";
 import LoginUser from "./components/LoginUser";
 import ChangePasswordAdmin from "./pages/changePasswordAdmin";
@@ -54,6 +54,7 @@ import PharmacistChatDoctor from "./pages/pharmacistChatDoctor";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import AdminHeader from "./components/AdminHeader"; // Correct import statement
+
 
 function App() {
   return (
@@ -134,6 +135,7 @@ function App() {
             path="/changePasswordAdmin"
             element={<ChangePasswordAdmin />}
           />
+          <Route path="/addadmin" element={<AddAdminPage />} />
 
           <Route path="/admin" element={<AdminHeader />} />
           <Route path="/admin/login" element={<LoginPage />} />

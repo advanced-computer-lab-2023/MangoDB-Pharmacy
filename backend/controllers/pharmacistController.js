@@ -400,13 +400,18 @@ const loginPharmacist = asyncHandler(async (req, res) => {
     // Check for username
     const pharmacist = await Pharmacist.findOne({ username });
 
-    if (pharmacist && (await bcrypt.compare(password, pharmacist.password))) {
+    if (pharmacist && (await bcrypt.compare(password, pharmacist.password))) 
+    {
+      const initials = (pharmacist.firstName ? pharmacist.firstName[0] : '') +
+         (pharmacist.lastName ? pharmacist.lastName[0] : '');
         res.status(200).json({
             message: "Successful Login",
             _id: pharmacist.id,
             username: pharmacist.username,
-            name: pharmacist.firstName + pharmacist.lastName,
+            name: pharmacist.firstName ,
+            lastName: pharmacist.lastName,
             email: pharmacist.email,
+            initials: initials, 
             token: generateToken(pharmacist._id),
         });
     } else {

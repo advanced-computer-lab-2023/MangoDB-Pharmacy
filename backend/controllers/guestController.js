@@ -80,10 +80,15 @@ console.log(username);
     return res.status(400).json({ message: "Password is incorrect" });
 
   const token = genToken(user._id);
-
+  const initials = (user.firstName ? user.firstName[0] : '') +
+  (user.lastName ? user.lastName[0] : '');
   res.status(200).json({
     _id: user.id,
     username: user.username,
+   name: user.firstName,
+		lastName: user.lastName,
+		email: user.email,
+		initials: initials, 
     type: user.userType,
     token: token,
   });

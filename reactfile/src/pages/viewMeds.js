@@ -3,6 +3,7 @@ import { Grid, Typography, Paper, TextField, InputAdornment, Select, MenuItem, F
 import { Link } from 'react-router-dom';
 import { viewMeds, getAllMedicineUses, getMedicinesByUse } from "../services/api";
 import { mainListItems } from '../components/ListItems';
+import PatientHeader from "../components/PatientHeader";
 
 const ViewMeds = () => {
   const [meds, setMeds] = useState([]);
@@ -11,7 +12,7 @@ const ViewMeds = () => {
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
+ 
   useEffect(() => {
     // Fetch medicine uses when the component mounts
     getAllMedicineUses()
@@ -64,10 +65,11 @@ const ViewMeds = () => {
   };
 
   return (
+    <PatientHeader>
     <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
+        {/* {mainListItems} */}
       </Grid>
 
       {/* Main Content */}
@@ -125,7 +127,7 @@ const ViewMeds = () => {
                   >
                     {med.picture && (
                       <img
-                        src={`http://localhost:8000/${med.picture}`}
+                        src={`http://localhost:4000/${med.picture}`}
                         alt={med.name}
                         style={{ width: "50px", height: "50px", marginRight: "1rem" }}
                       />
@@ -142,6 +144,7 @@ const ViewMeds = () => {
         )}
       </Grid>
     </Grid>
+    </PatientHeader>
   );
 };
 
