@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mu
 import { getPatientbyId, getChatPharmaPat, sendMessagePharma } from "../services/api";
 import { useParams } from 'react-router-dom';
 import { pharmacistListItems } from '../components/ListItemsPharma';
-
+import PatientHeader from "../components/PatientHeader";
 const ChatPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState("");
@@ -77,6 +77,7 @@ const ChatPage = () => {
   };
   
   return (
+    <PatientHeader>
     <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
@@ -138,6 +139,7 @@ const ChatPage = () => {
         </Paper>
       </Grid>
     </Grid>
+    </PatientHeader>
   );
 };
 export default ChatPage;

@@ -14,6 +14,7 @@ import {
 import { viewWallet } from '../services/api';
 import { useParams } from 'react-router-dom';
 import { alpha } from "@mui/system";
+import PatienttHeader from '../components/PatientHeader';
 
 const WalletPage = () => {
     const [wallet, setWallet] = useState(null);
@@ -42,7 +43,7 @@ const WalletPage = () => {
     };
   
     return (
-        
+        <PatienttHeader>
       <Grid container spacing={3}>
         <Grid item xs={12} paddingTop = "30">
           
@@ -85,6 +86,7 @@ const WalletPage = () => {
           </>
         )}
       </Grid>
+      </PatienttHeader>
     );
   };
 

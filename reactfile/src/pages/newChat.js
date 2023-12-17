@@ -15,6 +15,7 @@ import { getAllPharmacists, createChat, viewChats,getChat } from "../services/ap
 import { mainListItems } from '../components/ListItems';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from "@mui/icons-material/Add";
+import PatienttHeader from "../components/PatientHeader";
 
 const NewChat = () => {
     const [pharmacists, setPharmacists] = useState([]);
@@ -124,6 +125,7 @@ const NewChat = () => {
   };
 
   return (
+    <PatienttHeader>
     <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
@@ -205,6 +207,7 @@ const NewChat = () => {
 ))}
       </Grid>
     </Grid>
+    </PatienttHeader>
   );
 };
 

@@ -22,6 +22,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { pharmacistListItems } from '../components/ListItemsPharma';
 import { clearNotifs, getPharmacist, seenNotifs } from '../services/api';
+import PharmacistHeader from "../components/PharmacistHeader";
 
 function Copyright(props) {
   return (
@@ -152,10 +153,11 @@ export default function PharmacistDashboard() {
 	}, [seen]);
 
   return (
+    <PharmacistHeader>
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        {/* <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -203,7 +205,7 @@ export default function PharmacistDashboard() {
                     {notifications.map(notification => (
                       // <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } } onClick={ () => { notification.seen = true; countNewNotifications(notifications); } }>
                       <div key={notification._id} style={ notification.seen ? {} : { "backgroundColor": '#F0F0F0' } }>
-                        {/* <h4>{notification.title}</h4> */}
+                        {/* <h4>{notification.title}</h4> /}
                         <div style={{ "display": "flex", "alignItems": "center", "justifyContent": "space-between" }}>
                           <h4>{notification.title}</h4>
                           <DeleteForeverIcon id={ notification._id } onClick={ () => handleNotifDelete(notification._id) } />
@@ -235,7 +237,7 @@ export default function PharmacistDashboard() {
             {pharmacistListItems}
             <Divider sx={{ my: 1 }} />
           </List>
-        </Drawer>
+        </Drawer> */}
         <Box
           component="main"
           sx={{
@@ -270,5 +272,6 @@ export default function PharmacistDashboard() {
         </Box>
       </Box>
     </ThemeProvider>
+    </PharmacistHeader>
   );
 }

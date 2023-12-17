@@ -6,6 +6,7 @@ import { getDifMeds, getAllSales, getSalesByMonth, getSalesByMedicine } from '..
 import { useParams } from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
+import PharmacistHeader from '../components/PharmacistHeader';
 
 
 const ViewSales = () => {
@@ -86,6 +87,7 @@ const ViewSales = () => {
   }, []);
 
   return (
+    <PharmacistHeader>
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
         {pharmacistListItems}
@@ -173,6 +175,7 @@ const ViewSales = () => {
 
       </Grid>
     </Grid>
+    </PharmacistHeader>
   );
 };
 

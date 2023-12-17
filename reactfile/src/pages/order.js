@@ -4,7 +4,7 @@ import { viewAllOrders } from "../services/api";
 // import List from '@mui/material/List';
 import { mainListItems } from '../components/ListItems';
 import { Link } from 'react-router-dom';
-
+import PatienttHeader from "../components/PatientHeader";
 
 const Orders = () => {
 //   const id = '653853e1af653f0d70d44763';
@@ -26,6 +26,7 @@ const Orders = () => {
   }, []);
 
   return (
+    <PatienttHeader>
     <Grid container>
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
         {mainListItems}
@@ -59,6 +60,7 @@ const Orders = () => {
         )}
       </Grid>
     </Grid>
+    </PatienttHeader>
   );
 };
 

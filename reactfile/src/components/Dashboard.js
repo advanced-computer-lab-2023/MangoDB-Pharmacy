@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 // import DoctorsTable from '../components/DoctorsTable';
 import { mainListItems } from '../components/ListItems';
+import PatienttHeader from './PatientHeader';
 
 function Copyright(props) {
   return (
@@ -89,10 +90,11 @@ export default function Dashboard() {
   };
 
   return (
+    <PatienttHeader>
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        {/* <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -144,7 +146,7 @@ export default function Dashboard() {
             {mainListItems}
             <Divider sx={{ my: 1 }} />
           </List>
-        </Drawer>
+        </Drawer> */}
         <Box
           component="main"
           sx={{
@@ -197,5 +199,6 @@ export default function Dashboard() {
         </Box>
       </Box>
     </ThemeProvider>
+    </PatienttHeader>
   );
 }

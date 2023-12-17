@@ -3,6 +3,7 @@ import { Grid, Typography, Paper, FormControl, InputLabel, Select, MenuItem, But
 import { viewChatsPharma } from "../services/api";
 import { pharmacistListItems } from '../components/ListItemsPharma';
 import { useNavigate } from 'react-router-dom';
+import PharmacistHeader from "../components/PharmacistHeader";
 
 const NewChat = () => {
   const [pharmacists, setPharmacists] = useState([]);
@@ -27,6 +28,7 @@ const NewChat = () => {
   };
 
   return (
+    <PharmacistHeader>
       <Grid container>
       {/* Sidebar */}
       <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
@@ -94,6 +96,7 @@ const NewChat = () => {
         ))}
       </Grid>
     </Grid>
+    </PharmacistHeader>
   );
 };
 
