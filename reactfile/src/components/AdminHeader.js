@@ -163,7 +163,7 @@ export const AdminHeader = ({ children }) => {
                 </ListItemIcon>
                 <ListItemText primary="Add Admin" />
               </ListItem>
-              <ListItem button sx={{ pb: 1 }}>
+              <ListItem button sx={{ pb: 1 }} component={Link} to="/removeUsers">
                 <ListItemIcon>
                   <img
                     src={RemoveUserIcon}
@@ -270,7 +270,7 @@ export const AdminHeader = ({ children }) => {
           <ListItem button sx={{ pb: 0 }} component={Link} to="/salesAdmin">
             <ListItemIcon>
             <BarChartIcon style={{ width: 30, height: 30 }} />
-    <ReceiptIcon style={{ width: 30, height: 30 }} />
+    
             </ListItemIcon>
             <ListItemText primary="Sales" />
           </ListItem>
@@ -382,7 +382,7 @@ const logoutBottomListItem = (
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
             zIndex: (theme) => theme.zIndex.drawer - 1,
-            height: "25%",
+            height: "18%",
             width: "15%",
           },
         }}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { AdminListItems } from '../components/ListItemsAdmin';
 import { getMeds } from "../services/api";
+import AdminHeader from '../components/AdminHeader';
+
 
 import {
   Grid,
@@ -26,39 +27,31 @@ const MedicineAdmin = () => {
   }, [id]);
 
   return (
+    <AdminHeader>
     <Grid container>
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        md={2}
-        lg={2}
-        xl={2}
-        style={{
-          background: '#f0f0f0',
-          minHeight: '100vh',
-          paddingTop: '2rem',
-        }}
-      >
-        {AdminListItems}
-      </Grid>
+     
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9}>
+      <Grid item xs={12} sm={9} style={{  paddingLeft: '25rem'}}>
         {error ? (
           <div>Error fetching medicine details: {error}</div>
         ) : (
           <Paper
-            style={{
-              padding: '1rem',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
+          style={{
+            padding: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginRight: '2rem',
+            width: '100%',
+            paddingTop: "3rem",
+            marginTop: "3rem"
+
+          }}
           >
             {medicine ? (
               <div>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" gutterBottom style={{paddingLeft : '1.2rem'}}>
                   {medicine.name}
                 </Typography>
                 <img
@@ -68,24 +61,26 @@ const MedicineAdmin = () => {
                     maxWidth: '100%',
                     maxHeight: '300px',
                     marginBottom: '1rem',
+                    paddingLeft : '1.2rem'
+
                   }}
                 />
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom style={{paddingLeft : '1.6rem'}}>
                       Description: {medicine.description}
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
+                    <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '3rem'}}>
                       Details: {medicine.details}
                     </Typography>
-                    <Typography variant="body1" gutterBottom>
+                    <Typography variant="body1" gutterBottom style={{paddingLeft : '3rem'}}>
                       quantity: {medicine.quantity}
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
+                    <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '3rem'}}>
                       Price: {medicine.price}
                     </Typography>
-                    <Typography variant="body1" gutterBottom>
+                    <Typography variant="body1" gutterBottom style={{paddingLeft : '3rem'}}>
                       sales: {medicine.sales}
                     </Typography>
-                    <Typography variant="body2" gutterBottom>
+                    <Typography variant="body2" gutterBottom style={{paddingLeft : '3.5rem'}}>
                       Use: {medicine.use}
                     </Typography>
               </div>
@@ -96,6 +91,7 @@ const MedicineAdmin = () => {
         )}
       </Grid>
     </Grid>
+    </AdminHeader>
   );
 };
 
