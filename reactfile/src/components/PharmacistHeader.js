@@ -21,6 +21,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Notifications from "./Notifications";
 export const PharmacistHeader = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const {  name, lastName, initials } = userData;
@@ -369,6 +370,7 @@ export const PharmacistHeader = ({ children }) => {
           />
 
           <Typography>{/* User's name */}</Typography>
+          <Notifications />
           <Avatar sx={{ marginRight: 1 }}>{initials}</Avatar>
           <Typography
             variant="body1"
