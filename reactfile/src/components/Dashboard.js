@@ -43,8 +43,8 @@ const Dashboard = () => {
     },
     {
       icon: Icon5,
-      title: "Sales",
-      description: "View sales report of meds",
+      title: "Orders",
+      description: "View past and upcoming orders",
       cta: "View",
     },
     {
@@ -116,7 +116,7 @@ const Dashboard = () => {
     } else if (index === 3) {
       navigate("/newChat");
     } else if (index === 4) {
-      navigate("/sales");
+      navigate("/order");
     } else if (index === 5) {
       navigate("/wallet");
     }

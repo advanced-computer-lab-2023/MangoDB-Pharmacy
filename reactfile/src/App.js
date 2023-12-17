@@ -64,6 +64,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
+          <Route path="/DashboardAdmin" element={<DashboardAdmin />} />
+
           <Route path="/addMed" element={<AddMed />} />
 
           <Route path="/medicineAdmin/:id" element={<MedicineAdmin />} />

@@ -110,7 +110,7 @@ export const AdminHeader = ({ children }) => {
       </Box>
   
       <List sx={{ p: 0 }}>
-        <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/admin">
+        <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/DashboardAdmin">
           <ListItemIcon>
             <img
               src={DashboardIcon}

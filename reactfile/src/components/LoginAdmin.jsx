@@ -58,7 +58,7 @@ export default function LoginAdmin() {
 				localStorage.setItem('userData', JSON.stringify(response.data));
 
 
-				navigate("/admin");
+				navigate("/DashboardAdmin");
 			}
 		} catch (error) {
 			alert("Invalid Credentials");

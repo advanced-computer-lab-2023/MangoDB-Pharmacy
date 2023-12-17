@@ -1,5 +1,7 @@
 import React from "react";
 import { Paper, Typography, Grid, Button, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import AdminHeader from '../components/AdminHeader'; 
 
 // Import your icons
 const Profile = `${process.env.PUBLIC_URL}/icons/profile.svg`;
@@ -11,6 +13,7 @@ const Requests = `${process.env.PUBLIC_URL}/icons/ticket.svg`;
 
 const DashboardAdmin = () => {
   // Define your data
+  const navigate = useNavigate();
   const papers = [
     {
       icon: Profile,
@@ -51,6 +54,7 @@ const DashboardAdmin = () => {
   ];
 
   return (
+    <AdminHeader>
     <Box
       sx={{
         display: "flex",
@@ -97,15 +101,34 @@ const DashboardAdmin = () => {
                 >
                   {paper.description}
                 </Typography>
-                <Button variant="contained" color="primary">
-                  {paper.cta}
-                </Button>
+                <Button 
+  variant="contained" 
+  color="primary"
+  onClick={() => {
+    if (index === 0) {
+      navigate("/profile");
+    } else if (index === 1) {
+      navigate("/viewMedsAdmin");
+    } else if (index === 2) {
+      navigate("/salesAdmin");
+    } else if (index === 3) {
+      navigate("/addadmin");
+    } else if (index === 4) {
+      navigate("/viewPatients");
+    } else if (index === 5) {
+      navigate("/requestedPharma");
+    }
+  }}
+>
+  {paper.cta}
+</Button>
               </Paper>
             </Grid>
           ))}
         </Grid>
       </Paper>
     </Box>
+    </AdminHeader>
   );
 };
 
