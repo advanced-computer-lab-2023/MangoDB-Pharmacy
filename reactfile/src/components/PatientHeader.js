@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 export const PatienttHeader = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const {  name, lastName, initials } = userData;
-
+console.log(name,lastName)
   const [openProfileDrawer, setOpenProfileDrawer] = useState(false);
   const [open, setOpen] = useState(true);
 
@@ -341,7 +341,7 @@ export const PatienttHeader = ({ children }) => {
       }}
     >
       
-      <ListItem button sx={{ mb: 5, padding: "5px 16px" }} component={Link} to="/">
+      <ListItem button sx={{ mb: 5, padding: "5px 16px" }}  onClick={handleLogout}>
         <ListItemIcon>
           <img
             src={LogoutIcon}
@@ -467,7 +467,7 @@ export const PatienttHeader = ({ children }) => {
             </Typography>
           </ListItem>
 
-          <ListItem button>
+          <ListItem button onClick={handleLogout}>
             <ListItemIcon>
               <img
                 src={LogoutIcon}

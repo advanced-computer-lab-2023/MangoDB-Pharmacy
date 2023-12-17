@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { getPharmacistbyId, getChat, sendMessage } from "../services/api";
 import { useParams } from 'react-router-dom';
-import { mainListItems } from '../components/ListItems';
+import PatientHeader from '../components/PatientHeader';
 
 const ChatPage = () => {
   const { id } = useParams();
@@ -93,14 +93,12 @@ const ChatPage = () => {
   };
 
   return (
-    <Grid container>
-      {/* Sidebar */}
-      <Grid item xs={12} sm={3} md={2} lg={2} xl={2} style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}>
-        {mainListItems}
-      </Grid>
+    <PatientHeader>
 
+    <Grid container>
+    
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10}>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10 }style={{ paddingLeft: "20rem" }}>
         {/* App Bar with Name */}
         <AppBar position="static" style={{ maxWidth: "840px" }}>
           <Toolbar>
@@ -114,7 +112,6 @@ const ChatPage = () => {
             <div key={message._id} style={{ display: "flex", flexDirection: "column", alignItems: message.senderRole === 'patient' ? 'flex-end' : 'flex-start' }}>
               <div style={message.senderRole === 'patient' ? styles.youMessage : styles.pharmacistMessage}>
                 <p>{message.messageText}</p>
-                <p>{message.senderRole === 'pharmacist' ? 'Pharmacist' : 'You'}:</p>
 
                 <p style={{ fontSize: "small", color: "rgba(0, 0, 0, 0.6)" }}>
       {new Date(message.timeDate).toLocaleTimeString("en-US", {
@@ -156,6 +153,8 @@ const ChatPage = () => {
         </Paper>
       </Grid>
     </Grid>
+    </PatientHeader>
+
   );
 };
 

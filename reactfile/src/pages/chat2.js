@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, TextField, Button, Grid, Paper } from "@mui/material";
 import { getDoctorbyId, getChat2, sendMessage2 } from "../services/api";
 import { useParams } from 'react-router-dom';
-import { pharmacistListItems } from '../components/ListItemsPharma';
+import PharmacistHeader from "../components/PharmacistHeader"; // Import the AdminHeader component
 
 const Chat2 = () => {
   const { id } = useParams();
@@ -83,22 +83,13 @@ const Chat2 = () => {
   };
 
   return (
+    <PharmacistHeader>
+
     <Grid container>
-      {/* Sidebar */}
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        md={2}
-        lg={2}
-        xl={2}
-        style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
-      >
-        {pharmacistListItems}
-      </Grid>
+     
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "20rem" }}>
         {/* App Bar with Name */}
         <AppBar position="static" style={{ maxWidth: "840px" }}>
           <Toolbar>
@@ -154,6 +145,8 @@ const Chat2 = () => {
         </Grid>
       </Grid>
     </Grid>
+    </PharmacistHeader>
+
   );
 };
 
