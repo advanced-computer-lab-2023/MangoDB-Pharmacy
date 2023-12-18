@@ -28,7 +28,7 @@ const Notifications = () => {
     if (seen) {
       seenNotifs()
         .then((result) => console.log(result))
-        .catch((err) => onError(err.message));
+        .catch((err) => console.log(err.message));
     }
   }, [seen]);
 
