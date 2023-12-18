@@ -18,7 +18,7 @@ const PharmacistReg = () => {
   const uploadIcon = `${process.env.PUBLIC_URL}/icons/upload.svg`;
   //Pharmacist
   const [rate, setRate] = useState("");
-  const [documents, setDocuments] = useState([]);  // Initialize as an empty array
+  const [documents, setDocuments] = useState([]); // Initialize as an empty array
 
   const [affiliation, setAffiliation] = useState("");
   const [education, setEducation] = useState("");
@@ -51,7 +51,6 @@ const PharmacistReg = () => {
     formData.append("addresses", addresses);
     documents.forEach((file) => formData.append("documents", file));
 
-
     setIsPending(true);
 
     PharmacistRegService(formData)
@@ -71,10 +70,9 @@ const PharmacistReg = () => {
     if (selectedFiles.length > 0) {
       // Concatenate the new files with the existing ones
       setDocuments((prevDocuments) => [...prevDocuments, ...selectedFiles]);
-      console.log(documents)
+      console.log(documents);
     }
   };
-
 
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
@@ -226,13 +224,13 @@ const PharmacistReg = () => {
                   Upload
                 </Button>
                 <Input
-  id="fileInput"
-  type="file"
-  name="picture"
-  onChange={handleFileChange}
-  style={{ display: "none" }}
-  multiple  // Add this attribute to allow multiple file selection
-/>
+                  id="fileInput"
+                  type="file"
+                  name="picture"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  multiple // Add this attribute to allow multiple file selection
+                />
                 <FormHelperText>
                   Upload id , pharmacy degree or working license
                 </FormHelperText>
@@ -249,7 +247,7 @@ const PharmacistReg = () => {
             )}
             <Grid item xs sx={{ pt: 3 }}>
               <Typography variant="body2">Already registered?</Typography>
-              <Link href="/register" variant="body2" sx={{ color: "#15678d" }}>
+              <Link href="/login" variant="body2" sx={{ color: "#15678d" }}>
                 Login
               </Link>
             </Grid>

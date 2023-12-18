@@ -304,7 +304,7 @@ const PatientReg = () => {
             </Button>
             <Grid item xs sx={{ pt: 3 }}>
               <Typography variant="body2">Already registered?</Typography>
-              <Link href="/register" variant="body2" sx={{ color: "#15678d" }}>
+              <Link href="/login" variant="body2" sx={{ color: "#15678d" }}>
                 Login
               </Link>
             </Grid>
