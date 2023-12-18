@@ -1,5 +1,5 @@
 import "./App.css";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Blog";
 import Dashboard from "./components/Dashboard";
 import DashboardPharma from "./components/DashboardPharma";
 import DashboardAdmin from "./components/DashboardAdmin";
@@ -48,14 +48,12 @@ import PatientPharma from "./pages/chatPharmacistPatient";
 
 import Chat2 from "./pages/chat2";
 
-
 import PharmacistChatDoctor from "./pages/pharmacistChatDoctor";
 
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import AdminHeader from "./components/AdminHeader"; // Correct import statement
-
-
+import Register from "./pages/register";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -73,9 +71,11 @@ function App() {
           <Route path="/viewMedsAdmin" element={<ViewMedsAdmin />} />
 
           <Route path="/patientReg" element={<PatientReg />} />
-
-          <Route path="/pharmacistChatDoctor" element={<PharmacistChatDoctor />} />
-
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/pharmacistChatDoctor"
+            element={<PharmacistChatDoctor />}
+          />
 
           <Route path="/pharmaReg" element={<PharmacistReg />} />
 
@@ -93,7 +93,10 @@ function App() {
 
           <Route path="/viewPatients" element={<ViewPatients />} />
 
-          <Route path="/pharmacistDetails/:id" element={<PharmacistDetails />} />
+          <Route
+            path="/pharmacistDetails/:id"
+            element={<PharmacistDetails />}
+          />
 
           <Route path="/patientDetails/:id" element={<PatientDetails />} />
 
@@ -119,13 +122,15 @@ function App() {
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/chat2/:id" element={<Chat2 />} />
 
-
           <Route
             path="/changePasswordPatient"
             element={<ChangePasswordPatient />}
           />
           <Route path="/viewPatientChats" element={<PatientChats />} />
-          <Route path="/chatPharmacistPatient/:id" element={<PatientPharma />} />
+          <Route
+            path="/chatPharmacistPatient/:id"
+            element={<PatientPharma />}
+          />
 
           <Route
             path="/changePasswordPharmacist"

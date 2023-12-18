@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Link from "@mui/material/Link";
 import {
   Button,
   TextField,
@@ -238,6 +239,12 @@ const PharmacistReg = () => {
                 Registering
               </Button>
             )}
+            <Grid item xs sx={{ pt: 3 }}>
+              <Typography variant="body2">Already registered?</Typography>
+              <Link href="/register" variant="body2" sx={{ color: "#15678d" }}>
+                Login
+              </Link>
+            </Grid>
           </form>
         </Paper>
       </Grid>
