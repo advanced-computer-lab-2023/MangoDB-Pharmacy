@@ -111,7 +111,7 @@ const DashboardPharma = () => {
     } else if (index === 1) {
       navigate("/viewMedsPharma");
     } else if (index === 2) {
-      navigate("/cart");
+      navigate("/addMed");
     } else if (index === 3) {
       navigate("/newChat");
     } else if (index === 4) {
