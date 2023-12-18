@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { pharmacistListItems } from '../components/ListItemsPharma';
 import { getMeds, editMedPrice } from "../services/api";
+import PharmacistHeader from "../components/PharmacistHeader";
 import { Grid, Typography, Paper, Button, TextField } from '@mui/material';
 
 const MedicinePharma = () => {
@@ -62,6 +63,8 @@ const MedicinePharma = () => {
   };
 
   return (
+    <PharmacistHeader>
+
     <Grid container>
       <Grid
         item
@@ -90,6 +93,7 @@ const MedicinePharma = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              marginTop : "2rem"
             }}
           >
             {medicine ? (
@@ -125,7 +129,7 @@ const MedicinePharma = () => {
                     <Button onClick={handleCancelEdit} variant="outlined" color="secondary" style={{ marginTop: '1rem' }}>
                       Cancel
                     </Button>
-                    <Button onClick={handleSaveEdit} variant="contained" color="primary" style={{ marginTop: '1rem' }}>
+                    <Button onClick={handleSaveEdit} variant="contained" color="primary" style={{ marginTop: '1rem', marginLeft: "1rem" }}>
                       Save
                     </Button>
                   </>
@@ -162,6 +166,8 @@ const MedicinePharma = () => {
         )}
       </Grid>
     </Grid>
+    </PharmacistHeader>
+
   );
 };
 

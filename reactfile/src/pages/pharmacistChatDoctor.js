@@ -83,7 +83,7 @@ const PharmacistChatDoctor = () => {
         xl={2}
         style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
       >
-        {/* {pharmacistListItems} */}
+       
       </Grid>
 
       {/* Main Content */}
@@ -105,11 +105,12 @@ const PharmacistChatDoctor = () => {
             color: "#fff", // White color for the text
             borderRadius: "50%", // Make it a circle
             marginRight: "1rem", // Add margin for spacing
+            marginTop: "1rem"
           }}
         >
           <AddIcon />
         </IconButton>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="h6" gutterBottom >
           New Chat
         </Typography>
 

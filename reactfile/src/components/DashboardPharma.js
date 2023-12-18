@@ -60,9 +60,11 @@ const DashboardPharma = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        paddingLeft: "14%",
+        paddingUp: "100%", 
       }}
     >
-      <Paper sx={{ p: 2, width: 1200, height: 600, pl: 5 }}>
+      <Paper sx={{ p: 2, width: 1200, height: 600, pl: 5 ,marginBottom:'10rem'}}>
         <Typography variant="h2" align="left" sx={{ pb: 10, pl: 4, pt: 5 }}>
           Dashboard
         </Typography>
