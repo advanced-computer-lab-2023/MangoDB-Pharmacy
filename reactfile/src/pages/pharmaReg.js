@@ -17,6 +17,8 @@ const PharmacistReg = () => {
   const uploadIcon = `${process.env.PUBLIC_URL}/icons/upload.svg`;
   //Pharmacist
   const [rate, setRate] = useState("");
+  const [documents, setDocuments] = useState([]);  // Initialize as an empty array
+
   const [affiliation, setAffiliation] = useState("");
   const [education, setEducation] = useState("");
   //User
@@ -29,7 +31,6 @@ const PharmacistReg = () => {
   const [addresses, setAddresses] = useState("");
   //Docs
 
-  const [documents, setDocuments] = useState();
   //Other
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
@@ -47,9 +48,8 @@ const PharmacistReg = () => {
     formData.append("rate", rate);
     formData.append("education", education);
     formData.append("addresses", addresses);
-    documents.forEach((file) => {
-      formData.append(`documents`, file);
-    });
+    documents.forEach((file) => formData.append("documents", file));
+
 
     setIsPending(true);
 
@@ -65,8 +65,15 @@ const PharmacistReg = () => {
   };
 
   const handleFileChange = (event) => {
-    setDocuments(Array.from(event.target.files));
+    const selectedFiles = event.target.files;
+    console.log("Selected Files:", selectedFiles);
+    if (selectedFiles.length > 0) {
+      // Concatenate the new files with the existing ones
+      setDocuments((prevDocuments) => [...prevDocuments, ...selectedFiles]);
+      console.log(documents)
+    }
   };
+
 
   return (
     <Grid container justifyContent="center" style={{ padding: "2rem" }}>
@@ -218,12 +225,13 @@ const PharmacistReg = () => {
                   Upload
                 </Button>
                 <Input
-                  id="fileInput"
-                  type="file"
-                  name="picture"
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
-                />
+  id="fileInput"
+  type="file"
+  name="picture"
+  onChange={handleFileChange}
+  style={{ display: "none" }}
+  multiple  // Add this attribute to allow multiple file selection
+/>
                 <FormHelperText>
                   Upload id , pharmacy degree or working license
                 </FormHelperText>

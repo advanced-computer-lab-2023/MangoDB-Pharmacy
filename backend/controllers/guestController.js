@@ -11,13 +11,6 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = 'abc123';
 const registerUser = async (req, res, model, userType, fields) => {
   const data = req.body;
-  // for (const field of fields) {
-  // 	if (!data[field]) {
-  // 		return res.status(400).json({ message: "Fill all fields" });
-  // 	}
-  // }
-  console.log(data);
-
   try {
     const usernameExists = await User.findOne({ username: data.username });
     if (usernameExists)
@@ -36,11 +29,26 @@ const registerUser = async (req, res, model, userType, fields) => {
       userType: userType,
       accountStatus: userType === "patient" ? "active" : "inactive",
     });
+    if (!user.documents) {
+      user.documents = [];
+    }
+    if (userType === "Pharmacist" && req.files) {
+      console.log("Received Files:", req.files);
+      for (const file of req.files) {
+        const url = `http://localhost:8000/uploads/${file.originalname}`;
+        const document = {
+          name: file.originalname,
+          file: url,
+        };
+        user.documents.push(document);
+      }
+      await user.save();
+    }
     const wallet = new Wallet({
-		user: user._id,
-			balance:0 ,
-		});
-		 await wallet.save();
+        user: user._id,
+            balance:0 ,
+        });
+         await wallet.save();
 
     return res.status(201).json({
       _id: user._id,
@@ -56,23 +64,12 @@ const registerUser = async (req, res, model, userType, fields) => {
 };
 
 const registerAsPharmacist = asyncHandler(async (req, res) => {
-  await registerUser(req, res, Pharma, "Pharmacist", [
+  const user = await registerUser(req, res, Pharma, "Pharmacist", [
     "address",
     "rate",
     "affiliation",
     "Education",
   ]);
-  if (req.files) {
-    for (const file of req.files) {
-      const url = `http://localhost:8000/uploads/${file.originalname}`;
-      const document = {
-        name: file.originalname,
-        file: url,
-      };
-      Pharma.documents.push(document);
-    }
-    //await user.save();
-  }
 });
 
 const login = asyncHandler(async (req, res) => {

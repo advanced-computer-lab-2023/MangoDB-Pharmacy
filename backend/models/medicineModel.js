@@ -36,6 +36,7 @@ const medicineSchema = mongoose.Schema(
     sales: {
       type: Number,
       required: [true, "Total sales made"],
+      default: 0,
     },
     details: {
       type: String,

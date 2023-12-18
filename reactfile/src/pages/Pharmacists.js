@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Button } from "@mui/material";
-import { useParams ,useNavigate} from 'react-router-dom';
+import { useParams ,useNavigate,Link} from 'react-router-dom';
 import { viewPharmacist, pharamacistApproval, pharamacistRejection } from '../services/api';
 import AdminHeader from "../components/AdminHeader"; // Import the AdminHeader component
 import Snackbar from '@mui/material/Snackbar';
@@ -21,6 +21,7 @@ const PharmacistDetail = () => {
   useEffect(() => {
     viewPharmacist(id)
       .then((response) => {
+        console.log (response)
         setPharma(response.data);
         setError(null);
       })
@@ -93,14 +94,13 @@ const PharmacistDetail = () => {
 
               {/* Display documents */}
               <h2>Documents</h2>
-              <ul>
-                {pharmacist.documents.map((document, index) => (
-                  <li key={index}>
-                    <p>Name: {document.name}</p>
-                    <p>File: {document.file}</p>
-                  </li>
-                ))}
-              </ul>
+            <ul>
+              {pharmacist.documents.map((document, index) => (
+                <li key={index}>
+                  <p>File: <Link to={`http://localhost:8000/backend/uploads/${document.name}`} target="_blank">{document.name}</Link></p>
+                </li>
+              ))}
+            </ul>
 
               {/* Accept and Reject Buttons */}
               {!acceptClicked && !rejectClicked && (
