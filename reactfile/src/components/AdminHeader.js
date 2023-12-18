@@ -285,16 +285,7 @@ export const AdminHeader = ({ children }) => {
             </ListItemIcon>
             <ListItemText primary="Pharmacy" />
           </ListItem>
-          <ListItem button sx={{ pb: 0 }}>
-            <ListItemIcon>
-              <img
-                src={SettingsIcon}
-                alt="Settings"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
+         
         </List>
         <List sx={{ padding: "0px" }}>
           <ListItem button sx={{ pb: 0 }} component={Link} to="/salesAdmin">

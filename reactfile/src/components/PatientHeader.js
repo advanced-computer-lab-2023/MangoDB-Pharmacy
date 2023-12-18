@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -65,6 +66,9 @@ console.log(name,lastName)
   const PharmacyIcon = `${process.env.PUBLIC_URL}/icons/meds.svg`;
   const SettingsIcon = `${process.env.PUBLIC_URL}/icons/settings.svg`;
   const LogoutIcon = `${process.env.PUBLIC_URL}/icons/logout.svg`;
+  
+  
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -128,7 +132,7 @@ console.log(name,lastName)
         <ListItemText primary="Dashboard" />
       </ListItem>
 
-      <ListItem button sx={{ pt: 0, pb: 1 }}>
+      <ListItem button sx={{ pt: 0, pb: 1 }}component={Link} to="/changePasswordPatient">
         <ListItemIcon>
           <img
             src={profileIcon}
@@ -136,7 +140,7 @@ console.log(name,lastName)
             alt="profile"
           />
         </ListItemIcon>
-        <ListItemText primary="Profile" />
+        <ListItemText primary="Change Password" />
       </ListItem>
 
       <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/viewMeds">
@@ -448,16 +452,7 @@ console.log(name,lastName)
         variant="persistent" // This makes the drawer persistent
       >
         <List sx={{ mt: 12 }}>
-          <ListItem button>
-            <ListItemIcon>
-              <img
-                src={ProfileIcon}
-                alt="Profile"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="My Profile" />
-          </ListItem>
+       
 
           <ListItem button component={Link} to="/wallet">
             <ListItemIcon>
@@ -512,4 +507,3 @@ console.log(name,lastName)
 };
 
 export default PatienttHeader; // Make sure to export the component as default
-

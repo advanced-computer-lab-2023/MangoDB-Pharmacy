@@ -164,7 +164,7 @@ const NewChat = () => {
 
        {/* Display Patient's Chats */}
 <Typography variant="h4" gutterBottom style={{ marginTop: "2rem" }}>
-  Your Chats
+  Your Chats With Pharmacists
 </Typography>
 {patientChats.map((chat) => (
   <Paper

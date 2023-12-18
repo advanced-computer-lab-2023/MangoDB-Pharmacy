@@ -128,16 +128,7 @@ export const PharmacistHeader = ({ children }) => {
     <ListItemText primary="Dashboard" />
     </ListItem>
 
-      <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/">
-        <ListItemIcon>
-          <img
-            src={profileIcon}
-            style={{ width: 30, height: 30 }}
-            alt="profile"
-          />
-        </ListItemIcon>
-        <ListItemText primary="Profile" />
-      </ListItem>
+      
 
       <ListItem button sx={{ pt: 0, pb: 1 }}component={Link} to="/viewMedsPharma">
         <ListItemIcon>
@@ -297,6 +288,17 @@ export const PharmacistHeader = ({ children }) => {
         </ListItemIcon>
         <ListItemText primary="Report" />
       </ListItem>
+
+      <ListItem button sx={{ pt: 0, pb: 1 }} component={Link} to="/changePasswordPharmacist">
+        <ListItemIcon>
+          <img
+            src={profileIcon}
+            style={{ width: 30, height: 30 }}
+            alt="Profile"
+          />
+        </ListItemIcon>
+        <ListItemText primary="Change Password" />
+      </ListItem>
       {/* <ListItem button sx={{ pb: 0 }}>
         <ListItemIcon>
           <img
@@ -415,16 +417,7 @@ export const PharmacistHeader = ({ children }) => {
         variant="persistent" // This makes the drawer persistent
       >
         <List sx={{ mt: 12 }}>
-          <ListItem button>
-            <ListItemIcon>
-              <img
-                src={ProfileIcon}
-                alt="Profile"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="My Profile" />
-          </ListItem>
+         
 
           <ListItem button component={Link} to="/walletPharma">
             <ListItemIcon>
@@ -439,7 +432,6 @@ export const PharmacistHeader = ({ children }) => {
               variant="body1"
               sx={{ fontWeight: "bold", marginRight: 2, color: "#333" }}
             >
-              {"$100"} {/* Replace with actual wallet balance */}
             </Typography>
           </ListItem>
 

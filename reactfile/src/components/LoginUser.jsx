@@ -53,9 +53,6 @@ export default function LoginUser() {
         formData
       );
 
-      console.log(formData.username);
-      console.log(response.data.type);
-
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userData", JSON.stringify(response.data));

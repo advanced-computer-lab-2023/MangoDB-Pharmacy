@@ -303,7 +303,7 @@ const ViewMedsPharma = () => {
                     variant="outlined"
                     color="secondary"
                     onClick={() => handleArchiveMedicine(med.name)}
-                    style={{ marginLeft: "70rem", marginTop: "5px", marginBottom:"2rem", marginTop : "-5rem"  }}
+                    style={{ marginLeft: "55rem", marginTop: "7px", marginBottom:"2rem", marginTop : "-5rem"  }}
                   >
                     Archive Medicine
                   </Button>
@@ -312,14 +312,7 @@ const ViewMedsPharma = () => {
           </div>
         )}
 
-        {/* Add Medicine Button */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddMedicineOpen}
-        >
-          Add Medicine
-        </Button>
+       
 
         {/* Archived Medicines Button */}
         <Link to="/archivedMedicines" style={{ textDecoration: "none" }}>

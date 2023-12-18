@@ -55,7 +55,7 @@ const PharmacistDetail = () => {
         setSnackbarOpen(false);
 
         // Navigate to the desired page
-        navigate("/viewPharmacists");
+        navigate("/requestedPharma");
       }, 3000);
     } catch (error) {
       console.error('Error rejecting pharmacist:', error.message);

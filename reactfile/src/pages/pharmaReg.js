@@ -30,6 +30,8 @@ const PharmacistReg = () => {
   const [lastName, setLastName] = useState("");
   const [dob, setDOB] = useState("");
   const [addresses, setAddresses] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
+
   //Docs
 
   //Other

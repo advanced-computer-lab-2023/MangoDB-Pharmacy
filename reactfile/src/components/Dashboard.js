@@ -19,8 +19,8 @@ const Dashboard = () => {
   const papers = [
     {
       icon: Icon1,
-      title: "Profile",
-      description: "View/Edit Profile",
+      title: "Change Password",
+      description: "Edit Password",
       cta: "View",
     },
     {
@@ -108,7 +108,7 @@ const Dashboard = () => {
   color="primary"
   onClick={() => {
     if (index === 0) {
-      navigate("/profile");
+      navigate("/changePasswordPatient");
     } else if (index === 1) {
       navigate("/viewMeds");
     } else if (index === 2) {

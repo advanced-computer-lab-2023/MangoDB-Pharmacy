@@ -16,8 +16,8 @@ const DashboardPharma = () => {
   const papers = [
     {
       icon: Icon1,
-      title: "Profile",
-      description: "View/Edit Profile",
+      title: "Change Password",
+      description: "Edit Password",
       cta: "View",
     },
     {
@@ -107,7 +107,7 @@ const DashboardPharma = () => {
   color="primary"
   onClick={() => {
     if (index === 0) {
-      navigate("/profile");
+      navigate("/changePasswordPharmacist");
     } else if (index === 1) {
       navigate("/viewMedsPharma");
     } else if (index === 2) {
@@ -117,7 +117,7 @@ const DashboardPharma = () => {
     } else if (index === 4) {
       navigate("/sales");
     } else if (index === 5) {
-      navigate("/wallet");
+      navigate("/walletPharma");
     }
   }}
 >

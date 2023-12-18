@@ -47,7 +47,7 @@ const NewChat = () => {
         {/* ... (previous Chat Button and Pharmacist Dropdown code) */}
         {/* Display Patient's Chats */}
         <Typography variant="h4" gutterBottom style={{ marginTop: "2rem" }}>
-          Your Chats
+          Your Patient Chats
         </Typography>
         {patientChats.map((chat) => (
           <Paper

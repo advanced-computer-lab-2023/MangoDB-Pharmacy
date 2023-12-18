@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
-import { mainListItems } from '../components/ListItems';
+import PatientHeader from '../components/PatientHeader';
 import { changePassword2 } from '../services/api';
 import {
   Button,
@@ -60,19 +60,11 @@ export default function ChangePasswordPatient() {
       </HelmetProvider>
 
       <div style={{ display: 'flex' }}>
-        {/* Sidebar */}
-        <div
-          style={{
-            background: '#f0f0f0',
-            minHeight: '100vh',
-            paddingTop: '2rem',
-          }}
-        >
-          {mainListItems}
-        </div>
+      
+      <PatientHeader>
 
         {/* Main Content */}
-        <div style={{ padding: '1rem', flexGrow: 1 }}>
+        <div style={{ paddingLeft: '20rem', flexGrow: 1 }}>
           <Button variant="contained" color="primary" onClick={handleOpen}>
             Change Password
           </Button>
@@ -123,6 +115,8 @@ export default function ChangePasswordPatient() {
             </DialogContent>
           </Dialog>
         </div>
+        </PatientHeader>
+
       </div>
     </>
   );

@@ -26,16 +26,7 @@ const Medicine = () => {
   const [alternativeMedicines, setAlternativeMedicines] = useState([]);
   const [showAlternatives, setShowAlternatives] = useState(false);
   const [alternativeQuantities, setAlternativeQuantities] = useState({});
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
-  const [failureSnackbarOpen, setFailureSnackbarOpen] = useState(false);
-  const [requiresPrescription, setRequiresPrescription] = useState(false);
-  const [isPrescriptionRequiredSnackOpen, setIsPrescriptionRequiredSnackOpen] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-  const [isSoldOut, setSoldOut] = useState(false);
-
-
-
-
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
@@ -43,7 +34,13 @@ const Medicine = () => {
   useEffect(() => {
     getMeds(id)
       .then((response) => {
-        setMedicine(response.data);
+        console.log(response)
+        if(response.data.value == true){
+          setMedicine(response.data.medicine);
+
+        }
+        else{
+        setMedicine(response.data);}
         setError(null);
       })
       .catch((err) => {
@@ -72,26 +69,22 @@ const Medicine = () => {
         .catch((error) => {
           console.error('Error adding item to cart:', error);
           const errorMessage = error.response?.data?.error || 'An error occurred';
-
+  
           if (
+            errorMessage.includes('Quantity not available') &&
             errorMessage.includes('This medicine requires a prescription')
-          
           ) {
-            setIsPrescriptionRequiredSnackOpen(true); // Open the prescription required snacker
-          } 
-          else if ( errorMessage.includes('Quantity not available') )
-          {
-            setSoldOut(true); // Open the prescription required snacker
-              //alert(errorMessage);
+            alert('This medicine requires a prescription. Please consult your doctor.');
+          } else {
+            alert(errorMessage);
           }
         });
     }
   };
 
-
   const handleViewAlternatives = () => {
     if (medicine) {
-      console.log('Medicine data:', medicine);
+      console.log('Medicine data:', medicine.medicine);
       getAlternativeMedicines(medicine.name)
         .then((response) => {
           console.log('Received response:', response);
@@ -121,12 +114,12 @@ const Medicine = () => {
         const errorMessage = error.response?.data?.error || 'An error occurred';
 
         if (
-          errorMessage.includes('Quantity not available') ||
+          errorMessage.includes('Quantity not available') &&
           errorMessage.includes('This medicine requires a prescription')
         ) {
-          setIsPrescriptionRequiredSnackOpen(true); // Open the prescription required snacker
+          alert('This medicine requires a prescription. Please consult your doctor.');
         } else {
-          //alert(errorMessage);
+          alert(errorMessage);
         }
       });
   };
@@ -153,7 +146,7 @@ const Medicine = () => {
    
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} style={{  paddingLeft: '25rem'}}>
+      <Grid item xs={12} sm={9}>
         {error ? (
           <div>Error fetching medicine details: {error}</div>
         ) : (
@@ -163,12 +156,11 @@ const Medicine = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              marginRight: '2rem'
             }}
           >
             {medicine ? (
               <div>
-                <Typography variant="h4" gutterBottom style={{paddingLeft : '6rem'}}>
+                <Typography variant="h4" gutterBottom>
                   {medicine.name}
                 </Typography>
                 <img
@@ -178,27 +170,25 @@ const Medicine = () => {
                     maxWidth: '100%',
                     maxHeight: '300px',
                     marginBottom: '1rem',
-                    paddingLeft : '6rem'
-
                   }}
                 />
-                <Typography variant="body1" gutterBottom style={{paddingLeft : '6.5rem'}}>
+                <Typography variant="body1" gutterBottom>
                   Description: {medicine.description}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '8rem'}}>
+                <Typography variant="subtitle1" gutterBottom>
                   Details: {medicine.details}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '8rem'}}>
+                <Typography variant="subtitle1" gutterBottom>
                   Price: {medicine.price}
                 </Typography>
-                <Typography variant="body2" gutterBottom style={{paddingLeft : '8rem'}}>
+                <Typography variant="body2" gutterBottom>
                   Uses: {medicine.use}
                 </Typography>
-                <div style={{ display: 'flex', alignItems: 'center' ,paddingLeft : '6rem'}}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                   <IconButton onClick={handleDecreaseQuantity}>
                     <RemoveIcon />
                   </IconButton>
-                  <Typography variant="body2" style={{ margin: '0 1rem'  }}>
+                  <Typography variant="body2" style={{ margin: '0 1rem' }}>
                     {quantity}
                   </Typography>
                   <IconButton onClick={handleIncreaseQuantity}>
@@ -211,7 +201,7 @@ const Medicine = () => {
                   onClick={handleAddToCart}
                   style={{marginRight : "40px"}}
                 >
-                  {isAddedToCart ? 'Add to Cart' : 'Add to Cart'}
+                  {isAddedToCart ? 'Added to Cart' : 'Add to Cart'}
                 </Button>
 
                 <Button
@@ -235,7 +225,7 @@ const Medicine = () => {
                         {alternativeMedicines.map((alternative) => (
                           <li key={alternative._id}>
                             <div>
-                              <Typography variant="h6" gutterBottom style={{paddingLeft : '4rem'}}>
+                              <Typography variant="h6" gutterBottom>
                                 {alternative.name}
                               </Typography>
                               <img
@@ -245,22 +235,21 @@ const Medicine = () => {
                                   maxWidth: '100%',
                                   maxHeight: '150px',
                                   marginBottom: '0.5rem',
-                                  paddingLeft : '3rem'
                                 }}
                               />
-                              <Typography variant="body1" gutterBottom style={{paddingLeft : '3rem'}}>
+                              <Typography variant="body1" gutterBottom>
                                 Description: {alternative.description}
                               </Typography>
-                              <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '4rem'}}>
+                              <Typography variant="subtitle1" gutterBottom>
                                 Details: {alternative.details}
                               </Typography>
-                              <Typography variant="subtitle1" gutterBottom style={{paddingLeft : '4rem'}}>
+                              <Typography variant="subtitle1" gutterBottom>
                                 Price: {alternative.price}
                               </Typography>
-                              <Typography variant="body2" gutterBottom style={{paddingLeft : '4rem'}}>
+                              <Typography variant="body2" gutterBottom>
                                 Uses: {alternative.use}
                               </Typography>
-                              <div style={{ display: 'flex', alignItems: 'center',paddingLeft : '3rem'}}>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <IconButton
                                   onClick={() => handleDecreaseAlternativeQuantity(alternative._id)}
                                 >
@@ -279,7 +268,7 @@ const Medicine = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => handleAddAlternativeToCart(alternative)}
-                                style={{ marginTop: '0.5rem',marginLeft: "3rem" }}
+                                style={{ marginTop: '0.5rem' }}
                               >
                                 Add to Cart
                               </Button>
@@ -294,42 +283,16 @@ const Medicine = () => {
                 )}
 
                 {isAddedToCart && (
-                <Snackbar
-                  open={isAddedToCart}
-                  autoHideDuration={3000} // Adjust the duration as needed
-                  onClose={() => setIsAddedToCart(false)}
-                >
-                  <Alert onClose={() => setIsAddedToCart(false)} severity="success">
-                    Product added to cart successfully!
-                  </Alert>
-                </Snackbar>
-              )}
-
-{isPrescriptionRequiredSnackOpen && (
-            <Snackbar
-              open={isPrescriptionRequiredSnackOpen}
-              autoHideDuration={3000} // Adjust the duration as needed
-              onClose={() => setIsPrescriptionRequiredSnackOpen(false)}
-            >
-              <Alert onClose={() => setIsPrescriptionRequiredSnackOpen(false)} severity="warning">
-                This medicine requires a prescription. Please consult your doctor.
-              </Alert>
-            </Snackbar>
-          )}
-          {isSoldOut && (
-            <Snackbar
-              open={isSoldOut}
-              autoHideDuration={3000} // Adjust the duration as needed
-              onClose={() => setSoldOut(false)}
-            >
-              <Alert onClose={() => setSoldOut(false)} severity="warning">
-                Sold Out! View alternatives.
-              </Alert>
-            </Snackbar>
-          )}
-
-
-
+                 <Snackbar
+                 open={isSnackbarOpen}
+                 autoHideDuration={3000} // Adjust the duration as needed
+                 onClose={() => setIsSnackbarOpen(false)}
+               >
+                 <Alert onClose={() => setIsSnackbarOpen(false)} severity="success">
+                   Product added to cart successfully!
+                 </Alert>
+               </Snackbar>
+                )}
               </div>
             ) : (
               <div>Loading...</div>

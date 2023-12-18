@@ -124,8 +124,8 @@ const ViewMeds = () => {
               .filter((med) => med.name.toLowerCase().includes(searchTerm.toLowerCase()))
               .map((med) => (
                 <Link to={`/medicine/${med._id}`} key={med._id} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Paper
-                    style={{ padding: "1rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
+                  <Paper 
+                    style={{ width :"100%",paddingLeft: "5rem", marginBottom: "1rem", display: "flex", alignItems: "center", cursor: "pointer" }}
                   >
                     {med.picture && (
                       <img

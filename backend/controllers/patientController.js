@@ -197,8 +197,10 @@ const getMed = asyncHandler(async (req, res) => {
         });
   
         return res.status(200).json({
+		medicine,
           message: "Medicine out of stock. Here are alternatives with the same main active ingredient:",
           alternatives: similarMedicines,
+		  value :true,
         });
       }
   

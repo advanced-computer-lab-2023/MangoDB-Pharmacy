@@ -132,7 +132,7 @@ const PharmacistChatDoctor = () => {
 
         {/* Display Pharmacist's Chats */}
         <Typography variant="h4" gutterBottom style={{ marginTop: "2rem" }}>
-          Your Chats
+          Your Doctor Chats
         </Typography>
         {pharmacistChats.map((chat) => (
           <Paper

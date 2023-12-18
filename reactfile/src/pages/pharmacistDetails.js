@@ -48,7 +48,7 @@ const PharmacistDetails = () => {
           setSnackbarOpen(false);
 
           // Navigate to the desired page
-          navigate("/viewPharmacists");
+          navigate("/removeUsers");
         }, 3000);
       }
     } catch (error) {

@@ -52,7 +52,7 @@ const ArchivedMedicines = () => {
       
 
       {/* Main Content */}
-      <div style={{ flex: 1, padding: "2rem" }}>
+      <div style={{ flex: 1, paddingLeft: "20rem" }}>
         <Typography variant="h4" gutterBottom>
           Archived Medicines
         </Typography>

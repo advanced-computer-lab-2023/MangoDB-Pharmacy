@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
-import { pharmacistListItems } from '../components/ListItemsPharma';
+import PharmacistHeader from '../components/PharmacistHeader';
 import { changePassword3 } from '../services/api';
 import {
   Button,
@@ -11,7 +11,10 @@ import {
   TextField,
   Grid,
   Typography,
+  Snackbar,
 } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 export default function ChangePasswordPharmacist() {
   const [oldPassword, setOldPassword] = useState("");
@@ -19,6 +22,9 @@ export default function ChangePasswordPharmacist() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(false);
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
+  const navigate = useNavigate();
+  const [redirectTimer, setRedirectTimer] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +44,14 @@ export default function ChangePasswordPharmacist() {
       });
 
       console.log(response.data.message);
-      handleClose(); // Close the dialog after a successful submission
+      setSuccessSnackbarOpen(true);
+
+      // Redirect after 3 seconds
+      const timer = setTimeout(() => {
+        navigate("/changePasswordPharmacist");
+      }, 3000);
+
+      setRedirectTimer(timer);
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }
@@ -52,6 +65,19 @@ export default function ChangePasswordPharmacist() {
     setOpen(false);
   };
 
+  const handleSuccessSnackbarClose = () => {
+    setSuccessSnackbarOpen(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      // Clear the redirect timer when the component unmounts
+      if (redirectTimer) {
+        clearTimeout(redirectTimer);
+      }
+    };
+  }, [redirectTimer]);
+
   return (
     <>
       <HelmetProvider>
@@ -59,20 +85,8 @@ export default function ChangePasswordPharmacist() {
           <title>Reset Password | Admin</title>
         </Helmet>
       </HelmetProvider>
+      <PharmacistHeader>
       <Grid container>
-        {/* Sidebar */}
-        <Grid
-          item
-          xs={12}
-          sm={3}
-          md={2}
-          lg={2}
-          xl={2}
-          style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem" }}
-        >
-          {pharmacistListItems}
-        </Grid>
-
         {/* Main Content */}
         <Grid
           item
@@ -81,14 +95,15 @@ export default function ChangePasswordPharmacist() {
           md={10}
           lg={10}
           xl={10}
-          style={{ paddingLeft: "2rem" }}
+          style={{ paddingLeft: "20rem" }}
         >
           <Button variant="contained" color="primary" onClick={handleOpen}>
             Change Password
           </Button>
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>
-              <Typography variant = "h5"> Change Password </Typography></DialogTitle>
+              <Typography variant="h5"> Change Password </Typography>
+            </DialogTitle>
             <DialogContent>
               <form onSubmit={handleSubmit}>
                 <TextField
@@ -126,13 +141,30 @@ export default function ChangePasswordPharmacist() {
                 />
                 {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
                 <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Submit
-                  </Button>
+                  Submit
+                </Button>
               </form>
             </DialogContent>
           </Dialog>
         </Grid>
       </Grid>
+      </PharmacistHeader>
+
+      {/* Success Snackbar */}
+      <Snackbar
+        open={successSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSuccessSnackbarClose}
+      >
+        <MuiAlert
+          onClose={handleSuccessSnackbarClose}
+          severity="success"
+          elevation={6}
+          variant="filled"
+        >
+          Password change successful. 
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 }
