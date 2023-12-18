@@ -65,7 +65,7 @@ const Dashboard = () => {
         height: "100vh",
       }}
     >
-      <Paper sx={{marginLeft: "15rem", p: 2, width: 1200, height: 600, pl: 5 }} >
+      <Paper sx={{ p: 2, width: 1200, height: 600, pl: 5 ,marginBottom:'10rem', marginLeft: "14rem" }} >
         <Typography variant="h2" align="left" sx={{ pb: 10, pl: 4, pt: 5 }}>
           Dashboard
         </Typography>

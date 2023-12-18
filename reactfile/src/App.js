@@ -47,6 +47,7 @@ import PatientChats from "./pages/viewPatientChats";
 import PatientPharma from "./pages/chatPharmacistPatient";
 
 import Chat2 from "./pages/chat2";
+import RemoveUsers from "./pages/removeUsers";
 
 import PharmacistChatDoctor from "./pages/pharmacistChatDoctor";
 
@@ -121,6 +122,7 @@ function App() {
           <Route path="/newChat" element={<NewChat />} />
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/chat2/:id" element={<Chat2 />} />
+          <Route path="/removeUsers" element={<RemoveUsers />} />
 
           <Route
             path="/changePasswordPatient"

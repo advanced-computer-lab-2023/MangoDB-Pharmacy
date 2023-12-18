@@ -93,12 +93,12 @@ const ViewSales = () => {
         {/* {pharmacistListItems} */}
       </Grid>
 
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
-        <Typography variant="h4" gutterBottom>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" , marginTop:"0.5rem" }}>
+        <Typography variant="h3" gutterBottom style={{ marginLeft: "-0.8rem"}}>
           Sales
         </Typography>
 
-        <FormControl component="fieldset" style={{ marginBottom: "1rem" }}>
+        <FormControl component="fieldset" style={{ marginBottom: "1rem" , marginTop:"-1rem"}}>
   <FormLabel component="legend">Filter By:</FormLabel>
   <RadioGroup row aria-label="filter-type" name="filter-type" value={filterType} onChange={handleFilterTypeChange}>
     <FormControlLabel value="all" control={<Radio />} label="All" />
@@ -140,7 +140,7 @@ const ViewSales = () => {
           </RadioGroup>
         </FormControl>
 
-        <Button variant="contained" onClick={handleShowSales}>
+        <Button variant="contained" onClick={handleShowSales} style = {{marginLeft:"1rem", marginTop : "0.5rem"}}> 
           Show Sales
         </Button>
 

@@ -26,7 +26,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { addMed } from "../services/api";
-import { pharmacistListItems } from "../components/ListItemsPharma";
+import PharmaHeader from "../components/PharmacistHeader";
 
 import MuiAlert from "@mui/material/Alert";
 import Avatar from "@mui/material/Avatar";
@@ -41,9 +41,7 @@ const AddMed = () => {
     use: "",
     description: "",
     quantity: "",
-    sales: "",
     details: "",
-    prescribed: "", // New field
     picture: null, // New field
     mainActiveIngredient: "",
   });
@@ -133,23 +131,9 @@ const AddMed = () => {
   };
 
   return (
+    <PharmaHeader>
     <Grid container>
-      {/* Sidebar */}
-      <Grid
-        item
-        xs={12}
-        sm={3}
-        md={2}
-        lg={2}
-        xl={2}
-        style={{
-          background: "#f0f0f0",
-          minHeight: "100vh",
-          paddingTop: "2rem",
-        }}
-      >
-        {pharmacistListItems}
-      </Grid>
+  
 
       {/* Main Content */}
       <Grid
@@ -159,7 +143,7 @@ const AddMed = () => {
         md={10}
         lg={10}
         xl={10}
-        style={{ paddingLeft: "2rem" }}
+        style={{ paddingLeft: "15rem" }}
       >
         <Grid container justifyContent="center" style={{ padding: "2rem" }}>
           <Grid item xs={12} md={8} lg={6}>
@@ -228,17 +212,7 @@ const AddMed = () => {
                       margin="normal"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      label="Sales"
-                      name="sales"
-                      value={medicine.sales}
-                      onChange={handleChange}
-                      fullWidth
-                      required
-                      margin="normal"
-                    />
-                  </Grid>
+             
                   <Grid item xs={12} sm={6}>
                     <TextField
                       label="Details"
@@ -404,6 +378,7 @@ const AddMed = () => {
         </Grid>
       </Grid>
     </Grid>
+    </PharmaHeader>
   );
 };
 

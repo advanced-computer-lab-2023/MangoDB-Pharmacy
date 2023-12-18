@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Typography, Button, TextField } from "@mui/material";
 import { viewArchivedMeds, unarchiveMedicine } from "../services/api";
-import { pharmacistListItems } from "../components/ListItemsPharma"; // Import the sidebar component
+import PharmacistHeader from "../components/PharmacistHeader";
 
 const ArchivedMedicines = () => {
   const [archivedMeds, setArchivedMeds] = useState([]);
@@ -45,11 +45,11 @@ const ArchivedMedicines = () => {
   };
 
   return (
+    <PharmacistHeader>
+
     <div style={{ display: "flex" }}>
       {/* Sidebar */}
-      <div style={{ background: "#f0f0f0", minHeight: "100vh", paddingTop: "2rem", width: "20%" }}>
-        {pharmacistListItems}
-      </div>
+      
 
       {/* Main Content */}
       <div style={{ flex: 1, padding: "2rem" }}>
@@ -100,6 +100,8 @@ const ArchivedMedicines = () => {
         )}
       </div>
     </div>
+    </PharmacistHeader>
+
   );
 };
 

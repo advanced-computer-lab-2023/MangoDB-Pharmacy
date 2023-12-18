@@ -68,8 +68,8 @@ const ViewCartItems = () => {
       </Grid>
 
     
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
-        <Typography variant="h4" gutterBottom>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingleft: "5rem" }}>
+        <Typography variant="h3" gutterBottom>
           Medicines
         </Typography>
 
@@ -79,7 +79,7 @@ const ViewCartItems = () => {
           <div>
             {cartItems.map((item) => (
               <Paper key={item._id} style={{ padding: "1rem", marginBottom: "1rem" }}>
-                <Typography variant="h6">{item.name}</Typography>
+                <Typography variant="h5">{item.name}</Typography>
                
                 {item.picture && <img src={`http://localhost:8000/${item.picture}`} alt={item.name} style={{ width: '100px', height: '100px' }} />}
                 <Typography>Quantity: {item.quantity}</Typography>

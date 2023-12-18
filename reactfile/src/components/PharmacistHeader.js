@@ -61,6 +61,14 @@ export const PharmacistHeader = ({ children }) => {
     setOpen(true);
   };
 
+  const logoutListItem = (
+    <ListItem button onClick={handleLogout} sx={{ mb: 0 }}>
+      <ListItemIcon>
+        <img src={LogoutIcon} alt="Logout" style={{ width: 30, height: 30 }} />
+      </ListItemIcon>
+      <ListItemText primary="Logout" />
+    </ListItem>
+  );
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -400,7 +408,7 @@ export const PharmacistHeader = ({ children }) => {
             borderTopRightRadius: 8,
             borderBottomRightRadius: 8,
             zIndex: (theme) => theme.zIndex.drawer - 1, // Decrease the z-index of the Drawer
-            height: "33%", // Adjust this value to change the height of the drawer
+            height: "23%", // Adjust this value to change the height of the drawer
             width: "15%",
           },
         }}
@@ -435,16 +443,8 @@ export const PharmacistHeader = ({ children }) => {
             </Typography>
           </ListItem>
 
-          <ListItem button>
-            <ListItemIcon>
-              <img
-                src={LogoutIcon}
-                alt="Logout"
-                style={{ width: 30, height: 30 }}
-              />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
+         
+          {logoutListItem}
         </List>
       </SwipeableDrawer>
 

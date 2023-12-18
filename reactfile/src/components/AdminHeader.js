@@ -173,7 +173,12 @@ export const AdminHeader = ({ children }) => {
                 </ListItemIcon>
                 <ListItemText primary="Add Admin" />
               </ListItem>
-              <ListItem button sx={{ pb: 1 }}>
+              <ListItem
+                button
+                sx={{ pb: 1 }}
+                component={Link}
+                to="/removeUsers"
+              >
                 <ListItemIcon>
                   <img
                     src={RemoveUserIcon}
@@ -416,7 +421,7 @@ export const AdminHeader = ({ children }) => {
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
             zIndex: (theme) => theme.zIndex.drawer - 1,
-            height: "25%",
+            height: "18%",
             width: "15%",
           },
         }}

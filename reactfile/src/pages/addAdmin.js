@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import AdminHeader from '../components/AdminHeader'; // Import the AdminHeader component
 
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -31,7 +32,8 @@ const AddAdmin = ({ apiEndpoint, redirectPath }) => {
     email: "",
   });
   const [successOpen, setSuccessOpen] = useState(false);
-  
+  const [isNotFilled, setNotFilled] = useState(false);
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [state, setState] = useState({
@@ -47,9 +49,14 @@ const AddAdmin = ({ apiEndpoint, redirectPath }) => {
     }
 
     setSuccessOpen(false);
-navigate("/admin")  };
+ };
 
   const handleCreateAdmin = async () => {
+   if (formData.firstName == "" || formData.lastName == "" || formData.email == "")
+   {
+    setNotFilled(true);
+    return;
+   }
     try {
       setIsLoading(true);
       const response = await axios.post(
@@ -65,6 +72,18 @@ navigate("/admin")  };
       if (response.status === 201) {
         setError(null);
         setSuccessOpen(true);
+        alert(
+					"Admin Created Successfully!" +
+						"\nUsername: " +
+						response.data.username +
+						"\nPassword: " +
+						response.data.password
+				);
+
+        // Redirect to home after 7 seconds
+      setTimeout(() => {
+        navigate("/DashboardAdmin");
+      }, 3000);
       }
     } catch (error) {
       setState({
@@ -175,10 +194,23 @@ navigate("/admin")  };
               autoHideDuration={3000}
               onClose={handleClose}
             >
+
+
               <Alert onClose={handleClose} severity="success">
                 Admin Created Successfully!
               </Alert>
             </Snackbar>
+            {isNotFilled && (
+                <Snackbar
+                  open={isNotFilled}
+                  autoHideDuration={3000} // Adjust the duration as needed
+                  onClose={() => setNotFilled(false)}
+                >
+                  <Alert onClose={() => setNotFilled(false)} severity="warning">
+                    Please Fill Missing Text Fields!
+                  </Alert>
+                </Snackbar>
+              )}
           </Box>
         </Box>
       </Container>

@@ -75,7 +75,7 @@ const ViewMeds = () => {
       </Grid>
 
       {/* Main Content */}
-      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ paddingLeft: "2rem" }}>
+      <Grid item xs={12} sm={9} md={10} lg={10} xl={10} style={{ marginLeft: "-1.5rem" }}>
         <Typography variant="h4" gutterBottom>
           Medicines
         </Typography>

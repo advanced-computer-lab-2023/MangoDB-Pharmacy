@@ -274,6 +274,7 @@ const ViewMedsPharma = () => {
                         display: "flex",
                         alignItems: "center",
                         cursor: "pointer",
+                        width : "95%"
                       }}
                     >
                       {med.picture && (
@@ -294,6 +295,7 @@ const ViewMedsPharma = () => {
                           Price: {med.price}
                         </Typography>
                       </div>
+                      
                     </Paper>
                   </Link>
                   {/* Archive Medicine Button */}
@@ -301,7 +303,7 @@ const ViewMedsPharma = () => {
                     variant="outlined"
                     color="secondary"
                     onClick={() => handleArchiveMedicine(med.name)}
-                    style={{ marginLeft: "1rem" }}
+                    style={{ marginLeft: "70rem", marginTop: "5px", marginBottom:"2rem", marginTop : "-5rem"  }}
                   >
                     Archive Medicine
                   </Button>
